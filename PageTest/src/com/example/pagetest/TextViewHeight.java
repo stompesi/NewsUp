@@ -38,7 +38,7 @@ public class TextViewHeight {
         this.lineSpacingExtra = lineSpacingExtra;
     }
 
-    public int append(String text, TextPaint textPaint) {
+    public int getTextheight(String text, TextPaint textPaint) {
         textLineHeight = (int) Math.ceil(textPaint.getFontMetrics(null) * lineSpacingMultiplier + lineSpacingExtra);//줄간격 포함 한라인에 높이를 몇을 줄지를 정한다.
         String[] paragraphs = text.split("\n", -1);//개행 문자 까지 자른다 
         int i;

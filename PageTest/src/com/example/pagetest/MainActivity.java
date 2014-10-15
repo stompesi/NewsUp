@@ -27,24 +27,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		list = new ArrayList<Object>();
 		FirstSplitter firstSplitter= new FirstSplitter();//신문 기사 처음 이미지랑 기사 구분 하는 객체.
-	
-		TextViewHeight textViewHeight = new TextViewHeight(View_widht, 1330, 1, 0);
-		TextPaint textPaint = new TextPaint();//pagespliter에 넘겨줄 그림판.
-		textPaint.setTextSize(getResources().getDimension(R.dimen.text_size));//textsize설정.
-		
-		
-		
+
 		try {
-//			String str = readText("html.txt");
-//			list  = firstSplitter.FirstSplitter(str);//파싱된 걸 넣는다.
-			String str = readText("html1.txt");
-			 int num= textViewHeight.append(str, textPaint);
-//			String str1 = textViewHeight.getPages().get(0).toString();
-			 Log.d("TAG1", num+"");
-//		
-			
-			
-//			StaticClass.result_lits= getResult_List(list);
+			String str = readText("html.txt");
+			list  = firstSplitter.FirstSplitter(str);//파싱된 걸 넣는다.
+			StaticClass.result_lits= getResult_List(list);
 
 			//			StaticClass.result_lits = getResult_List(list);
 
@@ -81,9 +68,10 @@ public class MainActivity extends Activity {
 		int Text_hight = 0; //텍스트 높이.
 		String Temp_text,Temp_text1;
 		PageSplitter pageSplitter;//pageSpliter선언.
+		TextViewHeight textViewHeight;
 		TextPaint textPaint = new TextPaint();//pagespliter에 넘겨줄 그림판.
 		textPaint.setTextSize(getResources().getDimension(R.dimen.text_size));//textsize설정.
-
+		Log.d("TAG", "시작");
 		for(int i = 0; i<list.size(); i++)
 		{
 			if( list.get(i) instanceof ImageInfo)//이미지 판별 
@@ -133,13 +121,17 @@ public class MainActivity extends Activity {
 
 						pageSplitter = new PageSplitter(View_widht, View_height, 1, 0);//다음 layout은 뷰가 전체로 가정할때 처리 하는 조건.(넓이 높이를 뷰에 맞춘다)
 						pageSplitter.append(((String) list.get(i)), textPaint);
+						textViewHeight = new TextViewHeight(View_widht, View_height, 1, 0);
 						Log.d("TAG Arraylist", pageSplitter.getPages().size()+"");
 
 						if(pageSplitter.getPages().size()==1)
 						{
 							
+							ExtrTextHeight = textViewHeight.getTextheight(pageSplitter.getPages().get(0).toString(), textPaint);
+						
 							//현재 높이를 측정 할 수 있는 함수가 있어서 만약 높이가 절반 이상이 넘으면 Text_flag = 1 날리지 말고 
 							//그 이하면 Text_flag = 1날려 
+							Log.d("TAG 처음 측정 높이!!!!!!!!!!!!!!!", ExtrTextHeight+"");
 							Log.d("TAG 첫 페이지", pageSplitter.getPages().get(0).toString());
 //							Text_flag =1;
 					

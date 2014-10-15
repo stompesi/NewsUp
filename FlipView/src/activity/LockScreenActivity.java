@@ -8,12 +8,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
+import clock.Clock;
 
 import com.example.flipview.R;
 
@@ -30,11 +34,18 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	
 	private static LockScreenActivity lockScreenActivity;
 	
+	private TextView timeView;
+	private TextView dateView;
+	
+	private Clock clock;
+
+	private Handler timerHandler;
+	private Runnable timerRunnable;
+	
+	
 	public static LockScreenActivity getInstance() {
 		return lockScreenActivity;
 	}
-	
-	
 	
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +74,34 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		articleListManager = new ArticleListManager(this, articleListFlipper, 1, R.layout.lockscreen_article_list_item);
 		
 		articleListManager.insertArticleList();
+		
+		timeView = (TextView) findViewById(R.id.lockScreenTime);
+		dateView = (TextView) findViewById(R.id.lockScreenDate);
+		
+		clock = new Clock();
+		
+		timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+            	String time = clock.getTime() + clock.getAMPM();
+				String date = clock.getDate() + clock.getWeek();
+				
+				timeView.setText(time);
+				dateView.setText(date);
+				timerHandler.postDelayed(timerRunnable, 1000);
+            }
+        };
+         
+        timerHandler = new Handler();
+        timerHandler.postDelayed(timerRunnable, 0);
+		
 	}
+	@Override
+    protected void onDestroy() {
+        Log.i("test", "onDstory()");
+        timerHandler.removeCallbacks(timerRunnable);
+        super.onDestroy();
+    }
 	
 	private boolean moveNewsUpApp() {
 		if(articleListManager.getCurrentChildIndex() == 1) {
@@ -139,7 +177,6 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		}
 		return true;
 	}
-
 }
 
 

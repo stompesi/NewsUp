@@ -30,18 +30,19 @@
             android:background="#00ffffff"
             android:visibility="visible" >
 
-            <DigitalClock
+            <TextView
+                android:id="@+id/lockScreenTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:gravity="center" />
 
             <TextView
+                android:id="@+id/lockScreenDate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:gravity="center"
-                android:text="10.15 수요일" />
+                android:gravity="center" />
         </LinearLayout>
     </FrameLayout>
 

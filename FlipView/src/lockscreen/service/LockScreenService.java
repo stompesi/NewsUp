@@ -58,7 +58,7 @@ public class LockScreenService extends Service {
 				// TODO : 어떤것을 지울지 결정 해야 한다.
 				PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 				MainActivity mainActivity = (MainActivity) MainActivity.getInstance();
-				if(!mainActivity.hasWindowFocus()) {
+				if(mainActivity != null && !mainActivity.hasWindowFocus()) {
 					removeArticles();
 				}else if(!pm.isScreenOn()) {
 					removeArticles();

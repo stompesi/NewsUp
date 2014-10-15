@@ -42,7 +42,7 @@ public class StartActivity extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.start);
 		getActionBar().hide();
-		URQAController.InitializeAndStartSession(getApplicationContext(), "3049748C");
+		URQAController.InitializeAndStartSession(getApplicationContext(), "8C188FC3");
 		
 		RbPreference pref = new RbPreference(this);
 		// 앱 처음 실행 

@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +20,7 @@ import android.widget.ViewFlipper;
 import application.NewsUpApp;
 
 import com.example.flipview.R;
+import com.urqa.clientinterface.URQAController;
 
 
 @SuppressLint("ClickableViewAccessibility")
@@ -42,6 +42,7 @@ public class StartActivity extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.start);
 		getActionBar().hide();
+		URQAController.InitializeAndStartSession(getApplicationContext(), "3049748C");
 		
 		RbPreference pref = new RbPreference(this);
 		// 앱 처음 실행 

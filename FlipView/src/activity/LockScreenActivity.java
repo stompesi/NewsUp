@@ -64,7 +64,10 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		
 		articleListManager.display(articleListManager.getChildChount());
 	}
-	
+	@Override
+	protected void onUserLeaveHint() {
+		finish();
+	}
 	private void init() {
 		lockScreenActivity = LockScreenActivity.this;
 		

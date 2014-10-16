@@ -58,7 +58,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	public void outArticleDetail() {
 		setReadTime();
 		
-		if(Network.isNetworkStat(context)){
+		if(Network.isNetworkState(context)){
 			Network.getInstance().updateUserLog(articleReadInfo);
 		}
 		

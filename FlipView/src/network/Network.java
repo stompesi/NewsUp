@@ -49,13 +49,16 @@ public class Network {
 		this.articleDBManager = articleDBManager;
 	}
 
+	// article list 요청 
 	public void requestArticleList(final int category) {
-
+		Log.i("NewsUp", "Request Article List");
+		
 		String requestURL = SERVER_ADDRESS + "/news/category/" + category;
 
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
+						Log.i("NewsUp", "Network : ArticleList success.");
 						JSONArray articles;
 						try {
 							articles = response.getJSONArray("articles");
@@ -81,13 +84,13 @@ public class Network {
 		           return headers;
 		       }
 		};
-		
-		
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
 	
+	// 사용자 device 등록
 	public void requestRegistUser(final Context context) {
-
+		Log.i("NewsUp", "User 등록");
+		
 		String requestURL = SERVER_ADDRESS + "/users";
 
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.POST, requestURL, null, new Response.Listener<JSONObject>() {
@@ -129,6 +132,7 @@ public class Network {
 	}
 	
 	
+	// User Log 서버로 전달 
 	public void updateUserLog(ArticleReadInfo articleReadInfo) {
 
 		String requestURL = SERVER_ADDRESS + "/users/log";
@@ -138,15 +142,14 @@ public class Network {
             params.put("article_id", articleReadInfo.getArticleId());  
             params.put("start_time", articleReadInfo.getStartTime());  
             params.put("page", articleReadInfo.getPagesReadTime());
-            
-            Log.e("article_id", "" + articleReadInfo.getArticleId());  
-            Log.e("start_time", "" + articleReadInfo.getStartTime());  
-            Log.e("page", "" + articleReadInfo.getPagesReadTime());
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
+		Log.d("NewsUp", "User Log 서버로 전달");
+		Log.d("NewsUp", "article_id : " + articleReadInfo.getArticleId());  
+		Log.d("NewsUp", "start_time : " + articleReadInfo.getStartTime());  
+		Log.d("NewsUp", "page : " + articleReadInfo.getPagesReadTime());
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.POST, requestURL, params, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
@@ -155,10 +158,10 @@ public class Network {
 							errorCode = response.getInt("error_code");
 							switch(errorCode) {
 							case 1:
-								Log.e("NewsUp", "Network : updateUserLog fail.");
+								Log.d("NewsUp", "Network : updateUserLog fail.");
 								break;
 							case 0:
-								Log.i("NewsUp", "Network : updateUserLog success.");
+								Log.d("NewsUp", "Network : updateUserLog success.");
 								break;
 							}
 						} catch (JSONException e) {
@@ -168,7 +171,7 @@ public class Network {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						Log.e("NewsUp", "Network : ArticleList Request Fail.");
+						Log.d("NewsUp", "Network : ArticleList Request Fail.");
 					}
 				}) {
 			 		@Override
@@ -181,9 +184,11 @@ public class Network {
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
 	
-	public static boolean isNetworkStat(Context context) {
-        ConnectivityManager manager = 
-           (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	
+	// Network 상태 확인 함수 
+	public static boolean isNetworkState(Context context) {
+		Log.d("NewsUp", "네트워크 상태 확인");
+        ConnectivityManager manager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo lte_4g = manager.getNetworkInfo(ConnectivityManager.TYPE_WIMAX);
@@ -198,5 +203,5 @@ public class Network {
                   return true;
         }
         return false; 
-}
+	}
 }

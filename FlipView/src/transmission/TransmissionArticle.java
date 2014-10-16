@@ -1,45 +1,46 @@
 package transmission;
 
+import image.handler.Image;
+
 import java.io.Serializable;
 
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.flipview.R;
 
+
+/***
+ * 
+ * @author stompesi
+ *
+ * LockScreenActivity에서 MainActivity ArticleList의 정보를 전달하기 위한 Class
+ */
 public class TransmissionArticle implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private int idx;
 	private String title, content, provider, time;
-	Bitmap image;
+	private String imageURL;
 	
 	public TransmissionArticle(View view) {
+		Log.d("NewsUp", "Create transmissionArticle");
 		TextView title = (TextView) view.findViewById(R.id.title);
 		TextView content = (TextView) view.findViewById(R.id.content);
 		TextView time = (TextView) view.findViewById(R.id.time);
 		TextView provider = (TextView) view.findViewById(R.id.provider);
-//		ImageView image = (ImageView) view.findViewById(R.id.image);
-		
+		NetworkImageView image = (NetworkImageView) view.findViewById(R.id.image);
 		
 		this.idx = view.getId();
 		this.title = title.getText().toString();
 		this.content = content.getText().toString();
 		this.time = time.getText().toString();
 		this.provider = provider.getText().toString();
-		
-//		BitmapDrawable d = (BitmapDrawable)((ImageView) view.findViewById(R.id.image)).getDrawable();
-//		Bitmap b = d.getBitmap();
-		
-		
-//		this.image = b;
+		this.imageURL = ((Image) image.getTag()).getURL();
 	}
 	
 	public int getIdx() {
@@ -62,6 +63,7 @@ public class TransmissionArticle implements Serializable {
 		return time;
 	}
 	
-	
-	
+	public String getImageURL() {
+		return imageURL;
+	}
 }

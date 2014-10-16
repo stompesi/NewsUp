@@ -33,25 +33,24 @@ public class MainActivity extends Activity {
 			list  = firstSplitter.FirstSplitter(str);//파싱된 걸 넣는다.
 			StaticClass.result_lits= getResult_List(list);
 
-			//			StaticClass.result_lits = getResult_List(list);
 
-//											 for(int i = 0; i<list.size(); i++)
-//											 {
-//												 if( list.get(i) instanceof ImageInfo)
-//												 {
-//													Log.d("TAG1["+i+"]", ((ImageInfo) list.get(i)).ImageURL+"");
-//													Log.d("TAG1["+i+"]", ((ImageInfo) list.get(i)).Image_width+"");
-//													Log.d("TAG1["+i+"]", ((ImageInfo) list.get(i)).Image_height+"");
-//													
-//												 }else if( list.get(i) instanceof String)
-//												 {
-//													 Log.d("TAG1["+i+"]", ((String) list.get(i)).length()+":"+((String) list.get(i)));
-//												 }
-//												 
-//											 }
 
-			//
-			//			pageSplitter.append(str, textPaint);
+			for(int i = 0; i<StaticClass.result_lits.size(); i++)
+			{
+				if( StaticClass.result_lits.get(i) instanceof ImageInfo)
+				{
+					Log.d("TAG1["+i+"]", ((ImageInfo) StaticClass.result_lits.get(i)).getImageURL()+"");
+					Log.d("TAG1["+i+"]", ((ImageInfo) StaticClass.result_lits.get(i)).getImage_width()+"");
+					Log.d("TAG1["+i+"]", ((ImageInfo) StaticClass.result_lits.get(i)).getImage_height()+"");
+					Log.d("TAG1["+i+"]", ((ImageInfo) StaticClass.result_lits.get(i)).getImage_start()+"");
+
+				}else if( StaticClass.result_lits.get(i) instanceof String)
+				{
+					Log.d("TAG1["+i+"]", ((String) StaticClass.result_lits.get(i)).length()+":"+((String) StaticClass.result_lits.get(i)));
+				}
+
+			}
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,9 +81,10 @@ public class MainActivity extends Activity {
 					//2/3보다 크면 리사이즈 해서 맞춰.
 					int Image_Start = View_height - ExtrTextHeight;//전체 뷰에서 앞에 TextView 높이를 빼고 뺀 좌표를 이미지의 시작점으로 설정.
 					((ImageInfo)list.get(i)).setImage_start(Image_Start);
-				    Log.d("TAGImageStart",Image_Start+":"+ ((ImageInfo)list.get(i)).getImage_start()+"");
+					Log.d("TAGImageStart",Image_Start+":"+ ((ImageInfo)list.get(i)).getImage_start()+"");
 					result_list.add(list.get(i));//앞에 TextView가 있을 때 시작 점 위치를 바꿔서 저장.
-					Text_flag = 1; 
+					Text_flag = 0; 
+
 
 				}
 				else  //한페이지가 이미지로 시작 하는 경우.
@@ -97,10 +97,11 @@ public class MainActivity extends Activity {
 
 			}else if( list.get(i) instanceof String)//String 판별 
 			{
-				Log.d("TAG", "String");
-//				((String)list.get(i)).replaceAll("\n", "");
+				Log.d("TAG", "String들어");
+				//				((String)list.get(i)).replaceAll("\n", "");
 				if(Image_flag ==1)// TextView앞에가 이미지가 있는 경우.
 				{	
+					Log.d("TAG", "이미지가 앞일때");
 					pageSplitter = new PageSplitter(View_widht, Text_hight,1,0);//이미지를 자르고 남은 높이에 들어갈 수 있는 글자를 리턴.
 					pageSplitter.append(((String) list.get(i)), textPaint);
 					Temp_text1= pageSplitter.getPages().get(0).toString();// TextView에 들어갈 글자들.
@@ -112,40 +113,51 @@ public class MainActivity extends Activity {
 					if(((String)list.get(i)).length() - Temp_text1.length() > 0 )//이미지 밑에 글자가 짤렸때 남은 글자를 처리 하는 로직.
 					{
 						Log.d("TAG_Temp_text1", Temp_text1);
-						
+
 						Temp_text1 = ((String) list.get(i)).replace("\n", "").substring(Temp_text1.length());//해당 배열에서 TextView에 들어갈 글자 빼고 나머지.
 						list.remove(i);//해당 배열 삭제.
 						list.add(i,Temp_text1);
-//						Log.d("TAG_list", ((String) list.get(i)));
+						Log.d("TAG_list", ((String) list.get(i)));
 
 
 						pageSplitter = new PageSplitter(View_widht, View_height, 1, 0);//다음 layout은 뷰가 전체로 가정할때 처리 하는 조건.(넓이 높이를 뷰에 맞춘다)
 						pageSplitter.append(((String) list.get(i)), textPaint);
+
 						textViewHeight = new TextViewHeight(View_widht, View_height, 1, 0);
 						Log.d("TAG Arraylist", pageSplitter.getPages().size()+"");
 
-						if(pageSplitter.getPages().size()==1)
+						int pagelength = pageSplitter.getPages().size();
+						if(pagelength==1)
 						{
-							
+
 							ExtrTextHeight = textViewHeight.getTextheight(pageSplitter.getPages().get(0).toString(), textPaint);
-						
+							if(ExtrTextHeight<View_height/2)
+							{
+								Log.d("TAG", "이미지 플래그 보냄"+":"+ExtrTextHeight);
+								Text_flag = 1; 
+							}
 							//현재 높이를 측정 할 수 있는 함수가 있어서 만약 높이가 절반 이상이 넘으면 Text_flag = 1 날리지 말고 
 							//그 이하면 Text_flag = 1날려 
-							Log.d("TAG 처음 측정 높이!!!!!!!!!!!!!!!", ExtrTextHeight+"");
-							Log.d("TAG 첫 페이지", pageSplitter.getPages().get(0).toString());
-//							Text_flag =1;
-					
-						}else if(pageSplitter.getPages().size()>2)
+							Log.d("TAG 앞에 이미지 있고 첫 페이지", pageSplitter.getPages().get(0).toString());
+
+						}else if(pagelength>1)
 						{
 							for(int j = 0; j<pageSplitter.getPages().size(); j++)
 							{
-								Log.d("TAG전체 페이지 ",pageSplitter.getPages().get(j).length()+":"+pageSplitter.getPages().get(j).toString());
+								Log.d("TAG 앞에 이미지 있고 전체 페이지 ",pageSplitter.getPages().get(j).length()+":"+pageSplitter.getPages().get(j).toString());
 								result_list.add(pageSplitter.getPages().get(j).toString());//뷰가 layout하나가 한 페이지 라고 가정할때 페이지 단위로 결과 리스트에 저장.
-									
+
 							}
+							ExtrTextHeight = textViewHeight.getTextheight(pageSplitter.getPages().get(pagelength-1).toString(), textPaint);
+							if(ExtrTextHeight<View_height/2)
+							{
+								Log.d("TAG", "이미지 플래그 보냄"+":"+ExtrTextHeight);
+								Text_flag = 1; 
+							}
+
+
 							//현 높이를 측정 할 수 있는 함수가 있어서 마지막 글자의 높이가 만약 높이가 절반 이상이 넘으면 Text_flag = 1 날리지 말고 
 							//그 이하면 Text_flag = 1날려 
-//							Text_flag =1;
 						}
 					}
 
@@ -153,29 +165,47 @@ public class MainActivity extends Activity {
 				}
 				else//앞에 이미지가 아닐경우. 첫 페이지가 String로 시작 하는 경우.
 				{
-					Log.d("TAG", "앞에 이미지가 아닐경");
+					Log.d("TAG", "앞에 이미지가 아닐경우");
 					pageSplitter = new PageSplitter(View_widht, View_height, 1, 0);
 					pageSplitter.append(((String) list.get(i)), textPaint);
 					Log.d("TAG", pageSplitter.getPages().size()+"");
-					if(pageSplitter.getPages().size()==1)
+					textViewHeight = new TextViewHeight(View_widht, View_height, 1, 0);
+
+
+
+					int pagelength = pageSplitter.getPages().size();
+					if(pagelength==1)
 					{
-						Log.d("TAG", "첫번째 페이지");
+
+						ExtrTextHeight = textViewHeight.getTextheight(pageSplitter.getPages().get(0).toString(), textPaint);
+						if(ExtrTextHeight<View_height/2)
+						{
+							Log.d("TAG", "이미지 플래그 보냄"+":"+ExtrTextHeight);
+							Text_flag = 1; 
+						}
 						//현재 높이를 측정 할 수 있는 함수가 있어서 만약 높이가 절반 이상이 넘으면 Text_flag = 1 날리지 말고 
 						//그 이하면 Text_flag = 1날려 
-						Log.d("TAG 첫 페이지", pageSplitter.getPages().get(0).toString());
-//						Text_flag =1;
-				
-					}else if(pageSplitter.getPages().size()>1)
+
+						Log.d("TAG 스트링 첫 페이지", pageSplitter.getPages().get(0).toString());
+
+					}else if(pagelength>1)
 					{
 						for(int j = 0; j<pageSplitter.getPages().size(); j++)
 						{
-							Log.d("TAG전체 페이지 ",pageSplitter.getPages().get(j).length()+":"+pageSplitter.getPages().get(j).toString());
+							Log.d("TAG 스트링 전체 페이지 ",pageSplitter.getPages().get(j).length()+":"+pageSplitter.getPages().get(j).toString());
 							result_list.add(pageSplitter.getPages().get(j).toString());//뷰가 layout하나가 한 페이지 라고 가정할때 페이지 단위로 결과 리스트에 저장.
-								
+
 						}
+						ExtrTextHeight = textViewHeight.getTextheight(pageSplitter.getPages().get(pagelength-1).toString(), textPaint);
+						if(ExtrTextHeight<View_height/2)
+						{
+							Log.d("TAG", "이미지 플래그 보냄"+":"+ExtrTextHeight);
+							Text_flag = 1; 
+						}
+
+
 						//현 높이를 측정 할 수 있는 함수가 있어서 마지막 글자의 높이가 만약 높이가 절반 이상이 넘으면 Text_flag = 1 날리지 말고 
 						//그 이하면 Text_flag = 1날려 
-//						Text_flag =1;
 					}
 				}
 
@@ -185,13 +215,13 @@ public class MainActivity extends Activity {
 
 		return result_list;
 	}
-	
-	
-	
 
-	
-	
-	
+
+
+
+
+
+
 
 	private int getHeight(Context context, CharSequence text,  int deviceWidth,int padding) {
 		TextView textView = new TextView(context);

@@ -25,11 +25,11 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 
 	private void addArticleDetail(int layoutId, String str) {
 		View view = inflater.inflate(layoutId, null);
-		TextView content = (TextView) view.findViewById(R.id.textView1);
-		NetworkImageView image = (NetworkImageView) view.findViewById(R.id.imageView1);
-		content.setText(Html.fromHtml(str));
-		image.setImageUrl("http://tour.yp21.net/multi/uploadFile/20090729_1732.JPG", 
-				NewsUpApp.getInstance().getImageLoader());
+//		TextView content = (TextView) view.findViewById(R.id.textView1);
+//		NetworkImageView image = (NetworkImageView) view.findViewById(R.id.imageView1);
+//		content.setText(Html.fromHtml(str));
+//		image.setImageUrl("http://tour.yp21.net/multi/uploadFile/20090729_1732.JPG", 
+//				NewsUpApp.getInstance().getImageLoader());
 		addView(view);
 	}
 	

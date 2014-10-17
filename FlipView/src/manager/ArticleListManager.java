@@ -25,6 +25,7 @@ import database.Article;
 public class ArticleListManager extends ArticleFlipViewManager {
 	
 	private static final int MINIMUM_ARTICLE_LIST_ATTACH_INDEX = 5;
+	private static final int CACHE_ARTICLE_COUNT = 20;
 	
 	private int category;
 	
@@ -104,10 +105,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 				addView(view);
 			}
 		});
-		
-		
 	}
-	
 	
 	public void insertArticleList(ArrayList<TransmissionArticle> transferredArticleList) {
 		for(int i = 0 ; i < transferredArticleList.size() ; i++) {
@@ -116,8 +114,10 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 
 	public int insertArticleList() {
-		ArrayList<Article> articleList = articleDBManager.selectArticleList(category, getChildChount());
-		int[] suffleIndex = new int[articleList.size()];
+		int offset;
+		offset = (getChildChount() < CACHE_ARTICLE_COUNT) ?  CACHE_ARTICLE_COUNT - getChildChount() : 0;
+		ArrayList<Article> articleList = articleDBManager.selectArticleList(category, offset);
+		
 		int articleListSize = articleList.size();
 
 		 if(articleListSize == 0) {
@@ -136,21 +136,9 @@ public class ArticleListManager extends ArticleFlipViewManager {
 				 isFailInsertArticleList = false;
 			 }
 		 }
-
+		 
 		for (int i = 0; i < articleListSize; i++) {
-			suffleIndex[i] = i;
-		}
-
-		for (int i = articleListSize; i > 1; i--) {
-			int temp;
-			int randomIndex = (int) (Math.random() * i);
-			temp = suffleIndex[randomIndex];
-			suffleIndex[randomIndex] = suffleIndex[i - 1];
-			suffleIndex[i - 1] = temp;
-		}
-
-		for (int i = 0; i < articleListSize; i++) {
-			addArticleListItem(articleList.get(suffleIndex[i]));
+			addArticleListItem(articleList.get(i));
 		}
 		return articleListSize;
 	}

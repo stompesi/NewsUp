@@ -49,6 +49,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.e("Create", "aaa");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lockscreen);
 		getActionBar().hide();
@@ -75,8 +76,6 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		articleListFlipper.setOnTouchListener(this);
 		
 		articleListManager = new ArticleListManager(this, articleListFlipper, 1, R.layout.lockscreen_article_list_item);
-		
-		articleListManager.insertArticleList();
 		
 		timeView = (TextView) findViewById(R.id.lockScreenTime);
 		dateView = (TextView) findViewById(R.id.lockScreenDate);

@@ -220,7 +220,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				flipperManager.setAnimation(R.anim.first_left_right_in, R.anim.second_up_down_out);
 				return moveArticleDetail(articleListManager.getCurrentViewId());
 			}
-			if (clickCount == DOUBLE_TAB && articleListManager.getCurrentChildIndex() != 1) {
+			if (clickCount == DOUBLE_TAB && flipperManager.getCurrentChildIndex() != 1) {
 				long time = System.currentTimeMillis() - clickStartTime;
 				if (time <= CLICK_MAX_DURATION) {
 					initClickCount();

@@ -64,7 +64,7 @@ public class ArticleDatabaseHandler {
 	}
 	 
 	public ArrayList<Article> selectArticleList(int category, int offset) {
-		String sql = "SELECT * from " + TABLE_NAME + " WHERE " + COLUMN_CATEGORY + "=" + category + " ORDER BY " + COLUMN_IDX + " LIMIT 10 OFFSET " + offset + ";";
+		String sql = "SELECT * from " + TABLE_NAME + " WHERE " + COLUMN_CATEGORY + "=" + category + " ORDER BY " + COLUMN_IDX + " DESC LIMIT 10 OFFSET " + offset + ";";
 		ArrayList<Article> infos = new ArrayList<Article>();
 		Cursor results = db.rawQuery(sql, null);
 		results.moveToFirst();
@@ -78,9 +78,12 @@ public class ArticleDatabaseHandler {
 	}
 	
 	public int selectArticleCount(int category) {
+		int count;
 		String sql = "SELECT * from " + TABLE_NAME + " WHERE " + COLUMN_CATEGORY + "=" + category + ";";
 		Cursor results = db.rawQuery(sql, null);
-		return results.getCount();
+		count = results.getCount();
+		results.close();
+		return count;
 	}
 	
 	private Article makeArticle(Cursor result) {

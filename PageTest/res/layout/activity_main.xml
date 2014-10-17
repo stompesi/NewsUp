@@ -5,7 +5,7 @@
 
     tools:context="com.example.pagetest.MainActivity" >
 
-    <!-- <ImageView
+    <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -21,11 +21,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/imageView1" /> -->
+        android:layout_below="@+id/imageView1" /> 
         
-        <RelativeLayout 
-            android:layout_width="match_parent"
-    		android:layout_height="match_parent"
-    		android:id="@+id/layout"></RelativeLayout>
+
 
 </RelativeLayout>

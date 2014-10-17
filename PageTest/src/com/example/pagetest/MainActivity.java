@@ -26,8 +26,8 @@ import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
 
-	private int View_height = 1605;
-	private int View_widht = 984;
+	private int View_height = 984;
+	private int View_widht = 720;
 	private ArrayList<Object> list;
 	private ViewPager viewPager; 
 	private int pageCounter = 0; 
@@ -39,8 +39,8 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-//		imageView = (ImageView)findViewById(R.id.imageView1);
-//		textView = (TextView)findViewById(R.id.textView1);
+		imageView = (ImageView)findViewById(R.id.imageView1);
+		textView = (TextView)findViewById(R.id.textView1);
 		
 //		viewPager = (ViewPager)findViewById(R.id.pages);
 		list = new ArrayList<Object>();
@@ -76,21 +76,21 @@ public class MainActivity extends FragmentActivity {
 			e.printStackTrace();
 		}//읽는
 		
-		/*imageView.setLayoutParams(new RelativeLayout.LayoutParams(984*2,333*2));
+		imageView.setLayoutParams(new RelativeLayout.LayoutParams(984*2,333*2));
 		new DownloadImage().execute("http://imgnews.naver.net/image/366/2014/10/14/2014101402682_1_99_20141014173612.jpg");
 
 		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size));
 		
-		textView.setText(((String) StaticClass.result_lits.get(1)));*/
+		textView.setText(((String) StaticClass.result_lits.get(1)));
 		
 		
-		ArrayList<View> viewList = ViewMaker.getViewList(getApplicationContext(), StaticClass.result_lits);
-		
-		LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.activity_main, null);
-		
-		RelativeLayout a  = (RelativeLayout)view.findViewById(R.id.layout);
-		a.addView(viewList.get(0));
+//		ArrayList<View> viewList = ViewMaker.getViewList(getApplicationContext(), StaticClass.result_lits);
+//		
+//		LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//		View view = inflater.inflate(R.layout.activity_main, null);
+//		
+//		RelativeLayout a  = (RelativeLayout)view.findViewById(R.id.layout);
+//		a.addView(viewList.get(0));
 	}
 	
 
@@ -115,6 +115,7 @@ public class MainActivity extends FragmentActivity {
 				{
 					//전체 뷰 높이에서 Extra 높이 뺐을때 뷰 높이가 원래 높이의 2/3높이보다 작으면 그림 다음으로 넘겨 
 					//2/3보다 크면 리사이즈 해서 맞춰.
+					
 					int Image_Start = View_height - ExtrTextHeight;//전체 뷰에서 앞에 TextView 높이를 빼고 뺀 좌표를 이미지의 시작점으로 설정.
 					((ImageInfo)list.get(i)).setImage_start(Image_Start);
 					Log.d("TAGImageStart",Image_Start+":"+ ((ImageInfo)list.get(i)).getImage_start()+"");

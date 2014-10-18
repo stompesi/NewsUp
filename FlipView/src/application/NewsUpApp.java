@@ -4,20 +4,21 @@ package application;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import setting.RbPreference;
-import image.handler.BitmapCache;
 import network.Network;
-import activity.MainActivity;
-import activity.StartActivity;
+import setting.RbPreference;
 import android.app.Application;
-import android.content.Intent;
 import android.provider.Settings.Secure;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import database.ArticleDatabaseHandler;
 
@@ -25,7 +26,6 @@ public class NewsUpApp extends Application {
 	public static final String TAG = NewsUpApp.class.getSimpleName();
 	
 	private RequestQueue mRequestQueue;
-	private ImageLoader mImageLoader;
 	private ArticleDatabaseHandler articleDBManager;
 	private static NewsUpApp mInstance;
 	
@@ -45,6 +45,21 @@ public class NewsUpApp extends Application {
 			deviceId = encodeId();
 			pref.put(RbPreference.USER_ID, deviceId);
 		}
+		
+		// UNIVERSAL IMAGE LOADER SETUP
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+				.cacheOnDisc(true).cacheInMemory(true)
+				.imageScaleType(ImageScaleType.EXACTLY)
+				.displayer(new FadeInBitmapDisplayer(300)).build();
+
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				getApplicationContext())
+				.defaultDisplayImageOptions(defaultOptions)
+				.memoryCache(new WeakMemoryCache())
+				.discCacheSize(100 * 1024 * 1024).build();
+
+		ImageLoader.getInstance().init(config);
+		// END - UNIVERSAL IMAGE LOADER SETUP
 		
 	}
 	
@@ -97,15 +112,6 @@ public class NewsUpApp extends Application {
 		}
 
 		return mRequestQueue;
-	}
-
-	public ImageLoader getImageLoader() {
-		getRequestQueue();
-		if (mImageLoader == null) {
-			mImageLoader = new ImageLoader(this.mRequestQueue, new BitmapCache());
-		}
-		
-		return this.mImageLoader;
 	}
 
 	public <T> void addToRequestQueue(Request<T> req, String tag) {

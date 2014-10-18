@@ -141,11 +141,11 @@ public class LockScreenService extends Service {
 		};
 		
 		// 10초마다 over article 하나씩 제거
-		newsUpTimer.schedule(removeOverItemTask, 1000, 1000); 
+//		newsUpTimer.schedule(removeOverItemTask, 1000, 1000); 
 		// 한시간마다 Article 요청 
-		newsUpTimer.schedule(lockScreenTask, 3600000, 3600000);
+//		newsUpTimer.schedule(lockScreenTask, 3600000, 3600000);
 		// 하루마다 모든 over Article 제거 
-		newsUpTimer.schedule(removeAllOverItemTask, 86400000, 86400000);
+//		newsUpTimer.schedule(removeAllOverItemTask, 86400000, 86400000);
 	}
 
 	@Override

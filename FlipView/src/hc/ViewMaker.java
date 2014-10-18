@@ -1,25 +1,26 @@
 package hc;
 
 
-import image.handler.BitmapCache;
-
 import java.util.ArrayList;
 
+import manager.ImageViewManager;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.Volley;
 import com.example.flipview.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ViewMaker {
+	
+	private static final float DEFAULT_HDIP_DENSITY_SCALE = 1.5f;
 	
 	private static LayoutInflater inflater;
 	
@@ -28,19 +29,20 @@ public class ViewMaker {
 	private Context context;
 	private boolean isImageText;
 	
-	
-	
-	private RequestQueue mRequestQueue;
-	private ImageLoader mImageLoader;
+	private static int layoutHeight;
+	private static int layoutWidth;
+	private static float density;
+	private static int dpi;
 	
 	public static ArrayList<View> getViewList(Context context, ArrayList<Object> resultList) {
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-		int layoutHeight = metrics.heightPixels;
-		
+		layoutHeight = metrics.heightPixels;
+		layoutWidth = metrics.widthPixels;
+		density =  metrics.density;
+		dpi = metrics.densityDpi;
 		ArrayList<View> viewList = new ArrayList<View>();
-		View view = inflater.inflate(R.layout.text_image, null);
 		boolean isFirstText = true;
 		
 		
@@ -58,6 +60,9 @@ public class ViewMaker {
 					viewList.add(viewMaker.getView());
 					currentHeight = 0;
 					isFirstText = true;
+				} else if(i == (resultList.size() - 1)) {
+//					ViewMaker viewMaker = new ViewMaker(context, imageInfo, content);
+//					viewList.add(viewMaker.getView());
 				} else {
 					isFirstText = false;
 				}
@@ -66,7 +71,8 @@ public class ViewMaker {
 				content = (String) object;
 				currentHeight += Integer.parseInt(content.split(":")[0]);
 				
-				if(currentHeight == layoutHeight && isFirstText) {
+				if(currentHeight == layoutHeight && isFirstText
+						|| i == (resultList.size() - 1)) {
 					ViewMaker viewMaker = new ViewMaker(context, content);
 					viewList.add(viewMaker.getView());
 					currentHeight = 0;
@@ -119,43 +125,37 @@ public class ViewMaker {
 	
 	private View makeTextImageView() {
 		View view;
-		if(isImageText) {
-			view = inflater.inflate(R.layout.image_text, null);
-		} else {
-			view = inflater.inflate(R.layout.text_image, null);
-		}
+		TextView textView;
+		ImageView imageView;
 		
 		int height = Integer.parseInt(content.split(":")[0]);
-		TextView textView = (TextView) view.findViewById(R.id.content);
-		// TODO : DP 변환값 변경
-		textView.setHeight(height * 2);
+		if(isImageText) {
+			view = inflater.inflate(R.layout.image_text, null);
+			textView = (TextView) view.findViewById(R.id.content);
+			imageView = (ImageView) view.findViewById(R.id.image);
+			LayoutParams textViewParams = (LayoutParams) textView.getLayoutParams();
+			textViewParams.weight = (float) imageInfo.getImage_height() / layoutHeight;
+			textView.setLayoutParams(textViewParams);
+			
+			LayoutParams imageViewParams = (LayoutParams) imageView.getLayoutParams();
+			imageViewParams.weight = (float) height / layoutHeight;
+			imageView.setLayoutParams(imageViewParams);
+		} else {
+			view = inflater.inflate(R.layout.text_image, null);
+			textView = (TextView) view.findViewById(R.id.content);
+			imageView = (ImageView) view.findViewById(R.id.image);
+		}
+		
+		textView.setHeight((int)(height / DEFAULT_HDIP_DENSITY_SCALE * density));
 		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_size));
 		textView.setText(content.split(":")[1]);
 		
-		// TODO : 이미지 로드되기 전에 유사이미지 로
-		
-		NetworkImageView imageView = (NetworkImageView) view.findViewById(R.id.image);
-		imageView.setLayoutParams(new LinearLayout.LayoutParams(imageInfo.getImage_height() * 2, 333*2));
-		imageView.setImageUrl(imageInfo.getImageURL(), getImageLoader());
+		ImageViewManager.loadImage(imageView, imageInfo.getImageURL());
 		
 		return view;
 	}
-	public RequestQueue getRequestQueue() {
-		if (mRequestQueue == null) {
-			mRequestQueue = Volley.newRequestQueue(context);
-		}
-
-		return mRequestQueue;
-	}
-
-	public ImageLoader getImageLoader() {
-		getRequestQueue();
-		if (mImageLoader == null) {
-			mImageLoader = new ImageLoader(this.mRequestQueue, new BitmapCache());
-		}
-		
-		return this.mImageLoader;
-	}
+	
 	
 	
 }
+

@@ -13,11 +13,10 @@ import android.graphics.drawable.shapes.RectShape;
 import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-import application.NewsUpApp;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.flipview.R;
 
 import database.Article;
@@ -59,7 +58,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		TextView content = (TextView) view.findViewById(R.id.content);
 		TextView time = (TextView) view.findViewById(R.id.time);
 		TextView provider = (TextView) view.findViewById(R.id.provider);
-		NetworkImageView image = (NetworkImageView) view.findViewById(R.id.image);
+		ImageView image = (ImageView) view.findViewById(R.id.image);
 
 		title.setText("" + article.getIdx());
 		content.setText(article.getBody());
@@ -76,7 +75,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		 drawable.getPaint().setColor(Color.parseColor(article.getFirstImageColor()));
 		 image.setImageDrawable(drawable);
 
-		image.setImageUrl(article.getFirstImageURL(), NewsUpApp.getInstance().getImageLoader());
+		ImageViewManager.loadImage(image, article.getFirstImageURL());
 		Image imageInfo = new Image(article.getFirstImageURL());
 		image.setTag(imageInfo);
 		
@@ -95,13 +94,13 @@ public class ArticleListManager extends ArticleFlipViewManager {
 				TextView contentView = (TextView) view.findViewById(R.id.content);
 				TextView timeView = (TextView) view.findViewById(R.id.time);
 				TextView providerView = (TextView) view.findViewById(R.id.provider);
-				NetworkImageView image = (NetworkImageView) view.findViewById(R.id.image);
+				ImageView image = (ImageView) view.findViewById(R.id.image);
 
 				titleView.setText(article.getTitle());
 				contentView.setText(article.getContent());
 				timeView.setText(article.getTime());
 				providerView.setText(article.getProvider());
-				image.setImageUrl(article.getImageURL(), NewsUpApp.getInstance().getImageLoader());
+				ImageViewManager.loadImage(image, article.getImageURL());
 				addView(view);
 			}
 		});

@@ -216,8 +216,9 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 					//앞에 이미지 제외 하고 여기 까지면 한 레리아웃에 이미지 + textView가 꽉찬 형태가 만들어짐.
 					pageSplitter = null;//pageSpliter 객체 삭제.
 					pageCounter++;//이미지 + 글, 한페이지 
-
-					if(((String)list.get(i)).length() - Temp_text1.length() > 0 )//이미지 밑에 글자가 짤렸때 남은 글자를 처리 하는 로직.
+					
+					Log.d("TAG!!", ((String)list.get(i)).replace("\n", "").length()+":"+Temp_text1.length());
+					if(((String)list.get(i)).replace("\n", "").length() - Temp_text1.length() > 0 )//이미지 밑에 글자가 짤렸때 남은 글자를 처리 하는 로직.
 					{
 				
 						

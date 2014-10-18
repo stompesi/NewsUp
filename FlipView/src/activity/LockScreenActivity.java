@@ -63,6 +63,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 		
+		articleListManager.insertArticleList();
 		articleListManager.display(articleListManager.getChildChount());
 	}
 	@Override

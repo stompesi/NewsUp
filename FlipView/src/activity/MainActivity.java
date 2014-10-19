@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -103,6 +104,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		view.findViewById(R.id.world).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.sympathy).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.game).setOnClickListener(menuClickListener);
+		view.findViewById(R.id.setting).setOnClickListener(menuClickListener);
 		articleListManager.getFlipper().addView(view, 0);
 		
 		view = getLayoutInflater().inflate(R.layout.menu, null);
@@ -117,6 +119,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		view.findViewById(R.id.world).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.sympathy).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.game).setOnClickListener(menuClickListener);
+		view.findViewById(R.id.setting).setOnClickListener(menuClickListener);
 		articleDetailManager.getFlipper().addView(view, 0);
 	}
 	
@@ -269,13 +272,17 @@ public class MainActivity extends Activity implements OnTouchListener {
 				category = 8;
 				break;
 			case R.id.world:
+				Log.d("Main", "111111");
 				category = 9;
 				break;
 			case R.id.sympathy:
 				category = 10;
 				break;
 			case R.id.setting:
-				// 처리를 해야한다.. 시부랑 텡텡;;
+				Log.d("Main", "asdf");
+				Intent i = new Intent(MainActivity.this,SettingActivity.class);
+				startActivity(i);
+				
 				return; 
 			}
 			articleListManager.changeCategory(category);

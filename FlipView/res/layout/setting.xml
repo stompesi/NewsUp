@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Switch
+            android:id="@+id/sw_lockScreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="락스크린" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Switch
+            android:id="@+id/sw_wordSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="글자크기조절" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <RadioGroup
+            android:id="@+id/radio"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/btn_text_size_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="작은글자" />
+
+            <RadioButton
+                android:id="@+id/btn_text_size_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="중간글자" />
+
+            <RadioButton
+                android:id="@+id/btn_text_size_large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="큰 글자" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Switch
+            android:id="@+id/sw_wordSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="키워드등록" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="62dp" >
+
+            <EditText
+                android:id="@+id/edt_wordEnter"
+                android:layout_width="191dp"
+                android:layout_height="wrap_content"
+                android:ems="10" >
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/btn_wordRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="등록" />
+
+            <Button
+                android:id="@+id/btn_wordDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="삭제" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/item_list"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_weight="2.08" >
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>

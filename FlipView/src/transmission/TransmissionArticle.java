@@ -4,12 +4,11 @@ import image.handler.Image;
 
 import java.io.Serializable;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.flipview.R;
 
 
@@ -33,7 +32,7 @@ public class TransmissionArticle implements Serializable {
 		TextView content = (TextView) view.findViewById(R.id.content);
 		TextView time = (TextView) view.findViewById(R.id.time);
 		TextView provider = (TextView) view.findViewById(R.id.provider);
-		NetworkImageView image = (NetworkImageView) view.findViewById(R.id.image);
+		ImageView image = (ImageView) view.findViewById(R.id.image);
 		
 		this.idx = view.getId();
 		this.title = title.getText().toString();

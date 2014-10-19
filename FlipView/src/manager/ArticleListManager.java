@@ -10,7 +10,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
@@ -83,27 +82,21 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 	
 	private void addArticleListItem(final TransmissionArticle article) {
-		AsyncTask.execute(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				View view = inflater.inflate(itemId, null);
-				// TODO : Idx를 Id로 변경해야 한다
-				view.setId(article.getIdx());
-				TextView titleView = (TextView) view.findViewById(R.id.title);
-				TextView contentView = (TextView) view.findViewById(R.id.content);
-				TextView timeView = (TextView) view.findViewById(R.id.time);
-				TextView providerView = (TextView) view.findViewById(R.id.provider);
-				ImageView image = (ImageView) view.findViewById(R.id.image);
+		View view = inflater.inflate(itemId, null);
+		// TODO : Idx를 Id로 변경해야 한다
+		view.setId(article.getIdx());
+		TextView titleView = (TextView) view.findViewById(R.id.title);
+		TextView contentView = (TextView) view.findViewById(R.id.content);
+		TextView timeView = (TextView) view.findViewById(R.id.time);
+		TextView providerView = (TextView) view.findViewById(R.id.provider);
+		ImageView image = (ImageView) view.findViewById(R.id.image);
 
-				titleView.setText(article.getTitle());
-				contentView.setText(article.getContent());
-				timeView.setText(article.getTime());
-				providerView.setText(article.getProvider());
-				ImageViewManager.loadImage(image, article.getImageURL());
-				addView(view);
-			}
-		});
+		titleView.setText(article.getTitle());
+		contentView.setText(article.getContent());
+		timeView.setText(article.getTime());
+		providerView.setText(article.getProvider());
+		ImageViewManager.loadImage(image, article.getImageURL());
+		addView(view);
 	}
 	
 	public void insertArticleList(ArrayList<TransmissionArticle> transferredArticleList) {

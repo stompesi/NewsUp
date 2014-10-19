@@ -17,6 +17,10 @@ public class RbPreference {
 	public final static String PREF_IS_INTRO = "PREF_IS_INTRO";
 	public final static String USER_ID = "USER_ID";
 	public final static String PREF_IS_FIRST_NETWORK_REQUEST = "PREF_IS_FIRST_NETWORK_REQUEST";
+	public final static String IS_LOCK_SCREEN ="IS_LOCK_SCREEN";
+	public final static String WORD_SIZE = "WORD_SIZE";
+	public final static String NOTI_ALARM = "NOTI_ALARM";
+	
 	
 	private Context context;
 

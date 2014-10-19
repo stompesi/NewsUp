@@ -73,12 +73,12 @@ public final class R {
         public static final int notthing=0x7f090006;
         public static final int politicalSociety=0x7f09000c;
         public static final int provider=0x7f090004;
+        public static final int push_notify=0x7f090020;
         public static final int radio=0x7f09001c;
         public static final int setting=0x7f090016;
         public static final int sports=0x7f09000f;
         public static final int startFlipper=0x7f090026;
         public static final int sw_lockScreen=0x7f090019;
-        public static final int sw_wordSetting=0x7f090020;
         public static final int sw_wordSize=0x7f09001a;
         public static final int sympathy=0x7f090015;
         public static final int textView1=0x7f090018;

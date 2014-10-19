@@ -1,8 +1,11 @@
 package activity;
 
+import java.io.ObjectOutputStream.PutField;
 import java.util.ArrayList;
 
+import setting.RbPreference;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +27,7 @@ public class SettingActivity extends Activity  {
 
 	private Switch sw_lockScreen;
 	private Switch sw_wordSize;
-	private Switch sw_wordSetting;
+	private Switch push_notify;
 	private Button btn_wordRegister;
 	private Button btn_wordDelete;
 	private LinearLayout layout_size,layout_list;
@@ -34,6 +37,7 @@ public class SettingActivity extends Activity  {
 	private ArrayAdapter<String> Adapter;
 	private ListView listView;
 	private InputMethodManager inputManager;
+	private Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,9 +48,12 @@ public class SettingActivity extends Activity  {
 	}
 	private void init()
 	{
+
 		MyOnCheckedChangeListener myOnCheckedChangeListener = new MyOnCheckedChangeListener();
 		MyOnClickListener myOnClickListener = new MyOnClickListener();
 
+		context = this;
+		RbPreference pref = new RbPreference(this);
 		item_list = new ArrayList<String>();
 		Adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,item_list);
 		inputManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
@@ -59,23 +66,24 @@ public class SettingActivity extends Activity  {
 		layout_size =(LinearLayout)findViewById(R.id.layout_size);
 		layout_list =(LinearLayout)findViewById(R.id.layout_list);
 		sw_lockScreen  = (Switch)findViewById(R.id.sw_lockScreen);
-		sw_wordSetting  = (Switch)findViewById(R.id.sw_wordSetting);
+		push_notify  = (Switch)findViewById(R.id.push_notify);
 		sw_wordSize = (Switch)findViewById(R.id.sw_wordSize);
 
 		btn_wordRegister = (Button)findViewById(R.id.btn_wordRegister);
 		btn_wordDelete = (Button)findViewById(R.id.btn_wordDelete);
 		edt_wordEnter = (EditText)findViewById(R.id.edt_wordEnter);
-		edt_wordEnter.setText("5개 까지만 입력가능합니다");
 		radioGroup =(RadioGroup)findViewById(R.id.radio);
 
 		edt_wordEnter.setOnClickListener(myOnClickListener);
 		btn_wordRegister.setOnClickListener(myOnClickListener);
 		btn_wordDelete.setOnClickListener(myOnClickListener);
 		sw_lockScreen.setOnCheckedChangeListener(myOnCheckedChangeListener);
-		sw_wordSetting.setOnCheckedChangeListener(myOnCheckedChangeListener);
+		push_notify.setOnCheckedChangeListener(myOnCheckedChangeListener);
 		sw_wordSize.setOnCheckedChangeListener(myOnCheckedChangeListener);
 		radioGroup.setOnCheckedChangeListener(mRCheckedChangeListener);
-
+		Log.d("TAGGGG", pref.getValue(RbPreference.IS_LOCK_SCREEN, false)+"");
+		Log.d("TAGGGG", pref.getValue(RbPreference.NOTI_ALARM, false)+"");
+	
 
 	}
 
@@ -93,15 +101,15 @@ public class SettingActivity extends Activity  {
 					Log.d("TAG", "작은");
 
 					break;
-					
+
 				case R.id.btn_text_size_medium:
 					Log.d("TAG","중간");
 					break;
-					
+
 				case R.id.btn_text_size_large:
 					Log.d("TAT","큰");
 					break;
-					
+
 				default:
 					break;
 
@@ -111,26 +119,24 @@ public class SettingActivity extends Activity  {
 		}
 	};
 
-
-
-
-
-
 	private class MyOnCheckedChangeListener implements OnCheckedChangeListener
 	{
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView,
 				boolean isChecked) {
+			RbPreference pref = new RbPreference(context);
 			switch(buttonView.getId())
 			{
 			case R.id.sw_lockScreen:
 				if(isChecked)
 				{
+					pref.put(RbPreference.IS_LOCK_SCREEN, true);
 					//락스크릭 on
 				}
 				else
 				{
+					pref.put(RbPreference.IS_LOCK_SCREEN, false);
 					//락스크린 off
 				}
 				break;
@@ -138,57 +144,27 @@ public class SettingActivity extends Activity  {
 				if(isChecked)
 				{
 					layout_size.setVisibility(View.VISIBLE);
+
 				}
 				else
 				{
 					layout_size.setVisibility(View.GONE);
 				}
 				break;
-			case R.id.sw_wordSetting:
+			case R.id.push_notify:
 				if(isChecked)
 				{
-					layout_list.setVisibility(View.VISIBLE);
+					pref.put(RbPreference.NOTI_ALARM, true);
+					//푸시 알람 on
 				}
 				else
 				{
-					layout_list.setVisibility(View.GONE);
+					pref.put(RbPreference.NOTI_ALARM, false);
+					//푸시 알람 off
 				}
 				break;
 			}
-			//			if(buttonView.getId() ==R.id.sw_lockScreen)
-			//			{
-			//				if(isChecked)
-			//				{
-			//					//락스크릭 on
-			//				}
-			//				else
-			//				{
-			//					//락스크린 off
-			//				}
-			//			}
-			//			else if(buttonView.getId() ==R.id.sw_wordSize)
-			//			{
-			//				if(isChecked)
-			//				{
-			//					layout_size.setVisibility(View.VISIBLE);
-			//				}
-			//				else
-			//				{
-			//					layout_size.setVisibility(View.GONE);
-			//				}
-			//			}
-			//			else if(buttonView.getId() ==R.id.sw_wordSetting)
-			//			{
-			//				if(isChecked)
-			//				{
-			//					layout_list.setVisibility(View.VISIBLE);
-			//				}
-			//				else
-			//				{
-			//					layout_list.setVisibility(View.GONE);
-			//				}
-			//			}
-			//
+
 		}
 
 	}
@@ -208,7 +184,7 @@ public class SettingActivity extends Activity  {
 						item_list.add(txt);
 						edt_wordEnter.setText("");
 						Adapter.notifyDataSetChanged();
-						//						inputManager.hideSoftInputFromWindow(edt_wordEnter.getWindowToken(), 0);
+						//inputManager.hideSoftInputFromWindow(edt_wordEnter.getWindowToken(), 0);
 
 					}
 				}

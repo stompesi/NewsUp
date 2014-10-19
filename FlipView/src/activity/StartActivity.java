@@ -74,6 +74,13 @@ public class StartActivity extends Activity implements OnTouchListener {
 		}
 		
 		Network.getInstance().requestArticleList(0);
+		
+		//처음 시작 할때 셋팅 값 저장.
+		RbPreference pref = new RbPreference(this);
+		pref.put(RbPreference.IS_LOCK_SCREEN, true);//락스크린 on
+		pref.put(RbPreference.NOTI_ALARM, true);//락스크린 off
+	
+		
 	}
 	
 

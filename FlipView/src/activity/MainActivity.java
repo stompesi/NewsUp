@@ -103,6 +103,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		view.findViewById(R.id.world).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.sympathy).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.game).setOnClickListener(menuClickListener);
+		view.findViewById(R.id.setting).setOnClickListener(menuClickListener);
 		articleListManager.getFlipper().addView(view, 0);
 		
 		view = getLayoutInflater().inflate(R.layout.menu, null);
@@ -117,6 +118,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		view.findViewById(R.id.world).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.sympathy).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.game).setOnClickListener(menuClickListener);
+		view.findViewById(R.id.setting).setOnClickListener(menuClickListener);
 		articleDetailManager.getFlipper().addView(view, 0);
 	}
 	
@@ -277,7 +279,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 				category = 10;
 				break;
 			case R.id.setting:
-				// 처리를 해야한다.. 시부랑 텡텡;;
+				Intent i = new Intent(MainActivity.this,SettingActivity.class);
+				startActivity(i);
 				return; 
 			}
 			articleListManager.changeCategory(category);

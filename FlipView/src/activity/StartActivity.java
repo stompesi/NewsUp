@@ -29,6 +29,7 @@ public class StartActivity extends Activity implements OnTouchListener {
 	private static final int ARTICLE_END_ITEM_INDEX = 1;
 	private static final int SWIPE_MIN_DISTANCE = 100;
 	private static final int ARTICLE_OFFSET = 1;
+
 	
 	private ViewFlipper startFlipper;
 
@@ -79,6 +80,7 @@ public class StartActivity extends Activity implements OnTouchListener {
 		RbPreference pref = new RbPreference(this);
 		pref.put(RbPreference.IS_LOCK_SCREEN, true);//락스크린 on
 		pref.put(RbPreference.NOTI_ALARM, true);//락스크린 off
+		pref.put(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
 	
 		
 	}

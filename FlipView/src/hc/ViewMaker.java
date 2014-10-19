@@ -4,19 +4,18 @@ package hc;
 import java.util.ArrayList;
 
 import manager.ImageViewManager;
+import setting.RbPreference;
+import activity.SettingActivity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.example.flipview.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ViewMaker {
 	
@@ -117,7 +116,8 @@ public class ViewMaker {
 		TextView textView = (TextView) view.findViewById(R.id.content);
 		// TODO : DP 변환값 변경
 		textView.setHeight(height * 2);
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_size));
+		textPaint_size(textView);
+//		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_nomal));
 		textView.setText(content.split(":")[1]);
 		
 		return view;
@@ -147,7 +147,8 @@ public class ViewMaker {
 		}
 		
 		textView.setHeight((int)(height / DEFAULT_HDIP_DENSITY_SCALE * density));
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_size));
+		textPaint_size(textView);
+//		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_nomal));
 		textView.setText(content.split(":")[1]);
 		
 		ImageViewManager.loadImage(imageView, imageInfo.getImageURL());
@@ -155,6 +156,29 @@ public class ViewMaker {
 		return view;
 	}
 	
+	private void textPaint_size(TextView textView)
+	{
+		
+		RbPreference pref = new RbPreference(context);
+		int num = pref.getValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);
+		switch(num)
+		{
+		case SettingActivity.SMALL_WORD:
+			textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_small));
+		
+			break;
+		case SettingActivity.MEDIUM_WORD:
+			textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_medium));
+		
+			break;
+		case SettingActivity.LARGE_WORD:
+			textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_large));
+		
+			break;
+		}
+		
+		
+	}
 	
 	
 }

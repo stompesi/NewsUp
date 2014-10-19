@@ -281,15 +281,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 				category = 10;
 				break;
 			case R.id.setting:
-<<<<<<< HEAD
-				Log.d("Main", "asdf");
+
 				Intent i = new Intent(MainActivity.this,SettingActivity.class);
 				startActivity(i);
-				
-=======
-				Intent i = new Intent(MainActivity.this,SettingActivity.class);
-				startActivity(i);
->>>>>>> BugFix
+
 				return; 
 			}
 			articleListManager.changeCategory(category);

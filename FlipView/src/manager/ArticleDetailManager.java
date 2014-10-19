@@ -11,8 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import setting.RbPreference;
+
 import network.Network;
 import ArticleReadInfo.ArticleReadInfo;
+import activity.SettingActivity;
 import android.content.Context;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
@@ -32,6 +35,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	private int View_widht = 984;
 	private ArrayList<Object> list;
 	private int pageCounter = 0; 
+	private Context context;
 	
 	
 	
@@ -40,6 +44,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	public ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
+		this.context = context;
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		View_height = metrics.heightPixels;
 		View_widht= metrics.widthPixels;
@@ -159,7 +164,25 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	
 	
-	
+	private void textPaint_size(TextPaint textPaint)
+	{
+		RbPreference pref = new RbPreference(context);
+		int num = pref.getValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);
+		switch(num)
+		{
+		case SettingActivity.SMALL_WORD:
+			textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_small));//textsize설정.
+			break;
+		case SettingActivity.MEDIUM_WORD:
+			textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_medium));//textsize설정.
+			break;
+		case SettingActivity.LARGE_WORD:
+			textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_large));//textsize설정.
+			break;
+		}
+		
+		
+	}
 	
 
 	private ArrayList<Object> getResult_List(ArrayList<Object> list)
@@ -173,7 +196,8 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		PageSplitter pageSplitter;//pageSpliter선언.
 		TextViewHeight textViewHeight;
 		TextPaint textPaint = new TextPaint();//pagespliter에 넘겨줄 그림판.
-		textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));//textsize설정.
+		textPaint_size(textPaint);
+//		textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_nomal));//textsize설정.
 		Log.d("TAG", "시작");
 		for(int i = 0; i<list.size(); i++)
 		{

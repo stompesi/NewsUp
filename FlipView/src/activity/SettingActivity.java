@@ -1,6 +1,5 @@
 package activity;
 
-import java.io.ObjectOutputStream.PutField;
 import java.util.ArrayList;
 
 import setting.RbPreference;
@@ -8,8 +7,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,6 +41,9 @@ public class SettingActivity extends Activity  {
 	private ListView listView;
 	private InputMethodManager inputManager;
 	private Context context;
+	public static final int SMALL_WORD = 13;
+	public static final int MEDIUM_WORD = 15;
+	public static final int LARGE_WORD = 20;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,7 @@ public class SettingActivity extends Activity  {
 
 		MyOnCheckedChangeListener myOnCheckedChangeListener = new MyOnCheckedChangeListener();
 		MyOnClickListener myOnClickListener = new MyOnClickListener();
+	
 
 		context = this;
 		item_list = new ArrayList<String>();
@@ -71,6 +78,7 @@ public class SettingActivity extends Activity  {
 		btn_wordRegister = (Button)findViewById(R.id.btn_wordRegister);
 		btn_wordDelete = (Button)findViewById(R.id.btn_wordDelete);
 		edt_wordEnter = (EditText)findViewById(R.id.edt_wordEnter);
+		edt_wordEnter.setInputType(EditorInfo.TYPE_NULL);
 		radioGroup =(RadioGroup)findViewById(R.id.radio);
 
 		edt_wordEnter.setOnClickListener(myOnClickListener);
@@ -81,14 +89,20 @@ public class SettingActivity extends Activity  {
 		sw_wordSize.setOnCheckedChangeListener(myOnCheckedChangeListener);
 		radioGroup.setOnCheckedChangeListener(mRCheckedChangeListener);
 
-	
+
+
+
 
 	}
+
+
+
 
 
 	RadioGroup.OnCheckedChangeListener mRCheckedChangeListener = 
 			new	RadioGroup.OnCheckedChangeListener(){
 
+		RbPreference pref = new RbPreference(SettingActivity.this);
 		@Override
 		public void onCheckedChanged(RadioGroup group, int checkedId) {
 			if(group.getId()==R.id.radio)
@@ -96,15 +110,19 @@ public class SettingActivity extends Activity  {
 				switch(checkedId)
 				{
 				case R.id.btn_text_size_small:
+					pref.put(RbPreference.WORD_SIZE, SMALL_WORD);
 					Log.d("TAG", "작은");
+
 
 					break;
 
 				case R.id.btn_text_size_medium:
+					pref.put(RbPreference.WORD_SIZE, MEDIUM_WORD);
 					Log.d("TAG","중간");
 					break;
 
 				case R.id.btn_text_size_large:
+					pref.put(RbPreference.WORD_SIZE, LARGE_WORD);
 					Log.d("TAT","큰");
 					break;
 
@@ -116,6 +134,8 @@ public class SettingActivity extends Activity  {
 			}
 		}
 	};
+
+
 
 	private class MyOnCheckedChangeListener implements OnCheckedChangeListener
 	{
@@ -182,7 +202,7 @@ public class SettingActivity extends Activity  {
 						item_list.add(txt);
 						edt_wordEnter.setText("");
 						Adapter.notifyDataSetChanged();
-						//inputManager.hideSoftInputFromWindow(edt_wordEnter.getWindowToken(), 0);
+
 					}
 				}
 
@@ -199,9 +219,12 @@ public class SettingActivity extends Activity  {
 
 				break;
 			case R.id.edt_wordEnter:
-				edt_wordEnter.setText("");
+				 edt_wordEnter.setInputType(EditorInfo.TYPE_CLASS_TEXT);
 
 				break;
+		
+				
+			
 
 			default:
 				break;

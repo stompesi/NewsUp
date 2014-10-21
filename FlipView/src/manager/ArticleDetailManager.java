@@ -135,7 +135,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	}
 	
 	private int getTimestamp() {
-		return (int) System.currentTimeMillis() / 1000;
+		return (int)(System.currentTimeMillis() / 1000L);
 	}
 	
 	

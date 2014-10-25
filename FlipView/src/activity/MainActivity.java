@@ -127,7 +127,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
-			if(flipperManager == articleListManager) {
+			if(flipperManager == articleListManager && !(flipperManager.isMenuState())) {
 				return super.onKeyDown(keyCode, event);
 			} else {
 				flipperManager.setAnimation(R.anim.second_left_right_in,

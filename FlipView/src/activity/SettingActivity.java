@@ -1,19 +1,17 @@
 package activity;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import lockscreen.service.LockScreenService;
 import setting.RbPreference;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -25,214 +23,209 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import com.example.flipview.R;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
+import database.KeywordORM;
 
 public class SettingActivity extends Activity  {
-
-	private Switch sw_lockScreen;
-	private Switch sw_wordSize;
-	private Switch push_notify;
-	private Button btn_wordRegister;
-	private Button btn_wordDelete;
-	private LinearLayout layout_size,layout_list;
-	private EditText edt_wordEnter;
-	private RadioGroup radioGroup;
-	private ArrayList<String> item_list; 
-	private ArrayAdapter<String> Adapter;
-	private ListView listView;
-	private InputMethodManager inputManager;
-	private Context context;
+	// 크기
+	private static final int MAX_KEYWORD_SIZE = 5;
 	public static final int SMALL_WORD = 13;
 	public static final int MEDIUM_WORD = 15;
 	public static final int LARGE_WORD = 20;
+	
+	// 관심키워드 등록 Text 입력창 
+	private EditText edtWord;
+	
+	// 레이아웃 
+	private LinearLayout textSizeLayout;
+	
+	private ArrayList<String> keywordList; 
+	private ArrayAdapter<String> adapter;
+	private ListView listView;
+	private Context context;
+	
+	// 글자크기 라디오 버튼 클릭 이벤트 리스너 
+	RadioGroup.OnCheckedChangeListener mRCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+		RbPreference pref = new RbPreference(SettingActivity.this);
+		
+		@Override
+		public void onCheckedChanged(RadioGroup group, int checkedId) {
+			if(group.getId() == R.id.radioWordSize)
+			{
+				switch(checkedId)
+				{
+				case R.id.btnTextSizeSmall:
+					pref.put(RbPreference.WORD_SIZE, SMALL_WORD);
+					break;
 
+				case R.id.btnTextSizeMedium:
+					pref.put(RbPreference.WORD_SIZE, MEDIUM_WORD);
+					break;
+
+				case R.id.btnTextSizeLarge:
+					pref.put(RbPreference.WORD_SIZE, LARGE_WORD);
+					break;
+
+				default:
+					break;
+				}
+			}
+		}
+	};
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setting);
 		init();
-
 	}
-	private void init()
-	{
-
-		MyOnCheckedChangeListener myOnCheckedChangeListener = new MyOnCheckedChangeListener();
-		MyOnClickListener myOnClickListener = new MyOnClickListener();
 	
+	@Override
+	public void finish() {
+		super.finish();
+		this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+	}
 
+	// 초기 설정 
+	private void init() {
+		// 리스너 설정 
+		SettingOnCheckedChangeListener settingOnCheckedChangeListener = new SettingOnCheckedChangeListener();
+		SettingOnClickListener settingOnClickListener = new SettingOnClickListener();
+		RbPreference pref = new RbPreference(this);
+		
 		context = this;
-		item_list = new ArrayList<String>();
-		Adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,item_list);
-		inputManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+		
+		// TODO : 디비에서 가저온것 키워드 리스트에 넣어야 한다.
+//		Realm realm = Realm.getInstance(context);
+		keywordList = new ArrayList<String>();
+		
+		List<KeywordORM> keywordORMList = KeywordORM.listAll(KeywordORM.class);
+		
+		for(KeywordORM keywordORM : keywordORMList) {
+			keywordList.add(keywordORM.getKeyword());
+		}
+		
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, keywordList);
 
-		listView = (ListView)findViewById(R.id.item_list);
-		listView.setAdapter(Adapter);
+		// keyword 리스트 설정 
+		listView = (ListView)findViewById(R.id.listKeyWord);
+		listView.setAdapter(adapter);
 		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+		
+		textSizeLayout =(LinearLayout)findViewById(R.id.textSizeLayout);
+		
+		// editText 설정 
+		edtWord = ((EditText)findViewById(R.id.edtWord));
+		edtWord.setOnClickListener(settingOnClickListener);
+		edtWord.setInputType(EditorInfo.TYPE_NULL);
 
-		layout_size =(LinearLayout)findViewById(R.id.layout_size);
-		layout_list =(LinearLayout)findViewById(R.id.layout_list);
-		sw_lockScreen  = (Switch)findViewById(R.id.sw_lockScreen);
-		push_notify  = (Switch)findViewById(R.id.push_notify);
-		sw_wordSize = (Switch)findViewById(R.id.sw_wordSize);
-
-		btn_wordRegister = (Button)findViewById(R.id.btn_wordRegister);
-		btn_wordDelete = (Button)findViewById(R.id.btn_wordDelete);
-		edt_wordEnter = (EditText)findViewById(R.id.edt_wordEnter);
-		edt_wordEnter.setInputType(EditorInfo.TYPE_NULL);
-		radioGroup =(RadioGroup)findViewById(R.id.radio);
-
-		edt_wordEnter.setOnClickListener(myOnClickListener);
-		btn_wordRegister.setOnClickListener(myOnClickListener);
-		btn_wordDelete.setOnClickListener(myOnClickListener);
-		sw_lockScreen.setOnCheckedChangeListener(myOnCheckedChangeListener);
-		push_notify.setOnCheckedChangeListener(myOnCheckedChangeListener);
-		sw_wordSize.setOnCheckedChangeListener(myOnCheckedChangeListener);
-		radioGroup.setOnCheckedChangeListener(mRCheckedChangeListener);
-
-
-
-
-
+		// button 리스너 등록 
+		((Button)findViewById(R.id.btnWordRegister)).setOnClickListener(settingOnClickListener);
+		((Button)findViewById(R.id.btnWordDelete)).setOnClickListener(settingOnClickListener);
+		
+		// switch 리스너 등록 
+		((Switch)findViewById(R.id.swLockScreen)).setChecked(pref.getValue(RbPreference.IS_LOCK_SCREEN, false));
+		((Switch)findViewById(R.id.swLockScreen)).setOnCheckedChangeListener(settingOnCheckedChangeListener);
+		((Switch)findViewById(R.id.swPushNotify)).setChecked(pref.getValue(RbPreference.NOTI_ALARM, false));
+		((Switch)findViewById(R.id.swPushNotify)).setOnCheckedChangeListener(settingOnCheckedChangeListener);
+		((Switch)findViewById(R.id.swWordSize)).setOnCheckedChangeListener(settingOnCheckedChangeListener);
+		
+		// radioGroup 리스너 등록 
+		((RadioGroup)findViewById(R.id.radioWordSize)).setOnCheckedChangeListener(mRCheckedChangeListener);
 	}
 
 
-
-
-
-	RadioGroup.OnCheckedChangeListener mRCheckedChangeListener = 
-			new	RadioGroup.OnCheckedChangeListener(){
-
-		RbPreference pref = new RbPreference(SettingActivity.this);
-		@Override
-		public void onCheckedChanged(RadioGroup group, int checkedId) {
-			if(group.getId()==R.id.radio)
-			{
-				switch(checkedId)
-				{
-				case R.id.btn_text_size_small:
-					pref.put(RbPreference.WORD_SIZE, SMALL_WORD);
-					Log.d("TAG", "작은");
-
-
-					break;
-
-				case R.id.btn_text_size_medium:
-					pref.put(RbPreference.WORD_SIZE, MEDIUM_WORD);
-					Log.d("TAG","중간");
-					break;
-
-				case R.id.btn_text_size_large:
-					pref.put(RbPreference.WORD_SIZE, LARGE_WORD);
-					Log.d("TAT","큰");
-					break;
-
-				default:
-					break;
-
-
-				}
-			}
-		}
-	};
-
-
-
-	private class MyOnCheckedChangeListener implements OnCheckedChangeListener
+	// Switch change 리스너 
+	private class SettingOnCheckedChangeListener implements OnCheckedChangeListener
 	{
 
 		@Override
-		public void onCheckedChanged(CompoundButton buttonView,
-				boolean isChecked) {
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			RbPreference pref = new RbPreference(context);
-			switch(buttonView.getId())
-			{
-			case R.id.sw_lockScreen:
-				if(isChecked)
+			
+			if(isChecked) {
+				switch(buttonView.getId())
 				{
+				case R.id.swLockScreen:
+					Intent intent = new Intent(context, LockScreenService.class);
+					startService(intent);
 					pref.put(RbPreference.IS_LOCK_SCREEN, true);
-					//락스크릭 on
-				}
-				else
-				{
-					pref.put(RbPreference.IS_LOCK_SCREEN, false);
-					//락스크린 off
-				}
-				break;
-			case R.id.sw_wordSize:
-				if(isChecked)
-				{
-					layout_size.setVisibility(View.VISIBLE);
-
-				}
-				else
-				{
-					layout_size.setVisibility(View.GONE);
-				}
-				break;
-			case R.id.push_notify:
-				if(isChecked)
-				{
+					break;
+				case R.id.swWordSize:
+					textSizeLayout.setVisibility(View.VISIBLE);
+					break;
+				case R.id.swPushNotify:
 					pref.put(RbPreference.NOTI_ALARM, true);
-					//푸시 알람 on
+					break;
 				}
-				else
+			} else {
+				switch(buttonView.getId())
 				{
+				case R.id.swLockScreen:
+					Intent intent = new Intent(context, LockScreenService.class);
+					stopService(intent);
+					pref.put(RbPreference.IS_LOCK_SCREEN, false);
+					break;
+				case R.id.swWordSize:
+					textSizeLayout.setVisibility(View.GONE);
+					break;
+				case R.id.swPushNotify:
 					pref.put(RbPreference.NOTI_ALARM, false);
-					//푸시 알람 off
+					break;
 				}
-				break;
 			}
-
 		}
-
 	}
 
-	private class MyOnClickListener implements OnClickListener{
+	// button click 리스너 
+	private class SettingOnClickListener implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
-
 			switch (v.getId()) {
-			case R.id.btn_wordRegister:
-				String txt = edt_wordEnter.getText().toString();
-				if(item_list.size() < 5)
-				{
-					if(txt.length() != 0)
-					{
-						item_list.add(txt);
-						edt_wordEnter.setText("");
-						Adapter.notifyDataSetChanged();
-
+			case R.id.btnWordRegister:
+				if(keywordList.size() < MAX_KEYWORD_SIZE) {
+					String keyword = edtWord.getText().toString();
+					if(keyword.length() != 0) {
+						keywordList.add(keyword);
+//						Realm realm = Realm.getInstance(context);
+//						KeywordRealmObject.insertKeyword(realm, keyword);
+						
+						KeywordORM keywordORM = new KeywordORM(keyword);
+						keywordORM.save();
+						
+						edtWord.setText("");
+						adapter.notifyDataSetChanged();
 					}
 				}
-
 				break;
-			case R.id.btn_wordDelete:
+			case R.id.btnWordDelete:
 				int positoin;
-				positoin = listView.getCheckedItemPosition();
-				if(positoin != listView.INVALID_POSITION)
-				{
-					item_list.remove(positoin);
-					listView.clearChoices();
-					Adapter.notifyDataSetChanged();
-				}
-
-				break;
-			case R.id.edt_wordEnter:
-				 edt_wordEnter.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-
-				break;
-		
 				
-			
+				positoin = listView.getCheckedItemPosition();
+				
+				if(positoin != listView.INVALID_POSITION) {
+					String keyword = keywordList.get(positoin);
+					keywordList.remove(positoin);
 
+					KeywordORM keywordORM = Select.from(KeywordORM.class).where(Condition.prop("keyword").eq(keyword)).first();
+					keywordORM.delete();
+					
+					listView.clearChoices();
+					adapter.notifyDataSetChanged();
+				}
+				break;
+			case R.id.edtWord:
+				 edtWord.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+				break;
 			default:
 				break;
 			}
-
 		}
 	}
-
 }
 
 

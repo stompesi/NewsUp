@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 
 import network.Network;
 import setting.RbPreference;
-import android.app.Application;
 import android.provider.Settings.Secure;
 import android.text.TextUtils;
 
@@ -22,7 +21,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import database.ArticleDatabaseHandler;
 
-public class NewsUpApp extends Application {
+public class NewsUpApp extends com.orm.SugarApp {
 	public static final String TAG = NewsUpApp.class.getSimpleName();
 	
 	private RequestQueue mRequestQueue;

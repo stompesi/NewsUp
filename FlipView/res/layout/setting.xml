@@ -10,10 +10,9 @@
         android:orientation="vertical" >
 
         <Switch
-            android:id="@+id/sw_lockScreen"
+            android:id="@+id/swLockScreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
             android:text="락스크린" />
     </LinearLayout>
 
@@ -22,41 +21,41 @@
         android:layout_height="wrap_content" >
 
         <Switch
-            android:id="@+id/sw_wordSize"
+            android:id="@+id/swWordSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="글자크기조절" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_size"
+        android:id="@+id/textSizeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="gone" >
 
         <RadioGroup
-            android:id="@+id/radio"
+            android:id="@+id/radioWordSize"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="horizontal" >
 
             <RadioButton
-                android:id="@+id/btn_text_size_small"
+                android:id="@+id/btnTextSizeSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="작은글자" />
 
             <RadioButton
-                android:id="@+id/btn_text_size_medium"
+                android:id="@+id/btnTextSizeMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="중간글자" />
 
             <RadioButton
-                android:id="@+id/btn_text_size_large"
+                android:id="@+id/btnTextSizeLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -69,10 +68,9 @@
         android:layout_height="wrap_content" >
 
         <Switch
-            android:id="@+id/push_notify"
+            android:id="@+id/swPushNotify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
             android:text="푸시 알람" />
     </LinearLayout>
 
@@ -81,13 +79,12 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="관심 키워드를 등록 하세요" />
 
     <LinearLayout
-        android:id="@+id/layout_list"
+        android:id="@+id/layoutWordList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -98,7 +95,7 @@
             android:layout_height="62dp" >
 
             <EditText
-                android:id="@+id/edt_wordEnter"
+                android:id="@+id/edtWord"
                 android:layout_width="191dp"
                 android:layout_height="wrap_content" >
 
@@ -106,14 +103,14 @@
             </EditText>
 
             <Button
-                android:id="@+id/btn_wordRegister"
+                android:id="@+id/btnWordRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="등록" />
 
             <Button
-                android:id="@+id/btn_wordDelete"
+                android:id="@+id/btnWordDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -121,7 +118,7 @@
         </LinearLayout>
 
         <ListView
-            android:id="@+id/item_list"
+            android:id="@+id/listKeyWord"
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:layout_weight="2.08" >

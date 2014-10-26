@@ -9,8 +9,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,7 +31,12 @@ import com.orm.query.Select;
 
 import database.Keyword;
 
-public class SettingActivity extends Activity  {
+public class SettingActivity extends Activity implements OnTouchListener {
+	
+	private static final int SWIPE_MIN_DISTANCE = 100;
+	// 좌표
+	private float xAtDown, xAtUp, yAtDown, yAtUp;
+	
 	// 크기
 	private static final int MAX_KEYWORD_SIZE = 5;
 	public static final int SMALL_WORD = 10;
@@ -139,6 +146,9 @@ public class SettingActivity extends Activity  {
 		int index = pref.getValue(RbPreference.WORD_SIZE, MEDIUM_WORD) / 5 - 2;
 		((RadioGroup)findViewById(R.id.radioWordSize)).check(((RadioGroup)findViewById(R.id.radioWordSize)).getChildAt(index).getId());
 		((RadioGroup)findViewById(R.id.radioWordSize)).setOnCheckedChangeListener(mRCheckedChangeListener);
+		
+		View view = findViewById(R.id.listKeyWord);
+		view.setOnTouchListener(this);
 	}
 
 
@@ -246,6 +256,25 @@ public class SettingActivity extends Activity  {
 		}
 		toast.show();
 		
+	}
+	
+	
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			yAtDown = event.getY();
+			xAtDown = event.getX();
+			break;
+		case MotionEvent.ACTION_UP:
+			yAtUp = event.getY(); 
+			xAtUp = event.getX();
+			if (xAtDown - xAtUp > SWIPE_MIN_DISTANCE) {
+			} else if (xAtUp - xAtDown > SWIPE_MIN_DISTANCE) {
+				finish();
+			}
+		}
+		return false;
 	}
 }
 

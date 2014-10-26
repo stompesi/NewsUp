@@ -41,20 +41,21 @@ public class StartActivity extends Activity implements OnTouchListener {
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.start);
-		getActionBar().hide();
+		setContentView(R.layout.activity_start);
 		URQAController.InitializeAndStartSession(getApplicationContext(), "184637B8");
 		
 		RbPreference pref = new RbPreference(this);
 		// 앱 처음 실행 
-		if(pref.getValue(RbPreference.PREF_IS_INTRO, true)) {
-			init();
-			display(startFlipper.getChildCount() - ARTICLE_OFFSET);
-		} else {
-			Intent intent = new Intent(StartActivity.this, MainActivity.class);
-			startActivity(intent);
-			finish();
-		}
+//		if(pref.getValue(RbPreference.PREF_IS_INTRO, true)) {
+//			init();
+//			display(startFlipper.getChildCount() - ARTICLE_OFFSET);
+//		} else {
+//			Intent intent = new Intent(StartActivity.this, ArticleActivity.class);
+//			startActivity(intent);
+//			finish();
+//		}
+		
+		onClick();
 	}
 	
 	private void init() {
@@ -67,15 +68,15 @@ public class StartActivity extends Activity implements OnTouchListener {
 		
 		View view = startFlipper.getChildAt(ARTICLE_END_ITEM_INDEX);
 		
-		Button startButton = (Button) view.findViewById(R.id.btn);
-		startButton.setOnClickListener(new StartClickLitener());
-		startButton.setText("시작");
-		for (int i = currentFlipperChildSize; i > ARTICLE_END_ITEM_INDEX ; i--){
-			view = startFlipper.getChildAt(i);
-			startButton = (Button) view.findViewById(R.id.btn);
-			startButton.setOnClickListener(new NextClickLitener());
-			startButton.setText("다음");
-		}
+//		Button startButton = (Button) view.findViewById(R.id.btn);
+//		startButton.setOnClickListener(new StartClickLitener());
+//		startButton.setText("시작");
+//		for (int i = currentFlipperChildSize; i > ARTICLE_END_ITEM_INDEX ; i--){
+//			view = startFlipper.getChildAt(i);
+//			startButton = (Button) view.findViewById(R.id.btn);
+//			startButton.setOnClickListener(new NextClickLitener());
+//			startButton.setText("다음");
+//		}
 		
 		Network.getInstance().requestArticleList(0);
 		
@@ -84,8 +85,6 @@ public class StartActivity extends Activity implements OnTouchListener {
 		pref.put(RbPreference.IS_LOCK_SCREEN, true);//락스크린 on
 		pref.put(RbPreference.NOTI_ALARM, true);//락스크린 off
 		pref.put(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
-	
-		
 	}
 	
 
@@ -166,7 +165,7 @@ public class StartActivity extends Activity implements OnTouchListener {
 			Network.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
 			Network.getInstance().requestRegistUser(getApplication());
 			
-			intent = new Intent(startActivity, MainActivity.class);
+			intent = new Intent(startActivity, ArticleActivity.class);
 			startActivity(intent);
 			startActivity.finish();
 			
@@ -180,6 +179,30 @@ public class StartActivity extends Activity implements OnTouchListener {
 			setAnimation(R.anim.second_up_down_in, R.anim.first_up_down_out);
 			upDownSwipe(currentChildIndex - 1);
 		}
+	}
+	
+	
+	
+	public void onClick() {
+		StartActivity startActivity;
+		Intent intent;
+		RbPreference pref;
+		
+		startActivity = StartActivity.this;
+		pref = new RbPreference(startActivity);
+		pref.put(RbPreference.PREF_IS_INTRO, false);
+		
+//		 서비스(background 실행) 실행 용도
+		intent = new Intent(startActivity, LockScreenService.class);
+		startActivity.startService(intent);
+		
+		Network.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
+		Network.getInstance().requestRegistUser(getApplication());
+		
+		intent = new Intent(startActivity, ArticleActivity.class);
+		startActivity(intent);
+		startActivity.finish();
+		
 	}
 }
 

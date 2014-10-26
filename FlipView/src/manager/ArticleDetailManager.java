@@ -26,8 +26,8 @@ import com.example.flipview.R;
 
 public class ArticleDetailManager extends ArticleFlipViewManager {
 	
-	private int View_height = 1605;
-	private int View_widht = 984;
+	private int View_height;
+	private int View_widht;
 	private ArrayList<Object> list;
 	private int pageCounter = 0; 
 	private Context context;
@@ -43,16 +43,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		View_height = metrics.heightPixels;
 		View_widht= metrics.widthPixels;
-	}
-
-	private void addArticleDetail(int layoutId, String str) {
-		View view = inflater.inflate(layoutId, null);
-//		TextView content = (TextView) view.findViewById(R.id.textView1);
-//		NetworkImageView image = (NetworkImageView) view.findViewById(R.id.imageView1);
-//		content.setText(Html.fromHtml(str));
-//		image.setImageUrl("http://tour.yp21.net/multi/uploadFile/20090729_1732.JPG", 
-//				NewsUpApp.getInstance().getImageLoader());
-		addView(view);
 	}
 	
 	// TODO : 상세 기사 검색
@@ -76,15 +66,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}//읽는
-				
-			 
-//			 addArticleDetail(R.layout.article_detail_item, "" + article.getIdx());
-			 
-//			 addArticleDetail(R.layout.article_detail_item, contents);
-//			 addArticleDetail(R.layout.article_detail_item, contents);
-//			 addArticleDetail(R.layout.article_detail_item, contents);
-//			 addArticleDetail(R.layout.article_detail_item, contents);
-			 maxChildIndex = getChildChount();
 		 } catch (Exception e) {
 			 e.printStackTrace();
 		 }
@@ -93,30 +74,24 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	@Override
 	public void outArticleDetail() {
 		setReadTime();
-		
 		if(Network.isNetworkState(context)){
 			Network.getInstance().updateUserLog(articleReadInfo);
 		}
-		
 	}
 	
 	@Override
 	public boolean upDownSwipe(int increase){
 		int checkIndex = currentChildIndex + increase;
-		if (checkIndex > maxChildIndex
-				|| isMenuState()
-				|| checkIndex < minChildIndex) {
+		if (checkIndex >= getChildChount() || checkIndex < minChildIndex) {
 			return false;
 		}
-		
 		setReadTime();
-		
 		display(checkIndex);
 		return true;
 	}
 	
 	private void setReadTime() {
-		int index = getChildChount() - currentChildIndex;
+		int index = getChildChount() - (currentChildIndex + 1);
 		articleReadInfo.setReadTime(index, getTimestamp() - pageReadStartTime);
 		pageReadStartTime = getTimestamp();
 	}
@@ -126,20 +101,20 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		getArticleDetail(articleId);
 		pageReadStartTime = getTimestamp();
 		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
-		display(getChildChount());
+		display(getChildChount() - 1);
+	}
+	
+	public void changeTextSize(int articleId) {
+		removeAllFlipperItem();
+		getArticleDetail(articleId);
+		pageReadStartTime = getTimestamp();
+		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
+		display(getChildChount() - 1);
 	}
 	
 	private int getTimestamp() {
 		return (int)(System.currentTimeMillis() / 1000L);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	private String readText(String file) throws IOException {

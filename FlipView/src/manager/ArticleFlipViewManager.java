@@ -11,20 +11,13 @@ import android.widget.ViewFlipper;
 import com.example.flipview.R;
 
 abstract public class ArticleFlipViewManager {
-	private static final int MENUE_PAGE = 0;
 	protected int offset;
 	
 	protected ViewFlipper flipper;
-	
-	
 	protected int currentChildIndex;
-	protected int maxChildIndex;
 	protected int minChildIndex;
 	
 	protected Context context;
-	
-	
-	protected int menuPrevChildIndex;
 	
 	protected LayoutInflater inflater;
 
@@ -32,7 +25,7 @@ abstract public class ArticleFlipViewManager {
 		this.offset = offset;
 		this.flipper = flipper;
 		this.context = context;
-		minChildIndex = 1;
+		minChildIndex = 0;
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -67,24 +60,6 @@ abstract public class ArticleFlipViewManager {
 		flipper.addView(view, minChildIndex);
 	}
 	
-	public boolean isMenuState() {
-		return MENUE_PAGE == currentChildIndex;
-	}
-	
-	public void outMenuPage() {
-//		currentState = 1;
-		setAnimation(R.anim.fade_in, R.anim.fade_out);
-		display(menuPrevChildIndex);
-	}
-	
-	public boolean inMenuPage() {
-		if (currentChildIndex != MENUE_PAGE) {
-			menuPrevChildIndex = flipper.getDisplayedChild();
-			display(MENUE_PAGE);
-		}
-		return true;
-	}
-	
 	public void setFlipperTouchListener(OnTouchListener listener) {
 		flipper.setOnTouchListener(listener);
 		
@@ -106,7 +81,9 @@ abstract public class ArticleFlipViewManager {
 		return currentChildIndex;
 	}
 	
-	
+	public boolean isErrorView() {
+		return false;
+	}
 	
 	
 	abstract public void inArticleDetail(int articleId);

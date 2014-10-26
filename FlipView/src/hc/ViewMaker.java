@@ -111,7 +111,7 @@ public class ViewMaker {
 	}
 	
 	private View makeTextView() {
-		View view = inflater.inflate(R.layout.text, null);
+		View view = inflater.inflate(R.layout.view_text, null);
 		int height = Integer.parseInt(content.split(":")[0]);
 		TextView textView = (TextView) view.findViewById(R.id.content);
 		// TODO : DP 변환값 변경
@@ -130,7 +130,7 @@ public class ViewMaker {
 		
 		int height = Integer.parseInt(content.split(":")[0]);
 		if(isImageText) {
-			view = inflater.inflate(R.layout.image_text, null);
+			view = inflater.inflate(R.layout.view_image_text, null);
 			textView = (TextView) view.findViewById(R.id.content);
 			imageView = (ImageView) view.findViewById(R.id.image);
 			LayoutParams textViewParams = (LayoutParams) textView.getLayoutParams();
@@ -141,7 +141,7 @@ public class ViewMaker {
 			imageViewParams.weight = (float) height / layoutHeight;
 			imageView.setLayoutParams(imageViewParams);
 		} else {
-			view = inflater.inflate(R.layout.text_image, null);
+			view = inflater.inflate(R.layout.view_text_image, null);
 			textView = (TextView) view.findViewById(R.id.content);
 			imageView = (ImageView) view.findViewById(R.id.image);
 		}

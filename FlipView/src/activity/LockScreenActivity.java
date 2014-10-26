@@ -26,7 +26,7 @@ import com.example.flipview.R;
 public class LockScreenActivity extends Activity implements OnTouchListener {
 	
 	private static final int SWIPE_MIN_DISTANCE = 100;
-	private static final int ARTICLE_END_ITEM_INDEX = 1;
+	private static final int ARTICLE_END_ITEM_INDEX = 0;
 	
 	private float xAtDown, xAtUp, yAtDown, yAtUp;
 
@@ -51,8 +51,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.e("Create", "aaa");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.lockscreen);
-		getActionBar().hide();
+		setContentView(R.layout.activity_lockscreen);
 		
 		init();
 		
@@ -64,7 +63,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 		
 		articleListManager.insertArticleList();
-		articleListManager.display(articleListManager.getChildChount());
+		articleListManager.display(articleListManager.getChildChount() - 1);
 	}
 	@Override
 	protected void onUserLeaveHint() {
@@ -76,7 +75,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		ViewFlipper articleListFlipper = (ViewFlipper) findViewById(R.id.lockScreenViewFlipper);
 		articleListFlipper.setOnTouchListener(this);
 		
-		articleListManager = new ArticleListManager(this, articleListFlipper, 1, R.layout.lockscreen_article_list_item);
+		articleListManager = new ArticleListManager(this, articleListFlipper, R.layout.view_lockscreen_article_list, 0);
 		
 		timeView = (TextView) findViewById(R.id.lockScreenTime);
 		dateView = (TextView) findViewById(R.id.lockScreenDate);
@@ -111,13 +110,13 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 			return false;
 		}
 		Bundle bun = new Bundle();
-		MainActivity mainActivity = (MainActivity) MainActivity.getInstance();
+		ArticleActivity mainActivity = (ArticleActivity) ArticleActivity.getInstance();
 		mainActivity.finish();
 		
-		Intent intent = new Intent(LockScreenActivity.this, MainActivity.class);
+		Intent intent = new Intent(LockScreenActivity.this, ArticleActivity.class);
 		ArrayList<TransmissionArticle> articleList = new ArrayList<TransmissionArticle>();
 		
-		for(int i = articleListManager.getChildChount() ; i >= ARTICLE_END_ITEM_INDEX  ; i--) {
+		for(int i = articleListManager.getChildChount() - 1 ; i >= ARTICLE_END_ITEM_INDEX  ; i--) {
 			TransmissionArticle transmissionArticle = new TransmissionArticle(articleListManager.getChildAt(i));
 			articleList.add(transmissionArticle);
 		}

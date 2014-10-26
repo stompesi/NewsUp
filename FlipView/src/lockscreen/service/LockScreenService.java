@@ -7,7 +7,7 @@ import lockscreen.receiver.LockScreenReceiver;
 import network.Network;
 import setting.RbPreference;
 import activity.LockScreenActivity;
-import activity.MainActivity;
+import activity.ArticleActivity;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
@@ -93,7 +93,7 @@ public class LockScreenService extends Service {
 			@Override
 			public void run() {
 				PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-				MainActivity mainActivity = (MainActivity) MainActivity.getInstance();
+				ArticleActivity mainActivity = (ArticleActivity) ArticleActivity.getInstance();
 				LockScreenActivity lockScreenActivity = (LockScreenActivity) LockScreenActivity.getInstance();
 				
 				if ((mainActivity != null  && mainActivity.hasWindowFocus())
@@ -108,7 +108,7 @@ public class LockScreenService extends Service {
 			@Override
 			public void run() {
 				PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-				MainActivity mainActivity = (MainActivity) MainActivity.getInstance();
+				ArticleActivity mainActivity = (ArticleActivity) ArticleActivity.getInstance();
 				if (!pm.isScreenOn()) {
 					LockScreenActivity lockScreenActivity = (LockScreenActivity) LockScreenActivity.getInstance();
 					lockScreenActivity.finish();

@@ -34,21 +34,17 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	
 	private int itemId;
 	
-	public ArticleListManager(Context context, ViewFlipper flipper, int offset, int itemId) {
+	public ArticleListManager(Context context, ViewFlipper flipper, int itemId, int offset) {
 		super(context, flipper, offset);
 		this.category = 0;
 		this.itemId = itemId;
 		this.isFailInsertArticleList = false;
 	}
 	
-	public void changeCategory(int category) {
+	public void setCategory(int category) {
 		this.category = category;
-		isFailInsertArticleList = false;
-		removeAllFlipperItem();
-		insertArticleList();
-		menuPrevChildIndex = detailArticleprevChildIndex = getChildChount();
 	}
-
+	
 	private void addArticleListItem(Article article) {
 		View view = inflater.inflate(itemId, null);
 
@@ -116,7 +112,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 
 		 if(articleListSize == 0) {
 			 if(!isFailInsertArticleList) {
-				 View view = inflater.inflate(R.layout.network_error, null);
+				 View view = inflater.inflate(R.layout.view_network_error, null);
 				 addView(view);
 				 isFailInsertArticleList = true;
 				 return 1;
@@ -140,7 +136,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	@Override
 	public void inArticleDetail(int articleId) {
 		detailArticleprevChildIndex = currentChildIndex;
-		display(getChildChount() + 1);
+		display(getChildChount());
 	}
 	
 	@Override
@@ -157,9 +153,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			checkIndex += insertArticleList();
 		}
 		
-		if (checkIndex > flipper.getChildCount() - offset
-				|| isMenuState()
-				|| checkIndex < minChildIndex) {
+		if (checkIndex >= getChildChount() || checkIndex < minChildIndex) {
 			return false;
 		}
 		

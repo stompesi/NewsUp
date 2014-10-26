@@ -2,13 +2,13 @@ package database;
 
 import com.orm.SugarRecord;
 
-public class KeywordORM extends SugarRecord<KeywordORM> {
+public class Keyword extends SugarRecord<Keyword> {
 	
 	private String keyword;
 	
-	public KeywordORM(){}
+	public Keyword(){}
 	
-	public KeywordORM(String keyword) {
+	public Keyword(String keyword) {
 		this.keyword = keyword;
 	}
 	

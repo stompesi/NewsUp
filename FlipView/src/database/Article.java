@@ -12,16 +12,16 @@ import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
-public class ArticleORM extends SugarRecord<ArticleORM> implements Serializable {
+public class Article extends SugarRecord<Article> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private int category, articleId;
 	private String body, description, author, title, timestamp, provider, firstImageURL, firstImageColor;
 	private double score;
 	
-	public ArticleORM() {}
+	public Article() {}
 	
-	public ArticleORM(int category,
+	public Article(int category,
 			int articleId,
 			double score,
 			String body,
@@ -72,11 +72,15 @@ public class ArticleORM extends SugarRecord<ArticleORM> implements Serializable 
 	public void setFirstImageColor(String firstImageColor) { this.firstImageColor = firstImageColor; }
 	
 	
+	public static void saveArticle(JSONObject articleJSONObject) {
+		ArticleInsertAsyncTask task = new ArticleInsertAsyncTask();
+		task.execute(articleJSONObject);
+	}
 	static class ArticleInsertAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 		@Override
 		protected Void doInBackground(JSONObject... params) {
 			JSONObject article = params[0];
-			ArticleORM articleORM = new ArticleORM();
+			Article articleORM = new Article();
 			try {
 				articleORM.setArticleId(article.getInt("id"));
 				articleORM.setCategory(article.getInt("category"));
@@ -97,20 +101,25 @@ public class ArticleORM extends SugarRecord<ArticleORM> implements Serializable 
 		}
 	}
 	
-	public static void saveArticle(JSONObject articleJSONObject) {
-		ArticleInsertAsyncTask task = new ArticleInsertAsyncTask();
-		task.execute(articleJSONObject);
-	}
 	
-	public static List<ArticleORM> selectArticleList(int category, int offset) {
-//		List<ArticleORM> result = ArticleORM.findWithQuery(ArticleORM.class, 
-//				"SELECT * FROM ArticleORM where category = ? ORDERY score DESC LIMIT 10 OFFSET ?", "" + category , "" + offset);
-		List<ArticleORM> result = Select.from(ArticleORM.class).where(Condition.prop("category").eq(category)).list();
+	
+	public static List<Article> selectArticleList(int category, int offset) {
+		Article.executeQuery("VACUUM");
+		// TODO : 점수별 소팅 
+//		List<Article> result = Article.findWithQuery(Article.class, 
+//				"SELECT * FROM Article where category = ? ORDER BY score DESC LIMIT 10 OFFSET ?", "" + category , "" + offset);
+		
+		
+		List<Article> result = Article.findWithQuery(Article.class, 
+				//DESC
+				"SELECT * FROM Article where category = ? ORDER BY id ASC LIMIT 10 OFFSET ?", "" + category , "" + offset);
 		return result;
 	}
 	
+	
+	
 	public static int getCategoryArticleCount(int category) {
-		return (int) Select.from(ArticleORM.class).where(Condition.prop("category").eq(category)).count();
+		return (int) Select.from(Article.class).where(Condition.prop("category").eq(category)).count();
 	}
 	
 	public static void removeCategoryArticle(int category){

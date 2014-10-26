@@ -11,25 +11,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import setting.RbPreference;
 import network.Network;
+import setting.RbPreference;
 import ArticleReadInfo.ArticleReadInfo;
 import activity.SettingActivity;
 import android.content.Context;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
 import com.example.flipview.R;
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
-import database.ArticleORM;
-import database.KeywordORM;
 
 public class ArticleDetailManager extends ArticleFlipViewManager {
 	

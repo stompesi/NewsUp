@@ -18,10 +18,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.flipview.R;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
-import database.ArticleORM;
+import database.Article;
 
 public class ArticleListManager extends ArticleFlipViewManager {
 	
@@ -51,18 +49,19 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		menuPrevChildIndex = detailArticleprevChildIndex = getChildChount();
 	}
 
-	private void addArticleListItem(ArticleORM article) {
+	private void addArticleListItem(Article article) {
 		View view = inflater.inflate(itemId, null);
 
 		// TODO : Idx를 Id로 변경해야 한다
-//		view.setId(article.getIdx());
+		view.setId(article.getArticleId());
 		TextView title = (TextView) view.findViewById(R.id.title);
 		TextView content = (TextView) view.findViewById(R.id.content);
 		TextView time = (TextView) view.findViewById(R.id.time);
 		TextView provider = (TextView) view.findViewById(R.id.provider);
 		ImageView image = (ImageView) view.findViewById(R.id.image);
 
-//		title.setText("" + article.getIdx());
+		// TODO : title 변경 
+		title.setText("" + article.getId());
 		content.setText(article.getBody());
 		time.setText(article.getTimestamp());
 		provider.setText(article.getProvider());
@@ -109,10 +108,9 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 
 	public int insertArticleList() {
-		int offset;
-		offset = (getChildChount() < CACHE_ARTICLE_COUNT) ?  CACHE_ARTICLE_COUNT - getChildChount() : 0;
+		int offset = getChildChount();
 		
-		List<ArticleORM> articleList = ArticleORM.selectArticleList(category, offset);
+		List<Article> articleList = Article.selectArticleList(category, offset);
 		
 		int articleListSize = articleList.size();
 

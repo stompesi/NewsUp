@@ -20,7 +20,7 @@ import android.util.Log;
 
 import com.example.flipview.R;
 
-import database.ArticleORM;
+import database.Article;
 
 public class LockScreenService extends Service {
 
@@ -55,7 +55,7 @@ public class LockScreenService extends Service {
 	// 48시간 이상 지난 Article 제거  
 	private void removeArticleOverItem() {
 		for (int i = CATEGORY_START_INDEX; i <= CATEGORY_MAX_INDEX; i++) {
-			ArticleORM.removeCategoryArticle(i);
+			Article.removeCategoryArticle(i);
 		}
 	}
 	

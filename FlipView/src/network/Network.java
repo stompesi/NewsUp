@@ -20,7 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import database.ArticleORM;
+import database.Article;
 
 public class Network {
 
@@ -60,7 +60,7 @@ public class Network {
 							for (int i = 0; i < articles.length(); i++) {
 								// TODO : 카테고리 임시변경함 - 서버에서 제대로 데이터가 날라온다면 제거해야함 
 								articles.getJSONObject(i).put("category", category);
-								ArticleORM.saveArticle(articles.getJSONObject(i));
+								Article.saveArticle(articles.getJSONObject(i));
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();

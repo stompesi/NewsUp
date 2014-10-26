@@ -27,7 +27,7 @@ import com.example.flipview.R;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
-import database.KeywordORM;
+import database.Keyword;
 
 public class SettingActivity extends Activity  {
 	// 크기
@@ -97,12 +97,12 @@ public class SettingActivity extends Activity  {
 		SettingOnCheckedChangeListener settingOnCheckedChangeListener = new SettingOnCheckedChangeListener();
 		SettingOnClickListener settingOnClickListener = new SettingOnClickListener();
 		RbPreference pref = new RbPreference(this);
-		List<KeywordORM> keywordORMList = KeywordORM.listAll(KeywordORM.class);
+		List<Keyword> keywordORMList = Keyword.listAll(Keyword.class);
 		context = this;
 
 		keywordList = new ArrayList<String>();
 		
-		for(KeywordORM keywordORM : keywordORMList) {
+		for(Keyword keywordORM : keywordORMList) {
 			keywordList.add(keywordORM.getKeyword());
 		}
 		
@@ -190,7 +190,7 @@ public class SettingActivity extends Activity  {
 			case R.id.btnWordRegister:
 				String keyword = edtWord.getText().toString();
 				if(keywordList.size() < MAX_KEYWORD_SIZE) {
-					KeywordORM keywordORM = Select.from(KeywordORM.class).where(Condition.prop("keyword").eq(keyword)).first();
+					Keyword keywordORM = Select.from(Keyword.class).where(Condition.prop("keyword").eq(keyword)).first();
 					if (keywordORM != null) {
 						showToast("동일한 키워드는 등록하실 수 없습니다.");
 						return ;
@@ -198,7 +198,7 @@ public class SettingActivity extends Activity  {
 					if(keyword.length() != 0) {
 						keywordList.add(keyword);
 						
-						keywordORM = new KeywordORM(keyword);
+						keywordORM = new Keyword(keyword);
 						keywordORM.save();
 						
 						edtWord.setText("");
@@ -217,7 +217,7 @@ public class SettingActivity extends Activity  {
 				if(positoin != ListView.INVALID_POSITION) {
 					keyword = keywordList.get(positoin);
 					keywordList.remove(positoin);
-					KeywordORM keywordORM = Select.from(KeywordORM.class).where(Condition.prop("keyword").eq(keyword)).first();
+					Keyword keywordORM = Select.from(Keyword.class).where(Condition.prop("keyword").eq(keyword)).first();
 					keywordORM.delete();
 					
 					showToast("\"" + keyword + "\" 관심키워드를 삭제하였습니다.");

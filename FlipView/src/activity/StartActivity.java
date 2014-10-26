@@ -58,6 +58,9 @@ public class StartActivity extends Activity implements OnTouchListener {
 	}
 	
 	private void init() {
+		Intent intent = new Intent(StartActivity.this, LockScreenService.class);
+		startService(intent);
+		
 		startFlipper = (ViewFlipper) findViewById(R.id.startFlipper);
 		startFlipper.setOnTouchListener(this);
 		currentFlipperChildSize = startFlipper.getChildCount() - ARTICLE_OFFSET;

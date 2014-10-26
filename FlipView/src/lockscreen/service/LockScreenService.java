@@ -17,11 +17,10 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import application.NewsUpApp;
 
 import com.example.flipview.R;
 
-import database.ArticleDatabaseHandler;
+import database.ArticleORM;
 
 public class LockScreenService extends Service {
 
@@ -53,26 +52,10 @@ public class LockScreenService extends Service {
 		startForeground(1, notification);
 	}
 
-	// 캐쉬해 있는 Article 갯수보다 숫자가 많으면 해당 카테고리 Item 한개 제거 
+	// 48시간 이상 지난 Article 제거  
 	private void removeArticleOverItem() {
-		ArticleDatabaseHandler db = ((NewsUpApp) getApplicationContext()).getDB();
-
 		for (int i = CATEGORY_START_INDEX; i <= CATEGORY_MAX_INDEX; i++) {
-			int categoryArticleSize = db.selectArticleCount(i);
-			if (categoryArticleSize > CACHE_ARTICLE_NUMBER) {
-				db.remveOldArticle(i);
-			}
-		}
-	}
-	
-	private void removeArticleAllOverItem() {
-		ArticleDatabaseHandler db = ((NewsUpApp) getApplicationContext()).getDB();
-
-		for (int i = CATEGORY_START_INDEX; i <= CATEGORY_MAX_INDEX; i++) {
-			int categoryArticleSize = db.selectArticleCount(i);
-			for(int j = categoryArticleSize ; j < CACHE_ARTICLE_NUMBER ; j++) {
-				db.remveOldArticle(i);
-			}
+			ArticleORM.removeCategoryArticle(i);
 		}
 	}
 	
@@ -127,8 +110,6 @@ public class LockScreenService extends Service {
 				PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 				MainActivity mainActivity = (MainActivity) MainActivity.getInstance();
 				if (!pm.isScreenOn()) {
-					removeArticleAllOverItem();
-
 					LockScreenActivity lockScreenActivity = (LockScreenActivity) LockScreenActivity.getInstance();
 					lockScreenActivity.finish();
 

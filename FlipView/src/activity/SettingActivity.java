@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.flipview.R;
 import com.orm.query.Condition;
@@ -31,7 +32,7 @@ import database.KeywordORM;
 public class SettingActivity extends Activity  {
 	// 크기
 	private static final int MAX_KEYWORD_SIZE = 5;
-	public static final int SMALL_WORD = 13;
+	public static final int SMALL_WORD = 10;
 	public static final int MEDIUM_WORD = 15;
 	public static final int LARGE_WORD = 20;
 	
@@ -45,6 +46,8 @@ public class SettingActivity extends Activity  {
 	private ArrayAdapter<String> adapter;
 	private ListView listView;
 	private Context context;
+	
+	Toast toast;
 	
 	// 글자크기 라디오 버튼 클릭 이벤트 리스너 
 	RadioGroup.OnCheckedChangeListener mRCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -94,14 +97,10 @@ public class SettingActivity extends Activity  {
 		SettingOnCheckedChangeListener settingOnCheckedChangeListener = new SettingOnCheckedChangeListener();
 		SettingOnClickListener settingOnClickListener = new SettingOnClickListener();
 		RbPreference pref = new RbPreference(this);
-		
-		context = this;
-		
-		// TODO : 디비에서 가저온것 키워드 리스트에 넣어야 한다.
-//		Realm realm = Realm.getInstance(context);
-		keywordList = new ArrayList<String>();
-		
 		List<KeywordORM> keywordORMList = KeywordORM.listAll(KeywordORM.class);
+		context = this;
+
+		keywordList = new ArrayList<String>();
 		
 		for(KeywordORM keywordORM : keywordORMList) {
 			keywordList.add(keywordORM.getKeyword());
@@ -114,7 +113,6 @@ public class SettingActivity extends Activity  {
 		listView.setAdapter(adapter);
 		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-		
 		textSizeLayout =(LinearLayout)findViewById(R.id.textSizeLayout);
 		
 		// editText 설정 
@@ -133,8 +131,11 @@ public class SettingActivity extends Activity  {
 		((Switch)findViewById(R.id.swPushNotify)).setOnCheckedChangeListener(settingOnCheckedChangeListener);
 		((Switch)findViewById(R.id.swWordSize)).setOnCheckedChangeListener(settingOnCheckedChangeListener);
 		
-		// radioGroup 리스너 등록 
+		// radioGroup 리스너 등록
+		int index = pref.getValue(RbPreference.WORD_SIZE, MEDIUM_WORD) / 5 - 2;
+		((RadioGroup)findViewById(R.id.radioWordSize)).check(((RadioGroup)findViewById(R.id.radioWordSize)).getChildAt(index).getId());
 		((RadioGroup)findViewById(R.id.radioWordSize)).setOnCheckedChangeListener(mRCheckedChangeListener);
+		pref.put(RbPreference.WORD_SIZE, SMALL_WORD);
 	}
 
 
@@ -187,19 +188,25 @@ public class SettingActivity extends Activity  {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.btnWordRegister:
+				String keyword = edtWord.getText().toString();
 				if(keywordList.size() < MAX_KEYWORD_SIZE) {
-					String keyword = edtWord.getText().toString();
+					KeywordORM keywordORM = Select.from(KeywordORM.class).where(Condition.prop("keyword").eq(keyword)).first();
+					if (keywordORM != null) {
+						showToast("동일한 키워드는 등록하실 수 없습니다.");
+						return ;
+					}
 					if(keyword.length() != 0) {
 						keywordList.add(keyword);
-//						Realm realm = Realm.getInstance(context);
-//						KeywordRealmObject.insertKeyword(realm, keyword);
 						
-						KeywordORM keywordORM = new KeywordORM(keyword);
+						keywordORM = new KeywordORM(keyword);
 						keywordORM.save();
 						
 						edtWord.setText("");
+						showToast("\"" + keyword + "\" 관심키워드로 등록되었습니다.");
 						adapter.notifyDataSetChanged();
 					}
+				} else if(keyword.length() != 0) {
+					showToast("관심키워드는 최대 5개까지 등록 됩니다.");
 				}
 				break;
 			case R.id.btnWordDelete:
@@ -207,13 +214,13 @@ public class SettingActivity extends Activity  {
 				
 				positoin = listView.getCheckedItemPosition();
 				
-				if(positoin != listView.INVALID_POSITION) {
-					String keyword = keywordList.get(positoin);
+				if(positoin != ListView.INVALID_POSITION) {
+					keyword = keywordList.get(positoin);
 					keywordList.remove(positoin);
-
 					KeywordORM keywordORM = Select.from(KeywordORM.class).where(Condition.prop("keyword").eq(keyword)).first();
 					keywordORM.delete();
 					
+					showToast("\"" + keyword + "\" 관심키워드를 삭제하였습니다.");
 					listView.clearChoices();
 					adapter.notifyDataSetChanged();
 				}
@@ -225,6 +232,17 @@ public class SettingActivity extends Activity  {
 				break;
 			}
 		}
+	}
+	
+	private void showToast(String string) {
+		if(toast == null) {
+			toast = Toast.makeText(getApplicationContext(),
+					string, Toast.LENGTH_SHORT);
+		}else{
+			toast.setText(string);
+		}
+		toast.show();
+		
 	}
 }
 

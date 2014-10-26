@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import setting.RbPreference;
-
 import network.Network;
 import ArticleReadInfo.ArticleReadInfo;
 import activity.SettingActivity;
@@ -26,8 +25,11 @@ import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
 import com.example.flipview.R;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
-import database.Article;
+import database.ArticleORM;
+import database.KeywordORM;
 
 public class ArticleDetailManager extends ArticleFlipViewManager {
 	
@@ -62,7 +64,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	// TODO : 상세 기사 검색
 	public void getArticleDetail(int articleId) {
-		 Article article = articleDBManager.selectArticle(articleId);
+//		KeywordORM article = Select.from(KeywordORM.class).where(Condition.prop("articleId").eq(articleId)).first();
 		 try {
 			 removeAllFlipperItem();
 			 list = new ArrayList<Object>();

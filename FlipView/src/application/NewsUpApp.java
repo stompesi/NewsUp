@@ -4,7 +4,6 @@ package application;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import network.Network;
 import setting.RbPreference;
 import android.provider.Settings.Secure;
 import android.text.TextUtils;
@@ -19,13 +18,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-import database.ArticleDatabaseHandler;
-
 public class NewsUpApp extends com.orm.SugarApp {
 	public static final String TAG = NewsUpApp.class.getSimpleName();
 	
 	private RequestQueue mRequestQueue;
-	private ArticleDatabaseHandler articleDBManager;
 	private static NewsUpApp mInstance;
 	
 	private String deviceId; 
@@ -34,8 +30,6 @@ public class NewsUpApp extends com.orm.SugarApp {
 	public void onCreate() {
 		super.onCreate();
 		mInstance = this;
-		articleDBManager = ArticleDatabaseHandler.getInstance(getApplicationContext());
-		Network.getInstance().setDBHandler(articleDBManager);
 		
 		RbPreference pref = new RbPreference(this);
 		deviceId = pref.getValue(RbPreference.USER_ID, null);
@@ -95,10 +89,6 @@ public class NewsUpApp extends com.orm.SugarApp {
 	
 	public String getDeviceId() {
 		return deviceId;
-	}
-	
-	public ArticleDatabaseHandler getDB() {
-		return articleDBManager;
 	}
 	
 	public static synchronized NewsUpApp getInstance() {

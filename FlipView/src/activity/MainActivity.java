@@ -6,6 +6,7 @@ import lockscreen.service.LockScreenService;
 import manager.ArticleDetailManager;
 import manager.ArticleFlipViewManager;
 import manager.ArticleListManager;
+import setting.RbPreference;
 import transmission.TransmissionArticle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -87,10 +88,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 		flipperManager = articleListManager;
 		clickCount = 0;
 		
-		Intent intent = new Intent(MainActivity.this, LockScreenService.class);
-		startService(intent);
-		
-		
 		View view = getLayoutInflater().inflate(R.layout.menu, null);
 		MenuClickListener menuClickListener = new MenuClickListener();
 		view.findViewById(R.id.main).setOnClickListener(menuClickListener);
@@ -121,6 +118,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 		view.findViewById(R.id.game).setOnClickListener(menuClickListener);
 		view.findViewById(R.id.setting).setOnClickListener(menuClickListener);
 		articleDetailManager.getFlipper().addView(view, 0);
+		
+		RbPreference pref = new RbPreference(MainActivity.this);
+		if(pref.getValue(RbPreference.IS_LOCK_SCREEN, false)) {
+			Intent intent = new Intent(MainActivity.this, LockScreenService.class);
+			startService(intent);
+		}
 	}
 	
 	@Override

@@ -7,18 +7,14 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
-import application.NewsUpApp;
 
 import com.example.flipview.R;
-
-import database.ArticleDatabaseHandler;
 
 abstract public class ArticleFlipViewManager {
 	private static final int MENUE_PAGE = 0;
 	protected int offset;
 	
 	protected ViewFlipper flipper;
-	protected ArticleDatabaseHandler articleDBManager;
 	
 	
 	protected int currentChildIndex;
@@ -37,8 +33,6 @@ abstract public class ArticleFlipViewManager {
 		this.flipper = flipper;
 		this.context = context;
 		minChildIndex = 1;
-		articleDBManager = ((NewsUpApp) context.getApplicationContext())
-				.getDB();
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}

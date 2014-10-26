@@ -20,7 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import database.ArticleDatabaseHandler;
+import database.ArticleORM;
 
 public class Network {
 
@@ -28,7 +28,6 @@ public class Network {
 	private final static String SERVER_ADDRESS = "http://14.63.161.26:5000";
 
 	private static Network singletone;
-	private ArticleDatabaseHandler articleDBManager;
 
 	private String deviceId;
 	
@@ -45,10 +44,6 @@ public class Network {
 		this.deviceId = deviceId;
 	}
 
-	public void setDBHandler(ArticleDatabaseHandler articleDBManager) {
-		this.articleDBManager = articleDBManager;
-	}
-
 	// article list 요청 
 	public void requestArticleList(final int category) {
 		Log.i("NewsUp", "Request Article List");
@@ -63,9 +58,9 @@ public class Network {
 						try {
 							articles = response.getJSONArray("articles");
 							for (int i = 0; i < articles.length(); i++) {
-								JSONObject article = articles.getJSONObject(i);
-								article.put("category", category);
-								articleDBManager.insertArticle(article);
+								// TODO : 카테고리 임시변경함 - 서버에서 제대로 데이터가 날라온다면 제거해야함 
+								articles.getJSONObject(i).put("category", category);
+								ArticleORM.saveArticle(articles.getJSONObject(i));
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();

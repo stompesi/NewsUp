@@ -51,8 +51,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.e("Create", "aaa");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.lockscreen);
-		getActionBar().hide();
+		setContentView(R.layout.lockscreen_activity);
 		
 		init();
 		
@@ -76,7 +75,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		ViewFlipper articleListFlipper = (ViewFlipper) findViewById(R.id.lockScreenViewFlipper);
 		articleListFlipper.setOnTouchListener(this);
 		
-		articleListManager = new ArticleListManager(this, articleListFlipper, 1, R.layout.lockscreen_article_list_item);
+		articleListManager = new ArticleListManager(this, articleListFlipper, R.layout.lockscreen_article_list_item);
 		
 		timeView = (TextView) findViewById(R.id.lockScreenTime);
 		dateView = (TextView) findViewById(R.id.lockScreenDate);
@@ -111,10 +110,10 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 			return false;
 		}
 		Bundle bun = new Bundle();
-		MainActivity mainActivity = (MainActivity) MainActivity.getInstance();
+		ArticleListActivity mainActivity = (ArticleListActivity) ArticleListActivity.getInstance();
 		mainActivity.finish();
 		
-		Intent intent = new Intent(LockScreenActivity.this, MainActivity.class);
+		Intent intent = new Intent(LockScreenActivity.this, ArticleListActivity.class);
 		ArrayList<TransmissionArticle> articleList = new ArrayList<TransmissionArticle>();
 		
 		for(int i = articleListManager.getChildChount() ; i >= ARTICLE_END_ITEM_INDEX  ; i--) {
@@ -126,6 +125,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		bun.putSerializable("articleList", articleList);
 		intent.putExtras(bun);
 		startActivity(intent);
+		this.overridePendingTransition(R.anim.first_left_right_in, R.anim.second_up_down_out);
 		finish();
 		return false;
 	}
@@ -175,7 +175,6 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 			// right 
 			} else if (xAtDown - xAtUp > SWIPE_MIN_DISTANCE) {
 				return moveNewsUpApp();
-			// up
 			}  
 		}
 		return true;

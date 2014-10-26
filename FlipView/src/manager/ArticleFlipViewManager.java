@@ -11,14 +11,9 @@ import android.widget.ViewFlipper;
 import com.example.flipview.R;
 
 abstract public class ArticleFlipViewManager {
-	private static final int MENUE_PAGE = 0;
-	protected int offset;
-	
 	protected ViewFlipper flipper;
 	
-	
 	protected int currentChildIndex;
-	protected int maxChildIndex;
 	protected int minChildIndex;
 	
 	protected Context context;
@@ -28,17 +23,15 @@ abstract public class ArticleFlipViewManager {
 	
 	protected LayoutInflater inflater;
 
-	public ArticleFlipViewManager(Context context, ViewFlipper flipper, int offset) {
-		this.offset = offset;
+	public ArticleFlipViewManager(Context context, ViewFlipper flipper) {
 		this.flipper = flipper;
 		this.context = context;
-		minChildIndex = 1;
-		inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		minChildIndex = 0;
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public void removeAllFlipperItem() {
-		while (flipper.getChildCount() > offset) {
+		while (flipper.getChildCount() > 0) {
 			flipper.removeViewAt(minChildIndex);
 		}
 	}
@@ -61,28 +54,8 @@ abstract public class ArticleFlipViewManager {
 		flipper.setOutAnimation(outAnimation);
 	}
 	
-	
-	
 	protected void addView(View view) {
 		flipper.addView(view, minChildIndex);
-	}
-	
-	public boolean isMenuState() {
-		return MENUE_PAGE == currentChildIndex;
-	}
-	
-	public void outMenuPage() {
-//		currentState = 1;
-		setAnimation(R.anim.fade_in, R.anim.fade_out);
-		display(menuPrevChildIndex);
-	}
-	
-	public boolean inMenuPage() {
-		if (currentChildIndex != MENUE_PAGE) {
-			menuPrevChildIndex = flipper.getDisplayedChild();
-			display(MENUE_PAGE);
-		}
-		return true;
 	}
 	
 	public void setFlipperTouchListener(OnTouchListener listener) {
@@ -95,7 +68,7 @@ abstract public class ArticleFlipViewManager {
 	}
 	
 	public int getChildChount(){
-		return flipper.getChildCount() - offset;
+		return flipper.getChildCount() - 1;
 	}
 	
 	public View getChildAt(int index) {
@@ -105,14 +78,5 @@ abstract public class ArticleFlipViewManager {
 	public int getCurrentChildIndex() {
 		return currentChildIndex;
 	}
-	
-	
-	
-	
-	abstract public void inArticleDetail(int articleId);
-	abstract public void outArticleDetail();
 	abstract public boolean upDownSwipe(int page);
-
-	
-	
 }

@@ -32,87 +32,62 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	private int pageCounter = 0; 
 	private Context context;
 	
-	
-	
 	private ArticleReadInfo articleReadInfo;
 	private int pageReadStartTime;
 	
-	public ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
-		super(context, flipper, offset);
+	private int articleId;
+	
+	public ArticleDetailManager(Context context, ViewFlipper flipper) {
+		super(context, flipper);
 		this.context = context;
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		View_height = metrics.heightPixels;
 		View_widht= metrics.widthPixels;
 	}
 
-	private void addArticleDetail(int layoutId, String str) {
-		View view = inflater.inflate(layoutId, null);
-//		TextView content = (TextView) view.findViewById(R.id.textView1);
-//		NetworkImageView image = (NetworkImageView) view.findViewById(R.id.imageView1);
-//		content.setText(Html.fromHtml(str));
-//		image.setImageUrl("http://tour.yp21.net/multi/uploadFile/20090729_1732.JPG", 
-//				NewsUpApp.getInstance().getImageLoader());
-		addView(view);
-	}
-	
 	// TODO : 상세 기사 검색
 	public void getArticleDetail(int articleId) {
 //		KeywordORM article = Select.from(KeywordORM.class).where(Condition.prop("articleId").eq(articleId)).first();
 		 try {
-			 removeAllFlipperItem();
-			 list = new ArrayList<Object>();
-				FirstSplitter firstSplitter= new FirstSplitter();//신문 기사 처음 이미지랑 기사 구분 하는 객체.
-
-				try {
-					String str = readText("html.txt");
-					list  = firstSplitter.FirstSplitter(str);//파싱된 걸 넣는다.
-					StaticClass.result_lits= getResult_List(list);
-					ArrayList<View> viewList = ViewMaker.getViewList(context, StaticClass.result_lits);
-//					addArticleDetail(R.layout.article_detail_item, contents);
-					for(int i = 0 ; i < viewList.size() ; i++) {
-						addView(viewList.get(i));
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}//읽는
-				
-			 
-//			 addArticleDetail(R.layout.article_detail_item, "" + article.getIdx());
-			 
-//			 addArticleDetail(R.layout.article_detail_item, contents);
-//			 addArticleDetail(R.layout.article_detail_item, contents);
-//			 addArticleDetail(R.layout.article_detail_item, contents);
-//			 addArticleDetail(R.layout.article_detail_item, contents);
-			 maxChildIndex = getChildChount();
+			list = new ArrayList<Object>();
+			FirstSplitter firstSplitter= new FirstSplitter();//신문 기사 처음 이미지랑 기사 구분 하는 객체.
+			try {
+				String str = readText("html.txt");
+				list  = firstSplitter.FirstSplitter(str);//파싱된 걸 넣는다.
+				StaticClass.result_lits= getResult_List(list);
+				ArrayList<View> viewList = ViewMaker.getViewList(context, StaticClass.result_lits);
+				for(int i = 0 ; i < viewList.size() ; i++) {
+					addView(viewList.get(i));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//읽는
 		 } catch (Exception e) {
 			 e.printStackTrace();
 		 }
 	}
 	
-	@Override
-	public void outArticleDetail() {
+	public void startArticleRead(int articleId) {
+		this.articleId = articleId;
+		getArticleDetail(articleId);
+		pageReadStartTime = getTimestamp();
+		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount() + 1);
+		display(getChildChount());
+	}
+	
+	public void startArticleRead() {
+		getArticleDetail(articleId);
+		pageReadStartTime = getTimestamp();
+		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount() + 1);
+		display(getChildChount());
+	}
+	
+	public void endArticleRead() {
 		setReadTime();
-		
 		if(Network.isNetworkState(context)){
 			Network.getInstance().updateUserLog(articleReadInfo);
 		}
-		
-	}
-	
-	@Override
-	public boolean upDownSwipe(int increase){
-		int checkIndex = currentChildIndex + increase;
-		if (checkIndex > maxChildIndex
-				|| isMenuState()
-				|| checkIndex < minChildIndex) {
-			return false;
-		}
-		
-		setReadTime();
-		
-		display(checkIndex);
-		return true;
 	}
 	
 	private void setReadTime() {
@@ -122,25 +97,19 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	}
 	
 	@Override
-	public void inArticleDetail(int articleId) {
-		getArticleDetail(articleId);
-		pageReadStartTime = getTimestamp();
-		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
-		display(getChildChount());
+	public boolean upDownSwipe(int increase){
+		int checkIndex = currentChildIndex + increase;
+		if (checkIndex >= flipper.getChildCount() || checkIndex < minChildIndex) {
+			return false;
+		}
+		setReadTime();
+		display(checkIndex);
+		return true;
 	}
 	
 	private int getTimestamp() {
 		return (int)(System.currentTimeMillis() / 1000L);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	private String readText(String file) throws IOException {
 		InputStream is = context.getAssets().open(file);
@@ -154,10 +123,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 
 		return text;
 	}
-	
-	
-	
-	
 	
 	private void textPaint_size(TextPaint textPaint)
 	{
@@ -175,10 +140,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 			textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_large));//textsize설정.
 			break;
 		}
-		
-		
 	}
-	
 
 	private ArrayList<Object> getResult_List(ArrayList<Object> list)
 	{
@@ -367,3 +329,5 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	}
 
 }
+
+

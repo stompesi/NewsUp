@@ -109,7 +109,6 @@ public class Article extends SugarRecord<Article> implements Serializable {
 //		List<Article> result = Article.findWithQuery(Article.class, 
 //				"SELECT * FROM Article where category = ? ORDER BY score DESC LIMIT 10 OFFSET ?", "" + category , "" + offset);
 		
-		
 		List<Article> result = Article.findWithQuery(Article.class, 
 				//DESC
 				"SELECT * FROM Article where category = ? ORDER BY id ASC LIMIT 10 OFFSET ?", "" + category , "" + offset);

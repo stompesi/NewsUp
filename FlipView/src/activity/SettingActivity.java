@@ -74,6 +74,9 @@ public class SettingActivity extends Activity  {
 				default:
 					break;
 				}
+				
+				ArticleDetailActivity articleDetailActivity = (ArticleDetailActivity) ArticleDetailActivity.getInstance();
+				articleDetailActivity.settingTextSize();
 			}
 		}
 	};
@@ -81,7 +84,7 @@ public class SettingActivity extends Activity  {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.setting);
+		setContentView(R.layout.setting_activity);
 		init();
 	}
 	
@@ -135,7 +138,6 @@ public class SettingActivity extends Activity  {
 		int index = pref.getValue(RbPreference.WORD_SIZE, MEDIUM_WORD) / 5 - 2;
 		((RadioGroup)findViewById(R.id.radioWordSize)).check(((RadioGroup)findViewById(R.id.radioWordSize)).getChildAt(index).getId());
 		((RadioGroup)findViewById(R.id.radioWordSize)).setOnCheckedChangeListener(mRCheckedChangeListener);
-		pref.put(RbPreference.WORD_SIZE, SMALL_WORD);
 	}
 
 

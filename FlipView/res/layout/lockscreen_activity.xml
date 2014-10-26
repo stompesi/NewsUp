@@ -7,21 +7,10 @@
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
-
-        
-
         <ViewFlipper
             android:id="@+id/lockScreenViewFlipper"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
-
-            <FrameLayout
-                android:id="@+id/notthing"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/back1"
-                android:orientation="vertical" >
-            </FrameLayout>
         </ViewFlipper>
         
         <LinearLayout

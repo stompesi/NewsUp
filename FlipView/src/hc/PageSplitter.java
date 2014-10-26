@@ -46,6 +46,7 @@ public class PageSplitter {
             appendText(paragraphs[i], textPaint);
             appendNewLine();//단락이 끝나면 개행 문자를 넣어 준다.
         }
+        
         appendText(paragraphs[i], textPaint);//마지막 단락을 넣는다.
     }
 
@@ -57,6 +58,36 @@ public class PageSplitter {
         }
         appendWord(words[i], textPaint);//마지막 단어
     }
+    
+    
+// //   
+//    private void appendWord(String appendWord,TextPaint textPaint)
+//	{ 	
+//		int i; 
+//		int textWidth=0; 
+//		
+//		for(i =0; i<appendWord.length(); i++)
+//		{
+//			 appendWord.charAt(i);
+//		}
+//	
+//		
+//	}
+//
+//    
+//  private void appendCharWord(char appendedText, TextPaint textPaint) {//받은 단어를 가지고 단어의 넓이를 측정한다.
+//  int textWidth = (int) Math.ceil(textPaint.measureText(appendedText));//현재단어의 넓이를 측정. 
+//  if (currentLineWidth + textWidth >= pageWidth) {//단어의 넓이가 페이지의 넓이 보다 크면 이 단락이 페이지의 끝인가 아닌가 측정을한다.
+//      checkForPageEnd();							
+//      appendLineToPage(textLineHeight);//페이지의 끝이 아닐경우.
+//  }
+//  appendTextToLine(appendedText, textPaint, textWidth);
+//}
+////
+
+    
+ //
+    
 
     private void appendWord(String appendedText, TextPaint textPaint) {//받은 단어를 가지고 단어의 넓이를 측정한다.
         int textWidth = (int) Math.ceil(textPaint.measureText(appendedText));//현재단어의 넓이를 측정. 
@@ -67,6 +98,10 @@ public class PageSplitter {
         appendTextToLine(appendedText, textPaint, textWidth);
     }
     
+  
+    
+    
+    
     private void checkForPageEnd() {
         if (pageContentHeight + currentLineHeight > pageHeight) {//만약 현재 라인이 뷰의 높이 보다 크면 현재 페이지에다가 추가 
             
@@ -76,7 +111,7 @@ public class PageSplitter {
         }
     }
     private void appendNewLine() {
-        //currentLine.append("\n");//개행 문자 넣는다 
+        currentLine.append("\n");//개행 문자 넣는다 
         checkForPageEnd();//현재 끝인가 아닌가를 판단.
         appendLineToPage(textLineHeight);
     }
@@ -107,9 +142,6 @@ public class PageSplitter {
         }
         lastPage.append(currentLine);
         copyPages.add(lastPage);
-//        str = copyPages.get(0);
-//        copyPages.clear();
-//        copyPages.add(str); 
         return copyPages;
     }
 

@@ -101,8 +101,6 @@ public class Article extends SugarRecord<Article> implements Serializable {
 		}
 	}
 	
-	
-	
 	public static List<Article> selectArticleList(int category, int offset) {
 		Article.executeQuery("VACUUM");
 		// TODO : 점수별 소팅 
@@ -116,7 +114,10 @@ public class Article extends SugarRecord<Article> implements Serializable {
 		return result;
 	}
 	
-	
+	public static Article getArticle(int articleId) {
+		Article article = Select.from(Article.class).where(Condition.prop("article_id").eq(articleId)).first();
+		return article;
+	}
 	
 	public static int getCategoryArticleCount(int category) {
 		return (int) Select.from(Article.class).where(Condition.prop("category").eq(category)).count();

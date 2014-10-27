@@ -24,6 +24,8 @@ import android.widget.ViewFlipper;
 
 import com.example.flipview.R;
 
+import database.Article;
+
 public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	private int View_height;
@@ -46,28 +48,18 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	// TODO : 상세 기사 검색
 	public void getArticleDetail(int articleId) {
-//		KeywordORM article = Select.from(KeywordORM.class).where(Condition.prop("articleId").eq(articleId)).first();
-		 try {
-			 removeAllFlipperItem();
-			 list = new ArrayList<Object>();
-				FirstSplitter firstSplitter= new FirstSplitter();//신문 기사 처음 이미지랑 기사 구분 하는 객체.
-
-				try {
-					String str = readText("html.txt");
-					list  = firstSplitter.FirstSplitter(str);//파싱된 걸 넣는다.
-					StaticClass.result_lits= getResult_List(list);
-					ArrayList<View> viewList = ViewMaker.getViewList(context, StaticClass.result_lits);
-//					addArticleDetail(R.layout.article_detail_item, contents);
-					for(int i = 0 ; i < viewList.size() ; i++) {
-						addView(viewList.get(i));
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}//읽는
-		 } catch (Exception e) {
-			 e.printStackTrace();
-		 }
+		Article article = Article.getArticle(articleId);
+		removeAllFlipperItem();
+		list = new ArrayList<Object>();
+		FirstSplitter firstSplitter= new FirstSplitter();
+		String str = article.getBody();
+		list  = firstSplitter.FirstSplitter(str);
+		// TODO: 시작페이지를 만들어야한다 (상세기사 첫화면)
+		StaticClass.result_lits= getResult_List(list);
+		ArrayList<View> viewList = ViewMaker.getViewList(context, StaticClass.result_lits);
+		for(int i = 0 ; i < viewList.size() ; i++) {
+			addView(viewList.get(i));
+		}
 	}
 	
 	@Override
@@ -114,24 +106,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	private int getTimestamp() {
 		return (int)(System.currentTimeMillis() / 1000L);
 	}
-	
-	
-	private String readText(String file) throws IOException {
-		InputStream is = context.getAssets().open(file);
-
-		int size = is.available();
-		byte[] buffer = new byte[size];
-		is.read(buffer);
-		is.close();
-
-		String text = new String(buffer);
-
-		return text;
-	}
-	
-	
-	
-	
 	
 	private void textPaint_size(TextPaint textPaint)
 	{

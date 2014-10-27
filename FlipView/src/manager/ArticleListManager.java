@@ -11,6 +11,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,7 +58,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		ImageView image = (ImageView) view.findViewById(R.id.image);
 
 		// TODO : title 변경 
-		title.setText("" + article.getId());
+		title.setText("" + article.getTitle());
 		content.setText(article.getBody());
 		time.setText(article.getTimestamp());
 		provider.setText(article.getProvider());
@@ -66,10 +68,10 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		int height = metrics.heightPixels;
 		
 		ShapeDrawable drawable = new ShapeDrawable(new RectShape());
-		 drawable.setIntrinsicWidth(width);
-		 drawable.setIntrinsicHeight((int)(height * 0.3));
-		 drawable.getPaint().setColor(Color.parseColor(article.getFirstImageColor()));
-		 image.setImageDrawable(drawable);
+		drawable.setIntrinsicWidth(width);
+		drawable.setIntrinsicHeight((int)(height * 0.3));
+		drawable.getPaint().setColor(Color.parseColor(article.getFirstImageColor()));
+		image.setImageDrawable(drawable);
 
 		ImageViewManager.loadImage(image, article.getFirstImageURL());
 		Image imageInfo = new Image(article.getFirstImageURL());
@@ -101,7 +103,32 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			addArticleListItem(transferredArticleList.get(i));
 		}
 	}
-
+//	private void insertArticleListBackGround() {
+//		
+//		private Handler timerHandler;
+//		private Runnable timerRunnable;
+//		timerRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//            	String time = clock.getTime() + clock.getAMPM();
+//				String date = clock.getDate() + clock.getWeek();
+//				
+//				timeView.setText(time);
+//				dateView.setText(date);
+//				timerHandler.postDelayed(timerRunnable, 1000);
+//            }
+//        };
+//         
+//        timerHandler = new Handler();
+//        timerHandler.postDelayed(timerRunnable, 0);
+//        
+//        
+//		AsyncTask.execute( new Runnable(){
+//			public void run() {
+//				currentChildIndex += insertArticleList();
+//			}
+//		});
+//	}
 	public int insertArticleList() {
 		int offset = getChildChount();
 		
@@ -129,7 +156,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		for (int i = 0; i < articleListSize; i++) {
 			addArticleListItem(articleList.get(i));
 		}
-		return articleListSize;
+		return articleListSize;	
 	}
 	
 	@Override
@@ -149,6 +176,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		int checkIndex = currentChildIndex + increase;
 		
 		if (currentChildIndex <= MINIMUM_ARTICLE_LIST_ATTACH_INDEX) {
+			// TODO : insertArticleListBackGround(); 로변
 			checkIndex += insertArticleList();
 		}
 		
@@ -157,6 +185,9 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		}
 		
 		display(checkIndex);
+		
+		
+		
 		return true;
 	}
 	

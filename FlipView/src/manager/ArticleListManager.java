@@ -24,7 +24,6 @@ import database.Article;
 public class ArticleListManager extends ArticleFlipViewManager {
 	
 	private static final int MINIMUM_ARTICLE_LIST_ATTACH_INDEX = 5;
-	private static final int CACHE_ARTICLE_COUNT = 20;
 	
 	private int category;
 	

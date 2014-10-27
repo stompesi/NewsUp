@@ -8,8 +8,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
 
-import com.example.flipview.R;
-
 abstract public class ArticleFlipViewManager {
 	protected int offset;
 	

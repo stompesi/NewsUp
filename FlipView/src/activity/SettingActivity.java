@@ -3,7 +3,7 @@ package activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import lockscreen.service.LockScreenService;
+import service.LockScreenService;
 import setting.RbPreference;
 import android.app.Activity;
 import android.content.Context;
@@ -35,7 +35,7 @@ public class SettingActivity extends Activity implements OnTouchListener {
 	
 	private static final int SWIPE_MIN_DISTANCE = 100;
 	// 좌표
-	private float xAtDown, xAtUp, yAtDown, yAtUp;
+	private float xAtDown, xAtUp;
 	
 	// 크기
 	private static final int MAX_KEYWORD_SIZE = 5;
@@ -147,7 +147,7 @@ public class SettingActivity extends Activity implements OnTouchListener {
 		((RadioGroup)findViewById(R.id.radioWordSize)).check(((RadioGroup)findViewById(R.id.radioWordSize)).getChildAt(index).getId());
 		((RadioGroup)findViewById(R.id.radioWordSize)).setOnCheckedChangeListener(mRCheckedChangeListener);
 		
-		View view = findViewById(R.id.listKeyWord);
+		View view = (View) findViewById(R.id.listKeyWord);
 		view.setOnTouchListener(this);
 	}
 
@@ -263,11 +263,9 @@ public class SettingActivity extends Activity implements OnTouchListener {
 	public boolean onTouch(View v, MotionEvent event) {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			yAtDown = event.getY();
 			xAtDown = event.getX();
 			break;
 		case MotionEvent.ACTION_UP:
-			yAtUp = event.getY(); 
 			xAtUp = event.getX();
 			if (xAtDown - xAtUp > SWIPE_MIN_DISTANCE) {
 			} else if (xAtUp - xAtDown > SWIPE_MIN_DISTANCE) {

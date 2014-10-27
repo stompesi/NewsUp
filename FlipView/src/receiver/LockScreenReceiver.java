@@ -1,5 +1,6 @@
-package lockscreen.receiver;
+package receiver;
 
+import service.ArticleManageService;
 import activity.LockScreenActivity;
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
@@ -63,7 +64,7 @@ public class LockScreenReceiver extends BroadcastReceiver {
 				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(i);
 			}
-		}
+		} 
 	}
 	
 	// 기본 잠금화면 없애기 

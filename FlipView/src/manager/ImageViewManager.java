@@ -9,8 +9,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ImageViewManager {
-	
-	
 	private static DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
 			.cacheOnDisc(true).resetViewBeforeLoading(true)
 			.showImageForEmptyUri(R.drawable.ic_launcher) // 처음 이미지 파일 보여주는 것 

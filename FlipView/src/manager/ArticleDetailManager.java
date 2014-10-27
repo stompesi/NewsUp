@@ -29,7 +29,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	private int View_height;
 	private int View_widht;
 	private ArrayList<Object> list;
-	private int pageCounter = 0; 
 	private Context context;
 	
 	
@@ -162,7 +161,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		int Image_flag = 0; //텍스트 앞에 이미지가 있는지 없는지 판단.
 		int Text_flag =0; //이미지 앞에 텍스트가 있는지 없는지 판단.
 		int Text_hight = 0; //텍스트 높이.
-		String Temp_text,Temp_text1;
+		String Temp_text1;
 		PageSplitter pageSplitter;//pageSpliter선언.
 		TextViewHeight textViewHeight;
 		TextPaint textPaint = new TextPaint();//pagespliter에 넘겨줄 그림판.
@@ -182,8 +181,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 					Log.d("TAGImageStart",Image_Start+":"+ ((ImageInfo)list.get(i)).getImage_start()+"");
 					result_list.add(list.get(i));//앞에 TextView가 있을 때 시작 점 위치를 바꿔서 저장.
 					Text_flag = 0; 
-					pageCounter++;
-
 				}
 				else  //한페이지가 이미지로 시작 하는 경우.
 				{
@@ -209,7 +206,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 					result_list.add(Integer.toString(Text_hight)+":"+Temp_text1);//이미지 뷰 뒤에 남은 Textview크기에 맞는 글자를 저장.
 					//앞에 이미지 제외 하고 여기 까지면 한 레리아웃에 이미지 + textView가 꽉찬 형태가 만들어짐.
 					pageSplitter = null;//pageSpliter 객체 삭제.
-					pageCounter++;//이미지 + 글, 한페이지 
 					
 					Log.d("TAG!!", ((String)list.get(i)).replace("\n", "").length()+":"+Temp_text1.length());
 					if(((String)list.get(i)).replace("\n", "").length() - Temp_text1.length() > 0 )//이미지 밑에 글자가 짤렸때 남은 글자를 처리 하는 로직.
@@ -239,10 +235,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 								Log.d("TAG", "이미지 플래그 보냄"+":"+ExtrTextHeight);
 								Text_flag = 1; 
 							}
-							else
-							{
-								pageCounter++; //글로만 이루어진 한 페이지 
-							}
 							Temp_text1  = Integer.toString(ExtrTextHeight)+":"+pageSplitter.getPages().get(0).toString();
 							result_list.add(Temp_text1);
 							//현재 높이를 측정 할 수 있는 함수가 있어서 만약 높이가 절반 이상이 넘으면 Text_flag = 1 날리지 말고 
@@ -257,17 +249,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 								
 								Temp_text1  = Integer.toString(View_height)+":"+pageSplitter.getPages().get(j).toString();
 								result_list.add(Temp_text1);
-								pageCounter++;//각페이지 카운트.
 							}
 							ExtrTextHeight = textViewHeight.getTextheight(pageSplitter.getPages().get(pagelength-1).toString(), textPaint);
 							if(ExtrTextHeight<View_height/2)
 							{
 								Log.d("TAG", "이미지 플래그 보냄"+":"+ExtrTextHeight);
 								Text_flag = 1; 
-							}
-							else 
-							{
-								pageCounter++;
 							}
 							Temp_text1  = Integer.toString(ExtrTextHeight)+":"+pageSplitter.getPages().get(pagelength-1).toString();
 							result_list.add(Temp_text1);
@@ -298,10 +285,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 							Log.d("TAG", "이미지 플래그 보냄"+":"+ExtrTextHeight);
 							Text_flag = 1; 
 						}
-						else
-						{
-							pageCounter++; //글로만 이루어진 한 페이지 
-						}
 						Temp_text1  = Integer.toString(ExtrTextHeight)+":"+pageSplitter.getPages().get(0).toString();
 						result_list.add(Temp_text1);
 						//현재 높이를 측정 할 수 있는 함수가 있어서 만약 높이가 절반 이상이 넘으면 Text_flag = 1 날리지 말고 
@@ -316,17 +299,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 							
 							Temp_text1  = Integer.toString(View_height)+":"+pageSplitter.getPages().get(j).toString();
 							result_list.add(Temp_text1);
-							pageCounter++;//각페이지 카운트.
 						}
 						ExtrTextHeight = textViewHeight.getTextheight(pageSplitter.getPages().get(pagelength-1).toString(), textPaint);
 						if(ExtrTextHeight<View_height/2)
 						{
 							Log.d("TAG", "이미지 플래그 보냄"+":"+ExtrTextHeight);
 							Text_flag = 1; 
-						}
-						else 
-						{
-							pageCounter++;
 						}
 						Temp_text1  = Integer.toString(ExtrTextHeight)+":"+pageSplitter.getPages().get(pagelength-1).toString();
 						result_list.add(Temp_text1);

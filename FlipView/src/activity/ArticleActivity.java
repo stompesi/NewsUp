@@ -2,10 +2,10 @@ package activity;
 
 import java.util.ArrayList;
 
-import lockscreen.service.LockScreenService;
 import manager.ArticleDetailManager;
 import manager.ArticleFlipViewManager;
 import manager.ArticleListManager;
+import service.LockScreenService;
 import setting.RbPreference;
 import transmission.TransmissionArticle;
 import android.annotation.SuppressLint;

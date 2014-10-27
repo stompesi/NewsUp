@@ -1,8 +1,9 @@
 package activity;
 
 
-import lockscreen.service.LockScreenService;
 import network.Network;
+import service.ArticleManageService;
+import service.LockScreenService;
 import setting.RbPreference;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,19 +25,7 @@ import com.urqa.clientinterface.URQAController;
 
 
 @SuppressLint("ClickableViewAccessibility")
-public class StartActivity extends Activity implements OnTouchListener {
-	
-	private static final int ARTICLE_END_ITEM_INDEX = 1;
-	private static final int SWIPE_MIN_DISTANCE = 100;
-	private static final int ARTICLE_OFFSET = 1;
-
-	
-	private ViewFlipper startFlipper;
-
-	private float yAtDown;
-	private float yAtUp;
-	
-	private int currentFlipperChildSize, currentChildIndex;
+public class StartActivity extends Activity {
 	
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,38 +34,23 @@ public class StartActivity extends Activity implements OnTouchListener {
 		URQAController.InitializeAndStartSession(getApplicationContext(), "184637B8");
 		
 		RbPreference pref = new RbPreference(this);
-		// 앱 처음 실행 
-//		if(pref.getValue(RbPreference.PREF_IS_INTRO, true)) {
-//			init();
-//			display(startFlipper.getChildCount() - ARTICLE_OFFSET);
-//		} else {
-//			Intent intent = new Intent(StartActivity.this, ArticleActivity.class);
-//			startActivity(intent);
-//			finish();
-//		}
-		
-		onClick();
+//		 앱 처음 실행 
+		if(pref.getValue(RbPreference.PREF_IS_INTRO, true)) {
+			init();
+			onClick();
+		} else {
+			Intent intent = new Intent(StartActivity.this, ArticleActivity.class);
+			startActivity(intent);
+			finish();
+		}
 	}
 	
 	private void init() {
-		Intent intent = new Intent(StartActivity.this, LockScreenService.class);
-		startService(intent);
+		Intent lockScreenIntent = new Intent(StartActivity.this, LockScreenService.class);
+		Intent articleManageIntent = new Intent(StartActivity.this, ArticleManageService.class);
+		startService(articleManageIntent);
+		startService(lockScreenIntent);
 		
-		startFlipper = (ViewFlipper) findViewById(R.id.startFlipper);
-		startFlipper.setOnTouchListener(this);
-		currentFlipperChildSize = startFlipper.getChildCount() - ARTICLE_OFFSET;
-		
-		View view = startFlipper.getChildAt(ARTICLE_END_ITEM_INDEX);
-		
-//		Button startButton = (Button) view.findViewById(R.id.btn);
-//		startButton.setOnClickListener(new StartClickLitener());
-//		startButton.setText("시작");
-//		for (int i = currentFlipperChildSize; i > ARTICLE_END_ITEM_INDEX ; i--){
-//			view = startFlipper.getChildAt(i);
-//			startButton = (Button) view.findViewById(R.id.btn);
-//			startButton.setOnClickListener(new NextClickLitener());
-//			startButton.setText("다음");
-//		}
 		
 		Network.getInstance().requestArticleList(0);
 		
@@ -86,102 +60,6 @@ public class StartActivity extends Activity implements OnTouchListener {
 		pref.put(RbPreference.NOTI_ALARM, true);//락스크린 off
 		pref.put(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
 	}
-	
-
-	// 페이지 Up, Down
-	private boolean upDownSwipe(int movingCheckIndex) {
-		if (movingCheckIndex > currentFlipperChildSize
-				|| movingCheckIndex < ARTICLE_END_ITEM_INDEX) {
-			return false;
-		}
-		display(movingCheckIndex);
-		return true;
-	}
-	
-	private void display(int checkWhichChild) {
-		currentChildIndex = checkWhichChild; 
-		startFlipper.setDisplayedChild(currentChildIndex);
-	}
-	
-	private void setAnimation(int in, int out) {
-		Animation inAnimation = AnimationUtils.loadAnimation(this, in);
-		Animation outAnimation = AnimationUtils.loadAnimation(this, out);
-		startFlipper.setInAnimation(inAnimation);
-		startFlipper.setOutAnimation(outAnimation);
-	}
-	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    switch (keyCode) {
-	    case KeyEvent.KEYCODE_BACK:
-	        return true;
-	    }
-	    return super.onKeyDown(keyCode, event);
-	}
-	
-	public boolean onTouch(View v, MotionEvent event) {
-		
-		if (v != startFlipper) {
-			return false;
-		}
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			yAtDown = event.getY();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			break;
-		case MotionEvent.ACTION_UP:
-			yAtUp = event.getY(); 
-            
-			if (yAtDown - yAtUp > SWIPE_MIN_DISTANCE) {
-				setAnimation(R.anim.second_up_down_in, R.anim.first_up_down_out);
-				return upDownSwipe(currentChildIndex - 1);
-			// down
-			} else if (yAtUp - yAtDown > SWIPE_MIN_DISTANCE) {
-				setAnimation(R.anim.first_up_down_in, R.anim.second_up_down_out);
-				return upDownSwipe(currentChildIndex + 1);
-			}  
-		}
-		return true;
-	}
-	
-	private class StartClickLitener implements OnClickListener{
-
-		@Override
-		public void onClick(View v) {
-			StartActivity startActivity;
-			Intent intent;
-			RbPreference pref;
-			
-			startActivity = StartActivity.this;
-			pref = new RbPreference(startActivity);
-			pref.put(RbPreference.PREF_IS_INTRO, false);
-			
-//			 서비스(background 실행) 실행 용도
-			intent = new Intent(startActivity, LockScreenService.class);
-			startActivity.startService(intent);
-			
-			Network.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
-			Network.getInstance().requestRegistUser(getApplication());
-			
-			intent = new Intent(startActivity, ArticleActivity.class);
-			startActivity(intent);
-			startActivity.finish();
-			
-		}
-	}
-	
-	private class NextClickLitener implements OnClickListener{
-
-		@Override
-		public void onClick(View v) {
-			setAnimation(R.anim.second_up_down_in, R.anim.first_up_down_out);
-			upDownSwipe(currentChildIndex - 1);
-		}
-	}
-	
-	
 	
 	public void onClick() {
 		StartActivity startActivity;
@@ -193,8 +71,6 @@ public class StartActivity extends Activity implements OnTouchListener {
 		pref.put(RbPreference.PREF_IS_INTRO, false);
 		
 //		 서비스(background 실행) 실행 용도
-		intent = new Intent(startActivity, LockScreenService.class);
-		startActivity.startService(intent);
 		
 		Network.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
 		Network.getInstance().requestRegistUser(getApplication());

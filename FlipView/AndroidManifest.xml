@@ -58,11 +58,19 @@
         </activity>
         
         <service 
-            android:name="lockscreen.service.LockScreenService" >
+            android:name="service.LockScreenService" >
+        </service>
+        
+        <service 
+            android:name="service.ArticleManageService" >
         </service>
 		
         <receiver 
-            android:name="lockscreen.receiver.LockScreenReceiver" >
+            android:name="receiver.LockScreenReceiver" >
+        </receiver>
+        
+        <receiver 
+            android:name="receiver.ScreenOnOffReceiver" >
         </receiver>
         
         <meta-data

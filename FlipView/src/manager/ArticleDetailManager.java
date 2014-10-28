@@ -16,10 +16,12 @@ import setting.RbPreference;
 import ArticleReadInfo.ArticleReadInfo;
 import activity.SettingActivity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.flipview.R;
@@ -127,6 +129,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		
 	}
 	
+	private void ApplyFont(Context context,TextPaint tp){
+		Typeface face = Typeface.createFromAsset(context.getAssets(),"SJSoju1.ttf.mp3");
+		tp.setTypeface(face);
+	}
+
+	
 
 	private ArrayList<Object> getResult_List(ArrayList<Object> list)
 	{
@@ -140,7 +148,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		TextViewHeight textViewHeight;
 		TextPaint textPaint = new TextPaint();//pagespliter에 넘겨줄 그림판.
 		textPaint_size(textPaint);
-//		textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_nomal));//textsize설정.
+//		ApplyFont(context,textPaint);
 		Log.d("TAG", "시작");
 		for(int i = 0; i<list.size(); i++)
 		{

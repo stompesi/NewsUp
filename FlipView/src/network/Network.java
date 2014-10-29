@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ArticleReadInfo.ArticleReadInfo;
+import activity.ArticleActivity;
+import activity.LockScreenActivity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -62,6 +64,13 @@ public class Network {
 								articles.getJSONObject(i).put("category", category);
 								Article.saveArticle(articles.getJSONObject(i));
 							}
+							
+							if(ArticleActivity.getInstance() != null) {
+								ArticleActivity.getInstance().successSaveArticle();
+							} 
+							if(LockScreenActivity.getInstance() != null) {
+								LockScreenActivity.getInstance().successSaveArticle();
+							}
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -70,6 +79,12 @@ public class Network {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						Log.e("NewsUp", "Network : ArticleList Request Fail.");
+						if(ArticleActivity.getInstance() != null) {
+							ArticleActivity.getInstance().successSaveArticle();
+						} 
+						if(LockScreenActivity.getInstance() != null) {
+							LockScreenActivity.getInstance().successSaveArticle();
+						}
 					}
 				}) {
 			 @Override

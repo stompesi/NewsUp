@@ -66,7 +66,6 @@ public class NewsUpApp extends com.orm.SugarApp {
 		try{
 			MessageDigest sh = MessageDigest.getInstance("SHA-256"); 
 			String deviceId = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID) + System.currentTimeMillis();
-			
 			sh.update(deviceId.getBytes()); 
 			byte byteData[] = sh.digest();
 			StringBuffer sb = new StringBuffer(); 

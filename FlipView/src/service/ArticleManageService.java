@@ -1,10 +1,14 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import network.Network;
 import receiver.ScreenOnOffReceiver;
+import transmission.TransmissionArticle;
+import activity.ArticleActivity;
+import activity.LockScreenActivity;
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,7 +19,7 @@ import database.Article;
 public class ArticleManageService extends Service {
 
 	private final static int TIME_HOURE = 3600000;
-	private final static int TIME_FOUR_HOURE = 14400000;
+	private final static int TIME_TWO_HOURE = 7200000;
 	private final static int TIME_NOW = 0;
 	
 	private ScreenOnOffReceiver mReceiver;
@@ -25,19 +29,19 @@ public class ArticleManageService extends Service {
 	private static final int CATEGORY_START_INDEX = 0;
 
 	// 일정 시간 후에 작업할 Task 설정
-	private static Timer articleManageTimer;
+	private static Timer articleRequestManageTimer;
 	private static Timer sleepCheckTimer;
 	
 	private static boolean isStopArticleManageTimer;
 	
 	public static void screenOff() {
 		sleepCheckTimer = new Timer();
-		sleepCheckTimer.schedule(new CheckSleepTask(), TIME_HOURE);
+		sleepCheckTimer.schedule(new CheckSleepTask(), TIME_TWO_HOURE);
 	}
 	
 	public static void screenOn() {
 		if(isStopArticleManageTimer){
-			reStartArticleManage();
+			reStartRequestArticleManage();
 		}
 	}
 
@@ -46,14 +50,12 @@ public class ArticleManageService extends Service {
 		Log.e("NewsUp", "Oncreate ArticleManage service");
 		super.onCreate();
 		registerScreenOnOffReceiver();
-		startArticleManage();
+		startRequestArticleManage();
 	}
 
 	// 48시간 이상 지난 Article 제거  
 	private static void removeArticleTimeOverItem() {
-		for (int i = CATEGORY_START_INDEX; i <= CATEGORY_MAX_INDEX; i++) {
-			Article.removeCategoryArticle(i);
-		}
+		Article.removeyArticle();
 	}
 	
 	// 서버에 Article 요청 
@@ -75,37 +77,27 @@ public class ArticleManageService extends Service {
 
 	@Override
 	public void onDestroy() {
-		stopArticleManage();
+		stopRequestArticleManage();
 		super.onDestroy();
 	}
 	
-	private static void reStartArticleManage() {
+	private static void reStartRequestArticleManage() {
 		isStopArticleManageTimer = false;
-		articleManageTimer = new Timer();
-		articleManageTimer.schedule(new RequestArticleTask(), TIME_NOW, TIME_HOURE);
-		articleManageTimer.schedule(new RemoveTimeOverArticleTask(), TIME_NOW, TIME_FOUR_HOURE);
+		articleRequestManageTimer = new Timer();
+		articleRequestManageTimer.schedule(new RequestArticleTask(), TIME_NOW, TIME_HOURE);
 	}
 	
-	private static void startArticleManage() {
+	private static void startRequestArticleManage() {
 		isStopArticleManageTimer = false;
-		articleManageTimer = new Timer();
-		articleManageTimer.schedule(new RequestArticleTask(), TIME_HOURE, TIME_HOURE);
-		articleManageTimer.schedule(new RemoveTimeOverArticleTask(), TIME_FOUR_HOURE, TIME_FOUR_HOURE);
+		articleRequestManageTimer = new Timer();
+		articleRequestManageTimer.schedule(new RequestArticleTask(), TIME_HOURE, TIME_HOURE);
 	}
 	
-	private static void stopArticleManage() {
+	private static void stopRequestArticleManage() {
 		isStopArticleManageTimer = true;
-		articleManageTimer.cancel(); // 해당 타이머가 수행할 모든 행위들을 정지
-		articleManageTimer.purge(); // 대기중이던 취소된 행위가 있는 경우 모두 제거
-		articleManageTimer = null;
-	}
-	private static class RemoveTimeOverArticleTask extends TimerTask {
-
-		@Override
-		public void run() {
-			Log.e("NewsUp", "기사 제거");
-			removeArticleTimeOverItem();
-		}
+		articleRequestManageTimer.cancel(); // 해당 타이머가 수행할 모든 행위들을 정지
+		articleRequestManageTimer.purge(); // 대기중이던 취소된 행위가 있는 경우 모두 제거
+		articleRequestManageTimer = null;
 	}
 	
 	private static class RequestArticleTask extends TimerTask {
@@ -123,7 +115,13 @@ public class ArticleManageService extends Service {
 		public void run() {
 			if(!isStopArticleManageTimer) {
 				Log.e("NewsUp", "슬립모드");
-				stopArticleManage();
+				// DB아티클 제거
+				removeArticleTimeOverItem();
+				
+				
+				
+				
+				stopRequestArticleManage();
 				sleepCheckTimer.cancel(); // 해당 타이머가 수행할 모든 행위들을 정지
 				sleepCheckTimer.purge(); // 대기중이던 취소된 행위가 있는 경우 모두 제거
 				sleepCheckTimer = null;

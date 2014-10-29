@@ -14,6 +14,7 @@ import android.graphics.drawable.shapes.RectShape;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,15 +36,22 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	
 	private int itemId;
 	
+	private boolean isRequestArticle;
+	
+	private Handler mHandler;
+	
 	public ArticleListManager(Context context, ViewFlipper flipper, int itemId, int offset) {
 		super(context, flipper, offset);
 		this.category = 0;
 		this.itemId = itemId;
 		this.isFailInsertArticleList = false;
+		this.isRequestArticle = false;
+		mHandler = new Handler();
 	}
 	
 	public void setCategory(int category) {
 		this.category = category;
+		this.isFailInsertArticleList = false;
 	}
 	
 	private void addArticleListItem(Article article) {
@@ -103,35 +111,9 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			addArticleListItem(transferredArticleList.get(i));
 		}
 	}
-//	private void insertArticleListBackGround() {
-//		
-//		private Handler timerHandler;
-//		private Runnable timerRunnable;
-//		timerRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//            	String time = clock.getTime() + clock.getAMPM();
-//				String date = clock.getDate() + clock.getWeek();
-//				
-//				timeView.setText(time);
-//				dateView.setText(date);
-//				timerHandler.postDelayed(timerRunnable, 1000);
-//            }
-//        };
-//         
-//        timerHandler = new Handler();
-//        timerHandler.postDelayed(timerRunnable, 0);
-//        
-//        
-//		AsyncTask.execute( new Runnable(){
-//			public void run() {
-//				currentChildIndex += insertArticleList();
-//			}
-//		});
-//	}
+
 	public int insertArticleList() {
-		int offset = getChildChount();
-		
+		int offset = getChildChount() - getChildChount() % 10; 
 		List<Article> articleList = Article.selectArticleList(category, offset);
 		
 		int articleListSize = articleList.size();
@@ -159,12 +141,70 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		return articleListSize;	
 	}
 	
+	
+	class InsertArticleTask extends AsyncTask<Void, Void, List<Article>> {
+
+		@Override
+		protected List<Article> doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			int offset = getChildChount() - getChildChount() % 10;
+			List<Article> articleList = Article.selectArticleList(category, offset);
+			return  articleList;
+			
+		}
+		
+		 @Override
+		 protected void onPostExecute(final List<Article> articleList) {
+			 mHandler.postDelayed(new Runnable() {
+		            @Override
+		            public void run() {
+		            	int articleListSize = articleList.size();
+			   			 currentChildIndex += articleListSize;
+			   			 if(articleListSize == 0) {
+			   				 if(!isFailInsertArticleList) {
+			   					currentChildIndex++;
+			   					 View view = inflater.inflate(R.layout.view_network_error, null);
+			   					 addView(view);
+			   					 isFailInsertArticleList = true;
+			   					successSaveArticle();
+			   					 return ;
+			   				 }
+			   				 if(Network.isNetworkState(context)) {
+			   					Network.getInstance().requestArticleList(category);
+			   				 } else {
+			   					successSaveArticle();
+			   				 }
+			   			 } else {
+			   				 if(isFailInsertArticleList) {
+			   					removeFlipperItem();
+			   					currentChildIndex--;
+			   					isFailInsertArticleList = false;
+			   				 }
+			   				for (int i = 0; i < articleListSize; i++) {
+				   				addArticleListItem(articleList.get(i));
+				   			}
+			   				display(currentChildIndex);
+			   				successSaveArticle();
+			   			 }
+		            }
+		        }, 0); 
+		 }
+	}
+	public void successSaveArticle() {
+		isRequestArticle = false;
+	}
+	
 	@Override
 	public void inArticleDetail(int articleId) {
 		detailArticleprevChildIndex = currentChildIndex;
 		display(getChildChount());
 	}
 	
+	public void runOnUiThread(Runnable runnable) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Override
 	public void outArticleDetail() {
 		setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
@@ -175,18 +215,18 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	public boolean upDownSwipe(int increase){
 		int checkIndex = currentChildIndex + increase;
 		
-		if (currentChildIndex <= MINIMUM_ARTICLE_LIST_ATTACH_INDEX) {
+		if (currentChildIndex <= MINIMUM_ARTICLE_LIST_ATTACH_INDEX && !isRequestArticle) {
 			// TODO : insertArticleListBackGround(); 로변
-			checkIndex += insertArticleList();
+			isRequestArticle = true;
+			InsertArticleTask insertArticleTask = new InsertArticleTask();
+			insertArticleTask.execute();
 		}
-		
+		Log.e("index", "count : " + getChildChount() + "  currentChildIndex : " + currentChildIndex + " checkIndex : " + checkIndex);
 		if (checkIndex >= getChildChount() || checkIndex < minChildIndex) {
 			return false;
 		}
 		
 		display(checkIndex);
-		
-		
 		
 		return true;
 	}

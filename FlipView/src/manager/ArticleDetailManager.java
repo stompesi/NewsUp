@@ -3,12 +3,9 @@ package manager;
 import hc.FirstSplitter;
 import hc.ImageInfo;
 import hc.PageSplitter;
-import hc.StaticClass;
 import hc.TextViewHeight;
 import hc.ViewMaker;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import network.Network;
@@ -21,7 +18,6 @@ import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.flipview.R;
@@ -57,8 +53,8 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		String str = article.getBody();
 		list  = firstSplitter.FirstSplitter(str);
 		// TODO: 시작페이지를 만들어야한다 (상세기사 첫화면)
-		StaticClass.result_lits= getResult_List(list);
-		ArrayList<View> viewList = ViewMaker.getViewList(context, StaticClass.result_lits);
+		ArrayList<Object> result_lits= getResult_List(list);
+		ArrayList<View> viewList = ViewMaker.getViewList(context, result_lits);
 		for(int i = 0 ; i < viewList.size() ; i++) {
 			addView(viewList.get(i));
 		}
@@ -159,8 +155,9 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 					//전체 뷰 높이에서 Extra 높이 뺐을때 뷰 높이가 원래 높이의 2/3높이보다 작으면 그림 다음으로 넘겨 
 					//2/3보다 크면 리사이즈 해서 맞춰.
 					int Image_Start = View_height - ExtrTextHeight;//전체 뷰에서 앞에 TextView 높이를 빼고 뺀 좌표를 이미지의 시작점으로 설정.
-					((ImageInfo)list.get(i)).setImage_start(Image_Start);
-					Log.d("TAGImageStart",Image_Start+":"+ ((ImageInfo)list.get(i)).getImage_start()+"");
+					
+					//TODO : 여기 주석지워야함 
+//					((ImageInfo)list.get(i)).setImage_start(Image_Start);
 					result_list.add(list.get(i));//앞에 TextView가 있을 때 시작 점 위치를 바꿔서 저장.
 					Text_flag = 0; 
 				}

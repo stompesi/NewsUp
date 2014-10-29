@@ -43,6 +43,10 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	private Runnable timerRunnable;
 	
 	
+	public void successSaveArticle(){
+		articleListManager.successSaveArticle();
+	}
+	
 	public static LockScreenActivity getInstance() {
 		return lockScreenActivity;
 	}
@@ -143,6 +147,12 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	        return true;
 	    }
 	    return super.onKeyDown(keyCode, event);
+	}
+	
+	public void reFresh() {
+		articleListManager.removeAllFlipperItem();
+		articleListManager.insertArticleList();
+		articleListManager.display(articleListManager.getChildChount() - 1);
 	}
 	
 	public boolean onTouch(View v, MotionEvent event) {

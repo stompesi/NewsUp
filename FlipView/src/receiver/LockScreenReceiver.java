@@ -1,6 +1,5 @@
 package receiver;
 
-import service.ArticleManageService;
 import activity.LockScreenActivity;
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;

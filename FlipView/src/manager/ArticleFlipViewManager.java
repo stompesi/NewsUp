@@ -24,8 +24,7 @@ abstract public class ArticleFlipViewManager {
 		this.flipper = flipper;
 		this.context = context;
 		minChildIndex = 0;
-		inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public void removeAllFlipperItem() {
@@ -80,7 +79,7 @@ abstract public class ArticleFlipViewManager {
 	}
 	
 	public boolean isErrorView() {
-		return false;
+		return getChildChount() == 1;
 	}
 	
 	

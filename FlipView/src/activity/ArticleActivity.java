@@ -109,6 +109,10 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 		articleListManager.display(articleListManager.getChildChount() - 1);
 	}
 	
+	public void successSaveArticle(){
+		articleListManager.successSaveArticle();
+	}
+	
 	public void changeTextSize() {
 		if(flipperManager == articleDetailManager) {
 			articleDetailManager.changeTextSize(currentArticleId);;
@@ -208,7 +212,7 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 				flipperManager.setAnimation(R.anim.first_left_right_in, R.anim.second_up_down_out);
 				return moveArticleDetail(articleListManager.getCurrentViewId());
 			}
-			if (clickCount == DOUBLE_TAB && !flipperManager.isErrorView()) {
+			if (clickCount == DOUBLE_TAB) {
 				long time = System.currentTimeMillis() - clickStartTime;
 				if (time <= CLICK_MAX_DURATION) {
 					initClickCount();

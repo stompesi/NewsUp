@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import activity.LockScreenActivity;
 import android.os.AsyncTask;
 
 import com.orm.SugarRecord;
@@ -13,6 +14,9 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 public class Article extends SugarRecord<Article> implements Serializable {
+	
+	private final static int TWO_DAY_SECOND = 172800;
+	
 	
 	private static final long serialVersionUID = 1L;
 	private int category, articleId;
@@ -107,10 +111,7 @@ public class Article extends SugarRecord<Article> implements Serializable {
 //		List<Article> result = Article.findWithQuery(Article.class, 
 //				"SELECT * FROM Article where category = ? ORDER BY score DESC LIMIT 10 OFFSET ?", "" + category , "" + offset);
 		
-		
-		List<Article> result = Article.findWithQuery(Article.class, 
-				//DESC
-				"SELECT * FROM Article where category = ? ORDER BY id ASC LIMIT 10 OFFSET ?", "" + category , "" + offset);
+		List<Article> result = Article.find(Article.class, "category = ? ORDER BY id ASC LIMIT 10 OFFSET ?", "" + category , "" + offset);
 		return result;
 	}
 	
@@ -123,9 +124,11 @@ public class Article extends SugarRecord<Article> implements Serializable {
 		return (int) Select.from(Article.class).where(Condition.prop("category").eq(category)).count();
 	}
 	
-	public static void removeCategoryArticle(int category){
+	public static void removeyArticle(){
+		int twoDayAgo = (int)(System.currentTimeMillis() / 1000L) - TWO_DAY_SECOND;
+		Article.deleteAll(Article.class, "timestamp <= ?", "" + twoDayAgo);
 		
+		LockScreenActivity lockScreenActivity = (LockScreenActivity) LockScreenActivity.getInstance();
+		lockScreenActivity.reFresh();
 	}
-	
-	
 }

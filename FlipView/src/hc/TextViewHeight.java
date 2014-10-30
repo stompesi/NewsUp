@@ -8,7 +8,6 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.style.StyleSpan;
-import android.util.Log;
 
 public class TextViewHeight {
     private final int pageWidth;
@@ -47,7 +46,6 @@ public class TextViewHeight {
             appendNewLine();//단락이 끝나면 개행 문자를 넣어 준다.
         }
         appendText(paragraphs[i], textPaint);//마지막 단락을 넣는다.
-        Log.d("TAG8 ", pageContentHeight+"");
         return pageContentHeight;
        
     }
@@ -58,7 +56,6 @@ public class TextViewHeight {
         for (i = 0; i < words.length - 1; i++) {//자른 단어의 배열을 넣는다
             appendWord(words[i] + " ", textPaint);
         }
-      
         appendWord(words[i], textPaint);//마지막 단어
     }
 
@@ -81,6 +78,7 @@ public class TextViewHeight {
   
  
     }
+    
     private void appendNewLine() {
     	
         //currentLine.append("\n");//개행 문자 넣는다 
@@ -88,7 +86,6 @@ public class TextViewHeight {
         appendLineToPage(textLineHeight);
       
     }
-
   
     private void appendLineToPage(int textLineHeight) {
         currentPage.append(currentLine);
@@ -105,7 +102,6 @@ public class TextViewHeight {
         currentLineWidth += textWidth;//글자의 넓이를 현재 넓이에 더해준다.
        
     }
-
 
     private SpannableString renderToSpannable(String text, TextPaint textPaint) {//볼드가 표시가 되어있을 경우 볼드 처리 .
         SpannableString spannable = new SpannableString(text);

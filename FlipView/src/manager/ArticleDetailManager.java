@@ -1,6 +1,7 @@
 package manager;
 
 import hc.ArticleDetailPage;
+import hc.CTextView;
 import hc.FirstSplitter;
 import hc.ImageInfo;
 import hc.Splitter;
@@ -12,6 +13,7 @@ import setting.RbPreference;
 import ArticleReadInfo.ArticleReadInfo;
 import activity.SettingActivity;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
@@ -19,8 +21,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -59,8 +60,10 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		
 		TextPaint textPaint = new TextPaint();
 		textPaint_size(textPaint);
-		Splitter splitter = new Splitter(textPaint, View_height, View_widht);
+		Splitter splitter = new Splitter(textPaint, View_height - 300, View_widht);
 		
+		
+		Log.e("aaaa", "aaaa");
 		ArrayList<ArticleDetailPage> articleDetailPageList = (ArrayList<ArticleDetailPage>) splitter.getList(list);
 		for (int i = 0 ; i < articleDetailPageList.size() ; i++) {
 			View view = viewMaker(articleDetailPageList.get(i));
@@ -77,33 +80,62 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	private View viewMaker(ArticleDetailPage articleDetailPage) {
 		ArrayList<Object> articleContent = (ArrayList<Object>) articleDetailPage.getContent();
-		RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.view_article_detail, null);
+		LinearLayout view = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
 		
 		for (int i = 0 ; i < articleContent.size() ; i++) {
 			Object object = articleContent.get(i);
 
 			// 이미지 처리
 			if (object instanceof ImageInfo) {
+				Log.e("image", "a");
 				ImageInfo imageInfo = (ImageInfo) object;
 				ImageView imageView = new ImageView(context);
-				LayoutParams imageViewParams = (LayoutParams) imageView.getLayoutParams();
-				imageViewParams.width = imageInfo.getImage_width();
-				imageViewParams.height = imageInfo.getImage_height();
-				imageView.setLayoutParams(imageViewParams);
-				
 				view.addView(imageView);
+				imageView.getLayoutParams().height = imageInfo.getImage_height() - 50;
+//				imageView.getLayoutParams().width = 569;//imageInfo.getImage_width();
+				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+				ImageViewManager.loadImage(imageView, imageInfo.getImageURL());
+				
 			}
 			// 텍스트 처리
 			else {
 				String text = (String) object;
+				Log.e("text", text);
+//				CTextView textView = new CTextView(context);
 				TextView textView = new TextView(context);
-				// TODO : DP 변환값 변경
+				Paint mPaint = textView.getPaint();
 				textPaint_size(textView);
 				ApplyFont(context,textView);
-				textView.setText(text);
+				
+				String save = "";
+				
+				
+				int end = 0;
+				String[] textArr = text.split("\n");
+				for (int j = 0; j < textArr.length; j++) {
+					if (textArr[j].length() == 0)
+						textArr[j] = " ";
+					do {
+						// 글자가 width 보다 넘어가는지 체크
+						end = mPaint.breakText(textArr[j], true, 569, null);
+						if (end > 0) {
+							// 자른 문자열을 문자열 배열에 담아 놓는다.
+							save += textArr[j].substring(0, end) + "\n";
+							// 넘어간 글자 모두 잘라 다음에 사용하도록 세팅
+							textArr[j] = textArr[j].substring(end);
+						}
+					} while (end > 0);
+					
+				}
+				
+				
+				textView.setText(save);
 				view.addView(textView);
+				
 			}
 		}
+		Log.e("end", "----------------------------------------------");
 		return view;
 	}
 	
@@ -135,11 +167,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 
 	}
 	
-	private void Splitter(TextPaint textPaint, int view_height2, int view_widht2) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public void outArticleDetail() {
 		setReadTime();

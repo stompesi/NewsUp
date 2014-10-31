@@ -37,7 +37,6 @@ abstract public class ArticleFlipViewManager {
 		flipper.removeViewAt(minChildIndex);
 	}
 
-
 	// show child
 	public void display(int checkWhichChild) {
 		currentChildIndex = checkWhichChild;
@@ -50,8 +49,6 @@ abstract public class ArticleFlipViewManager {
 		flipper.setInAnimation(inAnimation);
 		flipper.setOutAnimation(outAnimation);
 	}
-	
-	
 	
 	protected void addView(View view) {
 		flipper.addView(view, minChildIndex);
@@ -81,12 +78,8 @@ abstract public class ArticleFlipViewManager {
 	public boolean isErrorView() {
 		return getChildChount() == 1;
 	}
-	
-	
 	abstract public void inArticleDetail(int articleId);
 	abstract public void outArticleDetail();
 	abstract public boolean upDownSwipe(int page);
-
-	
 	
 }

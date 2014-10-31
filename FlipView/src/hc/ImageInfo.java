@@ -1,29 +1,25 @@
 package hc;
 
-
-
 public class ImageInfo {
-	String ImageURL;
-	int Image_width;
-	int Image_height; 
+	private String imageURL;
+	private int imageWidth, imageHeight; 
 	
-	public ImageInfo(String ImageURL, int Image_width,int Image_height) {
-		this.ImageURL = ImageURL;
-		this.Image_height = Image_height;
-		this.Image_width = Image_width;
+	public ImageInfo(String imageURL, int imageWidth,int imageHeight) {
+		this.imageURL = imageURL;
+		this.imageHeight = imageHeight;
+		this.imageWidth = imageWidth;
 	}
 	
-	public String getImageURL() {
-		return ImageURL;
+	public String getURL() {
+		return imageURL;
 	}
 	
-	public int getImage_height() {
-		return Image_height;
+	public int getHeight() {
+		return imageHeight;
 	}
 
-	
-	public int getImage_width() {
-		return Image_width;
+	public int getWidth() {
+		return imageWidth;
 	}
 
 }

@@ -5,12 +5,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import setting.RbPreference;
+import activity.SettingActivity;
 import android.provider.Settings.Secure;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.flipview.R;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,6 +27,7 @@ public class NewsUpApp extends com.orm.SugarApp {
 	private static NewsUpApp mInstance;
 	
 	private String deviceId; 
+	private int textSize;
 	
 	@Override
 	public void onCreate() {
@@ -37,6 +40,19 @@ public class NewsUpApp extends com.orm.SugarApp {
 		if(deviceId == null) {
 			deviceId = encodeId();
 			pref.put(RbPreference.USER_ID, deviceId);
+		}
+		
+		int num = pref.getValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);
+		switch(num) {
+		case SettingActivity.SMALL_WORD:
+			textSize = R.dimen.text_small;
+			break;
+		case SettingActivity.MEDIUM_WORD:
+			textSize = R.dimen.text_medium;
+			break;
+		case SettingActivity.LARGE_WORD:
+			textSize = R.dimen.text_large;
+			break;
 		}
 		
 		// UNIVERSAL IMAGE LOADER SETUP
@@ -61,6 +77,24 @@ public class NewsUpApp extends com.orm.SugarApp {
 		super.onTerminate();
 	}
 	
+	public int getTextSize() {
+		return textSize;
+	}
+	
+	public void setTextSize(int num) {
+		switch(num) {
+		case SettingActivity.SMALL_WORD:
+			textSize = R.dimen.text_small;
+			break;
+		case SettingActivity.MEDIUM_WORD:
+			textSize = R.dimen.text_medium;
+			break;
+		case SettingActivity.LARGE_WORD:
+			textSize = R.dimen.text_large;
+			break;
+		}
+	}
+	
 	private String encodeId(){
 		String SHA = ""; 
 		try{
@@ -80,11 +114,6 @@ public class NewsUpApp extends com.orm.SugarApp {
 		}
 		return SHA;
 	}
-	public void refreshDeviceID(){
-		RbPreference pref = new RbPreference(this);
-		deviceId = encodeId();
-		pref.put(RbPreference.USER_ID, deviceId);
-	}
 	
 	public String getDeviceId() {
 		return deviceId;
@@ -94,11 +123,16 @@ public class NewsUpApp extends com.orm.SugarApp {
 		return mInstance;
 	}
 
+	public void refreshDeviceID(){
+		RbPreference pref = new RbPreference(this);
+		deviceId = encodeId();
+		pref.put(RbPreference.USER_ID, deviceId);
+	}
+	
 	public RequestQueue getRequestQueue() {
 		if (mRequestQueue == null) {
 			mRequestQueue = Volley.newRequestQueue(getApplicationContext());
 		}
-
 		return mRequestQueue;
 	}
 

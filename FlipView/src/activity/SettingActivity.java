@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
+import application.NewsUpApp;
 
 import com.example.flipview.R;
 import com.orm.query.Condition;
@@ -64,18 +65,23 @@ public class SettingActivity extends Activity implements OnTouchListener {
 		public void onCheckedChanged(RadioGroup group, int checkedId) {
 			if(group.getId() == R.id.radioWordSize)
 			{
+				
+				
 				switch(checkedId)
 				{
 				case R.id.btnTextSizeSmall:
 					pref.put(RbPreference.WORD_SIZE, SMALL_WORD);
+					NewsUpApp.getInstance().setTextSize(SMALL_WORD);
 					break;
 
 				case R.id.btnTextSizeMedium:
 					pref.put(RbPreference.WORD_SIZE, MEDIUM_WORD);
+					NewsUpApp.getInstance().setTextSize(SMALL_WORD);
 					break;
 
 				case R.id.btnTextSizeLarge:
 					pref.put(RbPreference.WORD_SIZE, LARGE_WORD);
+					NewsUpApp.getInstance().setTextSize(SMALL_WORD);
 					break;
 
 				default:

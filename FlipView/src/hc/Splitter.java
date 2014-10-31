@@ -6,57 +6,59 @@ import java.util.List;
 import java.util.Queue;
 
 import android.text.TextPaint;
-import android.widget.TextView;
 
 public class Splitter {
-	ArrayList<Object> result = new ArrayList<Object>();
-	TextPaint textPaint;
 
-	String string = new String();
-	String totalString = new String();
+	private Queue<Object> job;
+	
+	private String currentInputString, totalInputString;
 
-	int availableWidth;
-
-	// height 관련 정보
-	int availableHeight;
-	int currentHeight;
-	int textLineHeight;
-	Queue<Object> q = new LinkedList<Object>();
-	List<ArticleDetailPage> articleDatailPageList= new ArrayList<ArticleDetailPage>();
-	ArticleDetailPage articleDatailPage;
+	private TextPaint textPaint;
+	
+	private int availableHeight;
+	private int currentHeight;
+	private int textLineHeight;
+	private int availableWidth;
+	
+	private List<ArticleDetailPage> articleDatailPageList;
+	private ArticleDetailPage articleDatailPage;
 	
 	private boolean prevIsPageOver = false;
 	
 	public Splitter(TextPaint textPaint, int availableHeight, int availableWidth) {
+		this.job = new LinkedList<Object>(); 
 		this.textPaint = textPaint;
 		this.textLineHeight = (int) Math.ceil(textPaint.getFontMetrics(null));
 		this.availableHeight = availableHeight;
-		this.availableWidth = availableHeight;
+		this.availableWidth = availableWidth;
+		this.articleDatailPageList = new ArrayList<ArticleDetailPage>();
+		this.currentInputString = "";
+		this.totalInputString = "";
 	}
 
 	public List<ArticleDetailPage> getList(ArrayList<Object> list) {
+		Object inputContent;
 		
 		currentHeight = availableHeight;
 		articleDatailPage = new ArticleDetailPage();
 
 		for (int i = 0; i < list.size() ; i++) {
-			Object object;
-			if (!q.isEmpty() && (!prevIsPageOver || q.peek() instanceof String)) {
-				object = q.poll();
+			if (!job.isEmpty() && (!prevIsPageOver || job.peek() instanceof String)) {
+				inputContent = job.poll();
 				i--;
 			} else {
-				object = list.get(i);
+				inputContent = list.get(i);
 				prevIsPageOver = false;
 			}
-			process(object);
+			process(inputContent);
 		}
 		
-		if(!q.isEmpty()) {
-			Object object = q.poll();
-			articleDatailPage.add(object);
+		if(!job.isEmpty()) {
+			inputContent = job.poll();
+			articleDatailPage.add(inputContent);
 		}
-		if (!totalString.equals("")){
-			articleDatailPage.add(totalString);
+		if (!totalInputString.equals("")){
+			articleDatailPage.add(totalInputString);
 		}
 		
 		if(articleDatailPage.getContent().size() != 0) {
@@ -66,31 +68,32 @@ public class Splitter {
 		return articleDatailPageList;
 	}
 	
-	private void process(Object object) {
+	private void process(Object inputContent) {
 		// 이미지 처리
-		if (object instanceof ImageInfo) {
-			ImageInfo imageInfo = (ImageInfo) object;
-			if (currentHeight > imageInfo.getImage_height()) {
-				if (!(totalString.equals(""))) {
-					articleDatailPage.add(totalString);
-					totalString = "";
+		if (inputContent instanceof ImageInfo) {
+			ImageInfo imageInfo = (ImageInfo) inputContent;
+			
+			if (currentHeight > imageInfo.getHeight()) {
+				if (!(totalInputString.equals(""))) {
+					articleDatailPage.add(totalInputString);
+					totalInputString = "";
 				}
-				articleDatailPage.add(object);
 				
-				currentHeight = currentHeight - imageInfo.getImage_height();
+				articleDatailPage.add(inputContent);
+				currentHeight = currentHeight - imageInfo.getHeight();
 				
-				if (0 >= currentHeight - textLineHeight) {
+				if (isEndPage()) {
 					completeMakeView();
 				}
 				
 			} else {
-				q.offer(object);
+				job.offer(inputContent);
 				prevIsPageOver = true;
 			}
 		}
 		// 텍스트 처리
 		else {
-			String text = (String) object;
+			String text = (String) inputContent;
 			processText(text);
 		}
 	}
@@ -99,48 +102,57 @@ public class Splitter {
 		currentHeight = availableHeight;
 		articleDatailPageList.add(articleDatailPage);
 		articleDatailPage = new ArticleDetailPage();
-		totalString = "";
+		totalInputString = "";
 	}
 
 	private void processText(String text) {
-		if (get(text)) {
-			articleDatailPage.add(totalString);
+		if (fillText(text)) {
+			articleDatailPage.add(totalInputString);
 			completeMakeView();
-			if (!(string.equals(""))) {
-				processText(string);
+			if (!(currentInputString.equals(""))) {
+				processText(currentInputString);
 			}
 		}
 	}
 
-	private boolean get(String text) {
-		string = "";
-		int end = 0;
-		String[] textArr = text.split("\n");
-		for (int j = 0; j < textArr.length; j++) {
-			if (textArr[j].length() == 0)
-				textArr[j] = " ";
+	private boolean fillText(String text) {
+		int end;
+		String[] textSplitted;
+		
+		end = 0;
+		currentInputString = "";
+		textSplitted = text.split("\n");
+
+		for (int j = 0 ; j < textSplitted.length; j++) {
+			
+			if (textSplitted[j].length() == 0) {
+				textSplitted[j] = " ";
+			}
+			
 			do {
-				// 글자가 width 보다 넘어가는지 체크
-				end = textPaint.breakText(textArr[j], true, availableHeight, null);
+				
+				end = textPaint.breakText(textSplitted[j], true, availableWidth, null);
+				
 				if (end > 0) {
-					// 넘어간 글자 모두 잘라 다음에 사용하도록 세팅
-					totalString += textArr[j].substring(0, end);
-					textArr[j] = textArr[j].substring(end);
+					
+					totalInputString += textSplitted[j].substring(0, end);
+					textSplitted[j] = textSplitted[j].substring(end);
+					
 					currentHeight = currentHeight - textLineHeight;
-					if (0 > currentHeight - textLineHeight) {
-						for(int i = j ; i < textArr.length ; i++) {
-							string += textArr[i] + "\n";
+					if (isEndPage()) {
+						for(int i = j ; i < textSplitted.length ; i++) {
+							currentInputString += textSplitted[i] + "\n";
 						}
 						return true;
 					}
 				}
 			} while (end > 0);
-//			totalString += "\n";
-			
 		}
-		
-		totalString += "\n\n";
-//		currentHeight = currentHeight - textLineHeight;
+		totalInputString += "\n\n";
 		return false;
+	}
+	
+	private boolean isEndPage() {
+		return 0 >= currentHeight - textLineHeight;
 	}
 }

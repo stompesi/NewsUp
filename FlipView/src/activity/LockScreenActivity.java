@@ -36,6 +36,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	
 	private TextView timeView;
 	private TextView dateView;
+	private TextView ampmView;
 	
 	private Clock clock;
 
@@ -70,6 +71,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		articleListManager.display(articleListManager.getChildChount() - 1);
 	}
 	@Override
+	
 	protected void onUserLeaveHint() {
 		finish();
 	}
@@ -83,16 +85,19 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		
 		timeView = (TextView) findViewById(R.id.lockScreenTime);
 		dateView = (TextView) findViewById(R.id.lockScreenDate);
+		ampmView = (TextView) findViewById(R.id.lockScreenAM);
 		
 		clock = new Clock();
 		
 		timerRunnable = new Runnable() {
             @Override
             public void run() {
-            	String time = clock.getTime() + clock.getAMPM();
+            	String time = clock.getTime(); 
+            	String ampm = clock.getAMPM();
 				String date = clock.getDate() + clock.getWeek();
 				
 				timeView.setText(time);
+				ampmView.setText(ampm);
 				dateView.setText(date);
 				timerHandler.postDelayed(timerRunnable, 1000);
             }

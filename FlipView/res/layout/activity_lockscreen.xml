@@ -3,34 +3,53 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
+
         <ViewFlipper
             android:id="@+id/lockScreenViewFlipper"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
         </ViewFlipper>
-        
+
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="80dp"
-            android:background="#00ffffff"
+            android:layout_width="312dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="24dp"
+            android:orientation="horizontal"
+ 
             android:visibility="visible" >
 
             <TextView
                 android:id="@+id/lockScreenTime"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:gravity="center" />
+                android:layout_width="70dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="14dp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/lockScreenAM"
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="9dp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/lockScreenDate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:gravity="center" />
+                android:layout_width="100dp"
+                android:layout_height="33dp"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="14dp"
+                android:gravity="center"
+                android:text="11 01 토요일"
+                android:textColor="#000000"
+                android:textSize="18sp" />
         </LinearLayout>
     </FrameLayout>
 

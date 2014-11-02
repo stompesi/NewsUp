@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#B0AEAE"
     android:orientation="vertical" >
 
     <FrameLayout
@@ -10,8 +11,13 @@
 
         <ViewFlipper
             android:id="@+id/lockScreenViewFlipper"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_width="312dp"
+            android:layout_height="536dp"
+            android:layout_marginBottom="23.333dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="55dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical" >
         </ViewFlipper>
 
         <LinearLayout
@@ -19,7 +25,6 @@
             android:layout_height="55dp"
             android:layout_marginLeft="24dp"
             android:orientation="horizontal"
- 
             android:visibility="visible" >
 
             <TextView

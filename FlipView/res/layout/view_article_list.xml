@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="328dp"
     android:layout_height="match_parent"
-    android:background="#B0AEAE"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="312dp"
-        android:layout_height="536dp"
-        android:layout_marginBottom="23.333dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="16dp" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="328dp"
+        android:layout_height="587dp"
         android:background="#FFFFFF"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="312dp"
+            android:layout_width="328dp"
             android:layout_height="98.667dp"
             android:gravity="center"
             android:text="Large Text"
@@ -25,20 +26,20 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="312dp"
+            android:layout_width="328dp"
             android:layout_height="221.333dp"
             android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/content"
-            android:layout_width="312dp"
-            android:layout_height="136dp"
+            android:layout_width="328dp"
+            android:layout_height="176dp"
             android:gravity="center"
             android:text="Large Text"
             android:textColor="#000000" />
 
         <LinearLayout
-            android:layout_width="312dp"
+            android:layout_width="328dp"
             android:layout_height="40dp"
             android:background="#00BFFF"
             android:gravity="center_vertical"

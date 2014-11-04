@@ -30,6 +30,7 @@ import database.Article;
 public class ArticleDetailManager extends ArticleFlipViewManager {
 	private int viewHeight;
 	private int viewWidht;
+	private int viewPadding;
 	
 	private ArticleReadInfo articleReadInfo;
 	private int pageReadStartTime;
@@ -41,11 +42,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		
 		// TODO : viewHeight, viewWidth를 변경해야한다  
 		this.context = context;
-		this.viewHeight = metrics.heightPixels;
+		this.viewHeight = metrics.heightPixels - ((int) context.getResources().getDimension(R.dimen.layout_padding_top));
 		
-		
-		this.viewWidht = 569;//metrics.widthPixels;
+		this.viewWidht = (int) context.getResources().getDimension(R.dimen.layout_width);//metrics.widthPixels;
 	}
+	
+
 	
 	public void getArticleDetail(int articleId) {
 		View view;
@@ -61,7 +63,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		article = Article.getArticle(articleId);
 		list = new ArrayList<Object>();
 		str = article.getBody();
-		contentSplitter = new ContentSplitter();
+		contentSplitter = new ContentSplitter(viewWidht);
 		list  = (ArrayList<Object>) contentSplitter.split(str);
 		
 		// article content 추출 
@@ -81,11 +83,13 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	private View viewMaker(ArticleDetailPage articleDetailPage) {
 		ArrayList<Object> articleContent;
-		LinearLayout view;
+		LinearLayout view, layout;
 		Object object;
 		
 		articleContent = (ArrayList<Object>) articleDetailPage.getContent();
-		view = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
+		layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
+		view = (LinearLayout)(layout).findViewById(R.id.viewArticleDetail);
+		
 		
 		for (int i = 0 ; i < articleContent.size() ; i++) {
 			object = articleContent.get(i);
@@ -144,7 +148,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 				view.addView(textView);
 			}
 		}
-		return view;
+		return layout;
 	}
 	
 	private void ApplyFont(Context context, TextView tv){

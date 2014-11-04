@@ -3,7 +3,13 @@ package hc;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 public class ContentSplitter {
+	private int width;
+	public ContentSplitter(int width) {
+		this.width = width;		
+	}
 	public List<Object> split(String str) {
 		String[] midTemp, finalTemp, temp;
 		ArrayList<Object> articleContentList = new ArrayList<Object>();
@@ -43,12 +49,24 @@ public class ContentSplitter {
 		String imageURL;
 		int imageHeight;
 		int imgaeWidth;
+		double ratio;
 
 		String[] imageResult = str.split(" ");
 
 		imageURL = imageResult[0];
-		imgaeWidth = Integer.parseInt(imageResult[1]);
-		imageHeight = Integer.parseInt(imageResult[2]);
+		
+		Log.e("width", "" + width);
+		Log.e("width", "");
+		Log.e("Integer.parseInt(imageResult[1])", "" + Integer.parseInt(imageResult[1]));
+		ratio = (double) width / Integer.parseInt(imageResult[1]);
+		Log.e("ratio", "" + ratio);
+		
+		
+		
+		imgaeWidth = width;
+		Log.e("(Integer.parseInt(imageResult[2])", "" + (Integer.parseInt(imageResult[2])));
+		imageHeight = (int)(Integer.parseInt(imageResult[2]) * ratio);
+		Log.e("(imageHeight", "" + imageHeight);
 
 		imageInfo = new ImageInfo(imageURL, imgaeWidth, imageHeight);
 

@@ -76,12 +76,12 @@ public class SettingActivity extends Activity implements OnTouchListener {
 
 				case R.id.btnTextSizeMedium:
 					pref.put(RbPreference.WORD_SIZE, MEDIUM_WORD);
-					NewsUpApp.getInstance().setTextSize(SMALL_WORD);
+					NewsUpApp.getInstance().setTextSize(MEDIUM_WORD);
 					break;
 
 				case R.id.btnTextSizeLarge:
 					pref.put(RbPreference.WORD_SIZE, LARGE_WORD);
-					NewsUpApp.getInstance().setTextSize(SMALL_WORD);
+					NewsUpApp.getInstance().setTextSize(LARGE_WORD);
 					break;
 
 				default:

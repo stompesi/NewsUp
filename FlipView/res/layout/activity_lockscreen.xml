@@ -12,13 +12,9 @@
 
         <ViewFlipper
             android:id="@+id/lockScreenViewFlipper"
-            android:layout_width="312dp"
-            android:layout_height="520dp"
-            android:layout_marginBottom="23.333dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="70dp"
-            android:background="#FFFFFF"
-            android:orientation="vertical" >
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp" >
         </ViewFlipper>
 
         <LinearLayout
@@ -32,8 +28,7 @@
                 android:id="@+id/lockScreenTime"
                 android:layout_width="110dp"
                 android:layout_height="65dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
+                android:layout_marginTop="5dp"
                 android:textColor="#000000"
                 android:textSize="32sp" />
 
@@ -41,9 +36,8 @@
                 android:id="@+id/lockScreenAM"
                 android:layout_width="25dp"
                 android:layout_height="12dp"
-                android:layout_marginTop="-7dp"
+                android:layout_marginTop="-9dp"
                 android:gravity="left"
-                android:text="PM"
                 android:textColor="#000000"
                 android:textSize="12sp" />
 
@@ -51,10 +45,8 @@
                 android:id="@+id/lockScreenDate"
                 android:layout_width="120dp"
                 android:layout_height="33dp"
-                android:layout_marginLeft="65dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="11 01 토요일"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="5dp"
                 android:textColor="#000000"
                 android:textSize="20sp" />
         </LinearLayout>

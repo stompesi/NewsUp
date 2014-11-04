@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -10,22 +9,16 @@
     
     <!-- view_article_list.xml -->
     <dimen name="article_content_layout_height">587dp</dimen>
-    
     <dimen name="article_title_textView_height">98.667dp</dimen>
-    
     <dimen name="article_image_imageView_height">221.333dp</dimen>
     <dimen name="article_content_textView_height">176dp</dimen>
-    
     <dimen name="article_description_layout_height">40dp</dimen>
-	
 	<dimen name="article_description_time_textView_width">50dp</dimen>
 	<dimen name="article_description_time_textView_height">40dp</dimen>
 	<dimen name="article_description_time_textView_margin_left">37dp</dimen>
 	<dimen name="article_description_time_textView_margin_top">4dp</dimen>
-	
 	<dimen name="article_description_empty_layout_width">138dp</dimen>
 	<dimen name="article_description_empty_layout_height">40dp</dimen>
-	
 	<dimen name="article_description_provider_textView_width">50dp</dimen>
 	<dimen name="article_description_provider_textView_height">40dp</dimen>
 	<dimen name="article_description_provider_textView_margin_right">37dp</dimen>
@@ -33,29 +26,21 @@
 	
 	<!-- view_article_detail.xml -->
 	<dimen name="article_detail_padding_top">20dp</dimen>
-	
-    
-    
     
     <!-- activity_lockscreen.xml -->
     <dimen name="lockscreen_viewFlipper_width">328dp</dimen>
     <dimen name="lockscreen_viewFlipper_margin_left">16dp</dimen>
-    
 	<dimen name="lockscreen_timer_layout_margin_left">24dp</dimen>
 	<dimen name="lockscreen_timer_layout_width">312dp</dimen>
 	<dimen name="lockscreen_timer_layout_height">71dp</dimen>
-	
 	<dimen name="lockscreen_time_textView_width">110dp</dimen>
 	<dimen name="lockscreen_time_textView_height">65dp</dimen>
 	<dimen name="lockscreen_time_textView_margin_top">5dp</dimen>
 	<dimen name="lockscreen_time_textView_textSize">32sp</dimen>
-	
 	<dimen name="lockscreen_ampm_textView_width">25dp</dimen>
 	<dimen name="lockscreen_ampm_textView_height">12dp</dimen>
 	<dimen name="lockscreen_ampm_textView_margin_top">-9dp</dimen>
 	<dimen name="lockscreen_ampm_textView_textSize">12sp</dimen>
-	
-	
 	<dimen name="lockscreen_date_textView_width">120dp</dimen>
 	<dimen name="lockscreen_date_textView_height">33dp</dimen>
 	<dimen name="lockscreen_date_textView_margin_left">75dp</dimen>
@@ -63,34 +48,22 @@
 	<dimen name="lockscreen_date_textView_textSize">20sp</dimen>
 	
 	<!-- view_lockscreen_article_list.xml -->
-	
 	<dimen name="lockscreen_empty_height">55dp</dimen>
-	
 	<dimen name="lockscreen_content_layout_height">544dp</dimen>
-	
-	
-	
 	<dimen name="lockscreen_title_textView_height">98.667dp</dimen>
-	
 	<dimen name="lockscreen_image_imageView_height">221.333dp</dimen>
-	
 	<dimen name="lockscreen_content_textView_height">136dp</dimen>
-	
 	<dimen name="lockscreen_description_layout_height">40dp</dimen>
-	
 	<dimen name="lockscreen_description_time_textView_width">50dp</dimen>
 	<dimen name="lockscreen_description_time_textView_height">40dp</dimen>
 	<dimen name="lockscreen_description_time_textView_margin_left">37dp</dimen>
 	<dimen name="lockscreen_description_time_textView_margin_top">4dp</dimen>
-	
 	<dimen name="lockscreen_description_empty_layout_width">138dp</dimen>
 	<dimen name="lockscreen_description_empty_layout_height">40dp</dimen>
-	
 	<dimen name="lockscreen_description_provider_textView_width">50dp</dimen>
 	<dimen name="lockscreen_description_provider_textView_height">40dp</dimen>
 	<dimen name="lockscreen_description_provider_textView_margin_right">37dp</dimen>
 	<dimen name="lockscreen_description_provider_textView_margin_top">3dp</dimen>
-	
 	<dimen name="text_small">10sp</dimen>
     <dimen name="text_medium">15sp</dimen>
     <dimen name="text_large">20sp</dimen>

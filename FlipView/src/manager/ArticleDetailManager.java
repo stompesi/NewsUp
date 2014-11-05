@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import network.Network;
 import ArticleReadInfo.ArticleReadInfo;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
@@ -124,6 +125,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 				textView = new TextView(context);
 				mPaint = textView.getPaint();
 				int textSize = NewsUpApp.getInstance().getTextSize();
+				textView.setTextColor(Color.BLACK);
 				textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(textSize));
 				ApplyFont(context,textView);
 				
@@ -152,7 +154,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	}
 	
 	private void ApplyFont(Context context, TextView tv){
-		Typeface face = Typeface.createFromAsset(context.getAssets(),"SJSoju1.ttf.mp3");
+		Typeface face = Typeface.createFromAsset(context.getAssets(),"NanumGothic.ttf.mp3");
 		tv.setTypeface(face);
 	}
 	

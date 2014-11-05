@@ -14,7 +14,7 @@
             android:id="@+id/lockScreenViewFlipper"
             android:layout_width="@dimen/lockscreen_viewFlipper_width"
             android:layout_marginLeft="@dimen/lockscreen_viewFlipper_margin_left" 
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
         </ViewFlipper>
 
         <LinearLayout

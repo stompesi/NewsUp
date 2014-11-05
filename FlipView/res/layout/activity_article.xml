@@ -3,11 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#B0AEAE" >
-
     <ViewFlipper
         android:id="@+id/articleListFlipper"
         android:layout_width="@dimen/article_viewFlipper_width"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/article_viewFlipper_margin_left" >
 
         <ViewFlipper
@@ -17,5 +16,4 @@
             >
         </ViewFlipper>
     </ViewFlipper>
-
 </LinearLayout>

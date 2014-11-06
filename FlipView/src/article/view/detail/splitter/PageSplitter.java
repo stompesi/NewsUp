@@ -21,6 +21,7 @@ public class PageSplitter {
 	private int currentViewHeight;
 	private int textLineHeight;
 	private int availableViewWidth;
+	private int bottomHeight;
 	
 	private List<ArticleDetailPage> pageList;
 	private ArticleDetailPage page;
@@ -28,13 +29,14 @@ public class PageSplitter {
 	private boolean prevIsPageOver = false;
 	
 	public PageSplitter(TextPaint textPaint, int availableHeight, int availableWidth) {
+		this.bottomHeight = (int) (availableHeight * 0.1);
 		this.remnantContent = new LinkedList<Object>(); 
 		this.textPaint = textPaint;
 		this.textLineHeight = (int) Math.ceil(textPaint.getFontMetrics(null));
 		// TODO : 바텀 높이 
-		this.availableViewHeight = availableHeight;
+		this.availableViewHeight = availableHeight - bottomHeight;
 		// TODO : 첫페이지 들어갈 높이  + 바텀 높이 
-		this.currentViewHeight = availableHeight - 230;
+		this.currentViewHeight = availableHeight - 440 - bottomHeight;
 		this.availableViewWidth = availableWidth;
 		this.pageList = new ArrayList<ArticleDetailPage>();
 		this.page = new ArticleDetailPage();
@@ -157,7 +159,7 @@ public class PageSplitter {
 		pageList.add(page);
 		page = new ArticleDetailPage();
 		totalInputString = "";
-		currentViewHeight = availableViewHeight;
+		currentViewHeight = availableViewHeight - bottomHeight;
 	}
 	
 	public List<ArticleDetailPage> getPageList() {

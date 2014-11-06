@@ -1,8 +1,6 @@
 package manager;
 
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 
 import com.example.flipview.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

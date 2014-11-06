@@ -1,9 +1,9 @@
-package hc;
+package article.view.detail.splitter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
+import article.view.detail.schema.ImageInfo;
 
 public class ContentSplitter {
 	private int width;
@@ -51,24 +51,15 @@ public class ContentSplitter {
 		int imgaeWidth;
 		double ratio;
 
+		// TODO : COLOR 처리를 해야함 
 		String[] imageResult = str.split(" ");
 
 		imageURL = imageResult[0];
 		
-		Log.e("width", "" + width);
-		Log.e("width", "");
-		Log.e("Integer.parseInt(imageResult[1])", "" + Integer.parseInt(imageResult[1]));
 		ratio = (double) width / Integer.parseInt(imageResult[1]);
-		Log.e("ratio", "" + ratio);
-		
-		
-		
 		imgaeWidth = width;
-		Log.e("(Integer.parseInt(imageResult[2])", "" + (Integer.parseInt(imageResult[2])));
 		imageHeight = (int)(Integer.parseInt(imageResult[2]) * ratio);
-		Log.e("(imageHeight", "" + imageHeight);
-
-		imageInfo = new ImageInfo(imageURL, imgaeWidth, imageHeight);
+		imageInfo = new ImageInfo(imageURL, imgaeWidth, imageHeight, null);
 
 		return imageInfo;
 	}

@@ -1,10 +1,11 @@
-package manager;
+package article.view.list;
 
 import image.handler.Image;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import manager.ImageViewManager;
 import network.Network;
 import transmission.TransmissionArticle;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import article.view.ArticleFlipViewManager;
 
 import com.example.flipview.R;
 

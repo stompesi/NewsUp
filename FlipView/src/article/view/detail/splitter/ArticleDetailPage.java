@@ -1,4 +1,4 @@
-package hc;
+package article.view.detail.splitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,5 +16,9 @@ public class ArticleDetailPage {
 	
 	public List<Object> getContent() {
 		return content;
+	}
+	
+	public boolean isEmpty() {
+		return content.size() == 0;
 	}
 }

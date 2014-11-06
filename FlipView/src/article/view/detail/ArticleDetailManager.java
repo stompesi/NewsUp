@@ -1,14 +1,11 @@
-package manager;
-
-import hc.ArticleDetailPage;
-import hc.ContentSplitter;
-import hc.ImageInfo;
-import hc.Splitter;
+package article.view.detail;
 
 import java.util.ArrayList;
 
+import manager.ImageViewManager;
 import network.Network;
 import ArticleReadInfo.ArticleReadInfo;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,11 +15,17 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import application.NewsUpApp;
+import article.view.ArticleFlipViewManager;
+import article.view.detail.schema.ImageInfo;
+import article.view.detail.splitter.ArticleDetailPage;
+import article.view.detail.splitter.ContentSplitter;
+import article.view.detail.splitter.PageSplitter;
 
 import com.example.flipview.R;
 
@@ -38,23 +41,14 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	public ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
-		
-		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-		
-		// TODO : viewHeight, viewWidth를 변경해야한다  
 		this.context = context;
-		this.viewHeight = metrics.heightPixels - ((int) context.getResources().getDimension(R.dimen.layout_padding_top));
-		
-		this.viewWidht = (int) context.getResources().getDimension(R.dimen.layout_width);//metrics.widthPixels;
+		this.viewPadding = 50;
 	}
-	
 
-	
 	public void getArticleDetail(int articleId) {
-		View view;
 		String str;
 		Article article;
-		Splitter splitter;
+		PageSplitter splitter;
 		TextPaint textPaint;
 		ArrayList<Object> list;
 		ContentSplitter contentSplitter;
@@ -68,28 +62,74 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		list  = (ArrayList<Object>) contentSplitter.split(str);
 		
 		// article content 추출 
-		textPaint = new TextPaint();
-		int textSize = NewsUpApp.getInstance().getTextSize();
-		textPaint.setTextSize(context.getResources().getDimension(textSize));
 		
-		splitter = new Splitter(textPaint, viewHeight, viewWidht - 20);
+		TextView textView = new TextView(context);
+		textView.setPadding(viewPadding, 0, viewPadding, 0);
+		textView.setLineSpacing((float)1.1, (float)1.1);
+		textView.setWidth(viewWidht);
+		int textSize = NewsUpApp.getInstance().getTextSize();
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(textSize));
+		ApplyFont(context,textView);
+		
+		textPaint = textView.getPaint();
+		
+		splitter = new PageSplitter(textPaint, viewHeight - 200 , viewWidht - (viewPadding * 2));
 		
 		// TODO: 시작페이지를 만들어야한다 (상세기사 첫화면)
-		articleDetailPageList = (ArrayList<ArticleDetailPage>) splitter.getList(list);
-		for (int i = 0 ; i < articleDetailPageList.size() ; i++) {
-			view = viewMaker(articleDetailPageList.get(i));
-			addView(view);
+		splitter.makePageList(list);
+		articleDetailPageList = (ArrayList<ArticleDetailPage>) splitter.getPageList();
+		
+		//첫페잊 
+		
+		LinearLayout view, layout;
+		layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
+		view = (LinearLayout)(layout).findViewById(R.id.viewArticleDetail);
+		textView = new TextView(context);
+		textView.setWidth(viewWidht);
+		textView.setHeight(200);
+		textView.setPadding(viewPadding, 0, viewPadding, 0);
+		textView.setLineSpacing((float)1.1, (float)1.1);
+		textView.setTextColor(Color.BLACK);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(textSize));
+		ApplyFont(context,textView);
+		
+		textView.setText(article.getTitle());
+		view.addView(textView);
+		
+		textView = new TextView(context);
+		textView.setWidth(viewWidht);
+		textView.setHeight(30);
+		textView.setPadding(viewPadding, 0, viewPadding, 0);
+		textView.setLineSpacing((float)1.1, (float)1.1);
+		textView.setTextColor(Color.BLACK);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(textSize));
+		ApplyFont(context,textView);
+		
+		textView.setText(article.getAuthor());
+		
+		view.addView(textView);
+		
+		viewMaker(view, articleDetailPageList.get(0), 1);
+		addView(layout);
+		
+		
+		//중간페이지 
+		for (int i = 1 ; i < articleDetailPageList.size() ; i++) {
+			layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
+			view = (LinearLayout)(layout).findViewById(R.id.viewArticleDetail);
+			viewMaker(view, articleDetailPageList.get(i), i + 1);
+			addView(layout);
 		}
+		
+		//마지막 페이지
 	}
 	
-	private View viewMaker(ArticleDetailPage articleDetailPage) {
+	private void viewMaker(LinearLayout view, ArticleDetailPage articleDetailPage, int pageNumber) {
 		ArrayList<Object> articleContent;
-		LinearLayout view, layout;
+		
 		Object object;
 		
 		articleContent = (ArrayList<Object>) articleDetailPage.getContent();
-		layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
-		view = (LinearLayout)(layout).findViewById(R.id.viewArticleDetail);
 		
 		
 		for (int i = 0 ; i < articleContent.size() ; i++) {
@@ -106,6 +146,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 				view.addView(imageView);
 				
 				imageView.getLayoutParams().height = imageInfo.getHeight() - 50;
+				imageView.getLayoutParams().width = imageInfo.getWidth();
 				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
 				ImageViewManager.loadImage(imageView, imageInfo.getURL());
@@ -122,12 +163,18 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 				save = "";
 				
 				Log.e("text", text);
+				Log.e("-----", "--------------");
 				textView = new TextView(context);
-				mPaint = textView.getPaint();
+				textView.setWidth(viewWidht);
+				textView.setPadding(viewPadding, 0, viewPadding, 0);
+				textView.setLineSpacing((float)1.1, (float)1.1);
+				
 				int textSize = NewsUpApp.getInstance().getTextSize();
 				textView.setTextColor(Color.BLACK);
 				textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(textSize));
 				ApplyFont(context,textView);
+				
+				mPaint = textView.getPaint();
 				
 				end = 0;
 				textArr = text.split("\n");
@@ -136,7 +183,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 						textArr[j] = " ";
 					do {
 						// 글자가 width 보다 넘어가는지 체크
-						end = mPaint.breakText(textArr[j], true, viewWidht, null);
+						end = mPaint.breakText(textArr[j], true, viewWidht - (viewPadding * 2), null);
 						if (end > 0) {
 							// 자른 문자열을 문자열 배열에 담아 놓는다.
 							save += textArr[j].substring(0, end) + "\n";
@@ -144,16 +191,22 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 							textArr[j] = textArr[j].substring(end);
 						}
 					} while (end > 0);
-					
 				}
+				
 				textView.setText(save);
 				view.addView(textView);
 			}
 		}
-		return layout;
+		
+		// 바텀추가 
 	}
 	
 	private void ApplyFont(Context context, TextView tv){
+		Typeface face = Typeface.createFromAsset(context.getAssets(),"NanumGothic.ttf.mp3");
+		tv.setTypeface(face);
+	}
+	
+	private void ApplyFont(Context context, TextPaint tv){
 		Typeface face = Typeface.createFromAsset(context.getAssets(),"NanumGothic.ttf.mp3");
 		tv.setTypeface(face);
 	}
@@ -201,5 +254,13 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	private int getTimestamp() {
 		return (int)(System.currentTimeMillis() / 1000L);
+	}
+	
+	
+	public void setLayoutWidth(int width) {
+		viewWidht = width;
+	};
+	public void setLayoutHeight(int height) {
+		viewHeight = height;
 	}
 }

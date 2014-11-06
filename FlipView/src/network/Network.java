@@ -27,7 +27,7 @@ import database.Article;
 public class Network {
 
 	private final static String TAG_OBJECT_JSON = "JSON_OBJECT";
-	private final static String SERVER_ADDRESS = "http://14.63.161.26:5000";
+	private final static String SERVER_ADDRESS = "http://14.63.173.158:5000";
 
 	private static Network singletone;
 

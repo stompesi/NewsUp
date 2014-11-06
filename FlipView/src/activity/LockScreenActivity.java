@@ -2,7 +2,6 @@ package activity;
 
 import java.util.ArrayList;
 
-import manager.ArticleListManager;
 import transmission.TransmissionArticle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,6 +16,7 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import article.view.list.ArticleListManager;
 import clock.Clock;
 
 import com.example.flipview.R;

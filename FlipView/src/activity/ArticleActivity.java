@@ -2,9 +2,6 @@ package activity;
 
 import java.util.ArrayList;
 
-import manager.ArticleDetailManager;
-import manager.ArticleFlipViewManager;
-import manager.ArticleListManager;
 import service.LockScreenService;
 import setting.RbPreference;
 import transmission.TransmissionArticle;
@@ -12,11 +9,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ViewFlipper;
+import article.view.ArticleFlipViewManager;
+import article.view.detail.ArticleDetailManager;
+import article.view.list.ArticleListManager;
 
 import com.example.flipview.R;
 
@@ -95,6 +97,20 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 		articleDetailManager = new ArticleDetailManager(this, articleDetailFlipper, 0);
 		
 		flipperManager = articleListManager;
+		
+		articleListManager.getFlipper().getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			 @Override
+			  public void onGlobalLayout() {
+			   //now we can retrieve the width and height
+			   int width = articleListManager.getFlipper().getWidth();
+			   int height = articleListManager.getFlipper().getHeight();
+			   
+			   articleDetailManager.setLayoutWidth(width);
+			   articleDetailManager.setLayoutHeight(height);
+			   
+			   articleListManager.getFlipper().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+			 }
+		});
 	}
 	
 	public void changeCategory(int category) {

@@ -68,9 +68,12 @@
 	<dimen name="lockscreen_description_provider_textView_margin_top">3dp</dimen>
 	
 	<!-- default -->
+	<dimen name="text_title">27sp</dimen>
+	<dimen name="text_author">13sp</dimen>
 	<dimen name="text_small">10sp</dimen>
     <dimen name="text_medium">15sp</dimen>
     <dimen name="text_large">20sp</dimen>
+    <dimen name="text_pagenumber">10sp</dimen>
     <dimen name="layout_width">328dp</dimen>
     <dimen name="layout_padding_top">20dp</dimen>
     <dimen name="layout_padding_bottom">20dp</dimen>

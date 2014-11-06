@@ -126,29 +126,28 @@ public class PageSplitter {
 		int stringEndIndex = 0;
 		
 		currentInputString = "";
-
+		text = "";
 		for (int i = 0 ; i < splittedText.length; i++) {
 			if (splittedText[i].length() == 0) {
 				continue;
 			}
-			
-			do {
-				stringEndIndex = textPaint.breakText(splittedText[i], true, availableViewWidth, null);
-				if (stringEndIndex > 0) {
-					totalInputString += splittedText[i].substring(0, stringEndIndex);
-					Log.e("content", splittedText[i].substring(0, stringEndIndex));
-					splittedText[i] = splittedText[i].substring(stringEndIndex);
-					currentViewHeight -= textLineHeight;
-					
-					if (isEndPage()) {
-						for(int j = i ; j < splittedText.length ; j++) {
-							currentInputString += splittedText[j] + "\n";
-						}
-						return true;
-					}
-				}
-			} while (stringEndIndex > 0);
+			text += (splittedText[i] + " ");
 		}
+			
+		do {
+			stringEndIndex = textPaint.breakText(text, true, availableViewWidth, null);
+			if (stringEndIndex > 0) {
+				totalInputString += text.substring(0, stringEndIndex);
+				Log.e("content", text.substring(0, stringEndIndex));
+				text = text.substring(stringEndIndex);
+				currentViewHeight -= textLineHeight;
+				
+				if (isEndPage()) {
+					currentInputString += text;
+					return true;
+				}
+			}
+		} while (stringEndIndex > 0);
 		currentViewHeight = currentViewHeight - textLineHeight;
 		totalInputString += "\n\n";
 		return false;

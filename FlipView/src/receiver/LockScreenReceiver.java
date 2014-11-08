@@ -17,14 +17,19 @@ import android.telephony.TelephonyManager;
  * */
 @SuppressWarnings("deprecation")
 public class LockScreenReceiver extends BroadcastReceiver {
-	// 기본 잠금화면 관련 
+	
+	// 기본 잠금화면 정보  
 	private KeyguardManager keygardManager = null;
 	private KeyguardManager.KeyguardLock keyLock = null;
 	public boolean isOnreceive = false;
 	
-	// 통화상태 확인 
+	// 전화 관리 
 	private TelephonyManager telephonManager = null;
+	
+	// 통화상태 확인 하는 Flag
 	private boolean isPhonIdle = true;
+	
+	// 전화 관련 Listener
 	private PhoneStateListener phoneListener = new PhoneStateListener() {
 		@Override
 		public void onCallStateChanged(int state, String incomingNumber) {
@@ -75,6 +80,4 @@ public class LockScreenReceiver extends BroadcastReceiver {
 	public void disableKeyguard() {
 		keyLock.disableKeyguard();
 	}
-	
-	
 }

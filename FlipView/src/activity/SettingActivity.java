@@ -70,17 +70,17 @@ public class SettingActivity extends Activity implements OnTouchListener {
 				switch(checkedId)
 				{
 				case R.id.btnTextSizeSmall:
-					pref.put(RbPreference.WORD_SIZE, SMALL_WORD);
+					pref.setValue(RbPreference.WORD_SIZE, SMALL_WORD);
 					NewsUpApp.getInstance().setTextSize(SMALL_WORD);
 					break;
 
 				case R.id.btnTextSizeMedium:
-					pref.put(RbPreference.WORD_SIZE, MEDIUM_WORD);
+					pref.setValue(RbPreference.WORD_SIZE, MEDIUM_WORD);
 					NewsUpApp.getInstance().setTextSize(MEDIUM_WORD);
 					break;
 
 				case R.id.btnTextSizeLarge:
-					pref.put(RbPreference.WORD_SIZE, LARGE_WORD);
+					pref.setValue(RbPreference.WORD_SIZE, LARGE_WORD);
 					NewsUpApp.getInstance().setTextSize(LARGE_WORD);
 					break;
 
@@ -172,13 +172,13 @@ public class SettingActivity extends Activity implements OnTouchListener {
 				case R.id.swLockScreen:
 					Intent intent = new Intent(context, LockScreenService.class);
 					startService(intent);
-					pref.put(RbPreference.IS_LOCK_SCREEN, true);
+					pref.setValue(RbPreference.IS_LOCK_SCREEN, true);
 					break;
 				case R.id.swWordSize:
 					textSizeLayout.setVisibility(View.VISIBLE);
 					break;
 				case R.id.swPushNotify:
-					pref.put(RbPreference.NOTI_ALARM, true);
+					pref.setValue(RbPreference.NOTI_ALARM, true);
 					break;
 				}
 			} else {
@@ -187,13 +187,13 @@ public class SettingActivity extends Activity implements OnTouchListener {
 				case R.id.swLockScreen:
 					Intent intent = new Intent(context, LockScreenService.class);
 					stopService(intent);
-					pref.put(RbPreference.IS_LOCK_SCREEN, false);
+					pref.setValue(RbPreference.IS_LOCK_SCREEN, false);
 					break;
 				case R.id.swWordSize:
 					textSizeLayout.setVisibility(View.GONE);
 					break;
 				case R.id.swPushNotify:
-					pref.put(RbPreference.NOTI_ALARM, false);
+					pref.setValue(RbPreference.NOTI_ALARM, false);
 					break;
 				}
 			}

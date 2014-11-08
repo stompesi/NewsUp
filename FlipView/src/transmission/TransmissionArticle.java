@@ -4,19 +4,16 @@ import image.handler.Image;
 
 import java.io.Serializable;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.flipview.R;
-
-
 /***
  * 
  * @author stompesi
- *
- * LockScreenActivity에서 MainActivity ArticleList의 정보를 전달하기 위한 Class
+ * 
+ * Atcivity간의 Article 정보를 전달하기 위한 class
  */
 public class TransmissionArticle implements Serializable {
 	
@@ -27,7 +24,6 @@ public class TransmissionArticle implements Serializable {
 	private String imageURL;
 	
 	public TransmissionArticle(View view) {
-		Log.d("NewsUp", "Create transmissionArticle");
 		TextView title = (TextView) view.findViewById(R.id.title);
 		TextView content = (TextView) view.findViewById(R.id.content);
 		TextView time = (TextView) view.findViewById(R.id.time);

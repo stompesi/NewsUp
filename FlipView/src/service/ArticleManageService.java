@@ -1,14 +1,10 @@
 package service;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import network.Network;
+import network.NewsUpNetwork;
 import receiver.ScreenOnOffReceiver;
-import transmission.TransmissionArticle;
-import activity.ArticleActivity;
-import activity.LockScreenActivity;
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -18,10 +14,11 @@ import database.Article;
 
 public class ArticleManageService extends Service {
 
+	// 시간 상수 
 	private final static int TIME_HOURE = 3600000;
 	private final static int TIME_TWO_HOURE = 7200000;
-	private final static int TIME_NOW = 0;
 	
+	// 스크린 on / off 리시버 
 	private ScreenOnOffReceiver mReceiver;
 	
 	// Category 시작, 끝 Index 설정 
@@ -32,39 +29,17 @@ public class ArticleManageService extends Service {
 	private static Timer articleRequestManageTimer;
 	private static Timer sleepCheckTimer;
 	
+	// 뉴스기사 요청 기능 on / off 인지 확인하는 Flag
 	private static boolean isStopArticleManageTimer;
 	
-	public static void screenOff() {
-		sleepCheckTimer = new Timer();
-		sleepCheckTimer.schedule(new CheckSleepTask(), TIME_TWO_HOURE);
-	}
-	
-	public static void screenOn() {
-		if(isStopArticleManageTimer){
-			reStartRequestArticleManage();
-		}
-	}
-
 	@Override
 	public void onCreate() {
-		Log.e("NewsUp", "Oncreate ArticleManage service");
+		Log.d("NewsUp", "Oncreate ArticleManage service");
 		super.onCreate();
 		registerScreenOnOffReceiver();
 		startRequestArticleManage();
 	}
-
-	// 48시간 이상 지난 Article 제거  
-	private static void removeArticleTimeOverItem() {
-		Article.removeyArticle();
-	}
 	
-	// 서버에 Article 요청 
-	private static void requestArticles() {
-		for (int i = CATEGORY_START_INDEX; i <= CATEGORY_MAX_INDEX; i++) {
-			Network.getInstance().requestArticleList(i);
-		}
-	}
-
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -81,18 +56,40 @@ public class ArticleManageService extends Service {
 		super.onDestroy();
 	}
 	
-	private static void reStartRequestArticleManage() {
-		isStopArticleManageTimer = false;
-		articleRequestManageTimer = new Timer();
-		articleRequestManageTimer.schedule(new RequestArticleTask(), TIME_NOW, TIME_HOURE);
+	
+	// 스크린 꺼졌을 때 이벤트 
+	public static void screenOff() {
+		sleepCheckTimer = new Timer();
+		sleepCheckTimer.schedule(new CheckSleepTask(), TIME_TWO_HOURE);
+	}
+
+	// 스크린 켜졌을 때 이벤
+	public static void screenOn() {
+		if(isStopArticleManageTimer){
+			startRequestArticleManage();
+		}
+	}
+
+	// 48시간 이상 지난 Article 제거  
+	private static void removeArticleTimeOverItem() {
+		Article.removeyArticle();
 	}
 	
+	// 서버에 Article 요청 
+	private static void requestArticles() {
+		for (int i = CATEGORY_START_INDEX; i <= CATEGORY_MAX_INDEX; i++) {
+			NewsUpNetwork.getInstance().requestArticleList(i);
+		}
+	}
+
+	// 서버에 기사 요청하는 기능 실행 
 	private static void startRequestArticleManage() {
 		isStopArticleManageTimer = false;
 		articleRequestManageTimer = new Timer();
 		articleRequestManageTimer.schedule(new RequestArticleTask(), TIME_HOURE, TIME_HOURE);
 	}
 	
+	// 서버에 기사 요청하는 기능 중지 
 	private static void stopRequestArticleManage() {
 		isStopArticleManageTimer = true;
 		articleRequestManageTimer.cancel(); // 해당 타이머가 수행할 모든 행위들을 정지
@@ -100,27 +97,21 @@ public class ArticleManageService extends Service {
 		articleRequestManageTimer = null;
 	}
 	
+	
+	// 뉴스기사 요청하는 Task class 
 	private static class RequestArticleTask extends TimerTask {
-
 		@Override
 		public void run() {
-			Log.e("NewsUp", "기사 요청");
 			requestArticles();
 		}
 	}
 	
+	// 슬립모드 인지 아닌지 확인하는 Task class 
 	private static class CheckSleepTask extends TimerTask {
-
 		@Override
 		public void run() {
 			if(!isStopArticleManageTimer) {
-				Log.e("NewsUp", "슬립모드");
-				// DB아티클 제거
 				removeArticleTimeOverItem();
-				
-				
-				
-				
 				stopRequestArticleManage();
 				sleepCheckTimer.cancel(); // 해당 타이머가 수행할 모든 행위들을 정지
 				sleepCheckTimer.purge(); // 대기중이던 취소된 행위가 있는 경우 모두 제거
@@ -129,6 +120,7 @@ public class ArticleManageService extends Service {
 		}
 	}
 		
+	// 스크린 on / off 리시버 등록 
 	private void registerScreenOnOffReceiver() {
 		mReceiver = new ScreenOnOffReceiver();
 		IntentFilter screenOff = new IntentFilter(Intent.ACTION_SCREEN_OFF);

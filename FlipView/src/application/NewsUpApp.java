@@ -1,9 +1,7 @@
 package application;
 
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
+import network.NewsUpNetwork;
 import setting.RbPreference;
 import activity.SettingActivity;
 import android.provider.Settings.Secure;
@@ -36,11 +34,14 @@ public class NewsUpApp extends com.orm.SugarApp {
 		
 		RbPreference pref = new RbPreference(this);
 		deviceId = pref.getValue(RbPreference.USER_ID, null);
+		
 		// 앱 처음 실행 
 		if(deviceId == null) {
-			deviceId = encodeId();
-			pref.put(RbPreference.USER_ID, deviceId);
+			deviceId = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
+			pref.setValue(RbPreference.USER_ID, deviceId);
 		}
+		
+		NewsUpNetwork.getInstance().setDeviceId(deviceId);
 		
 		int num = pref.getValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);
 		switch(num) {
@@ -95,26 +96,6 @@ public class NewsUpApp extends com.orm.SugarApp {
 		}
 	}
 	
-	private String encodeId(){
-		String SHA = ""; 
-		try{
-			MessageDigest sh = MessageDigest.getInstance("SHA-256"); 
-			String deviceId = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID) + System.currentTimeMillis();
-			sh.update(deviceId.getBytes()); 
-			byte byteData[] = sh.digest();
-			StringBuffer sb = new StringBuffer(); 
-			for(int i = 0 ; i < byteData.length ; i++){
-				sb.append(Integer.toString((byteData[i]&0xff) + 0x100, 16).substring(1));
-			}
-			SHA = sb.toString();
-			
-		}catch(NoSuchAlgorithmException e){
-			e.printStackTrace(); 
-			SHA = null; 
-		}
-		return SHA;
-	}
-	
 	public String getDeviceId() {
 		return deviceId;
 	}
@@ -123,12 +104,6 @@ public class NewsUpApp extends com.orm.SugarApp {
 		return mInstance;
 	}
 
-	public void refreshDeviceID(){
-		RbPreference pref = new RbPreference(this);
-		deviceId = encodeId();
-		pref.put(RbPreference.USER_ID, deviceId);
-	}
-	
 	public RequestQueue getRequestQueue() {
 		if (mRequestQueue == null) {
 			mRequestQueue = Volley.newRequestQueue(getApplicationContext());

@@ -16,8 +16,10 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ViewFlipper;
+import application.NewsUpApp;
 import article.view.ArticleFlipViewManager;
 import article.view.detail.ArticleDetailManager;
+import article.view.detail.schema.LayoutInfo;
 import article.view.list.ArticleListManager;
 
 import com.example.flipview.R;
@@ -54,6 +56,8 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_article);
 		
+		
+		Log.e("asdfasdfasdf", NewsUpApp.getInstance().getDeviceId());
 		init();
 		
 		/***
@@ -105,9 +109,12 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 			   int width = articleListManager.getFlipper().getWidth();
 			   int height = articleListManager.getFlipper().getHeight();
 			   
-			   articleDetailManager.setLayoutWidth(width);
-			   articleDetailManager.setLayoutHeight(height);
+//			   articleDetailManager.setLayoutWidth(width);
+//			   articleDetailManager.setLayoutHeight(height);
 			   
+			   LayoutInfo layoutInfo = LayoutInfo.getInstance();
+			   
+			   layoutInfo.calLayoutInfo(width, height);
 			   articleListManager.getFlipper().getViewTreeObserver().removeOnGlobalLayoutListener(this);
 			 }
 		});

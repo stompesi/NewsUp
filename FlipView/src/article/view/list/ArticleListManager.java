@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import manager.ImageViewManager;
-import network.Network;
+import network.NewsUpNetwork;
 import transmission.TransmissionArticle;
 import android.content.Context;
 import android.graphics.Color;
@@ -127,8 +127,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 				 isFailInsertArticleList = true;
 				 return 1;
 			 }
-			 if(Network.isNetworkState(context)) {
-				Network.getInstance().requestArticleList(category);
+			 if(NewsUpNetwork.isNetworkState(context)) {
+				NewsUpNetwork.getInstance().requestArticleList(category);
 			 } 
 		 } else {
 			 if(isFailInsertArticleList) {
@@ -171,8 +171,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			   					successSaveArticle();
 			   					 return ;
 			   				 }
-			   				 if(Network.isNetworkState(context)) {
-			   					Network.getInstance().requestArticleList(category);
+			   				 if(NewsUpNetwork.isNetworkState(context)) {
+			   					NewsUpNetwork.getInstance().requestArticleList(category);
 			   				 } else {
 			   					successSaveArticle();
 			   				 }

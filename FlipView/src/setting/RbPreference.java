@@ -7,55 +7,43 @@ import android.content.SharedPreferences;
  * 
  * @author stompesi
  *
- * 안드로이드 App에 설정같은 내용을 저장하는 Class
+ * 안드로이드 App에 설정 내용을 저장하는 Class
  */
 
 public class RbPreference {
 
 	private final String PREF_NAME = "newsup";
 
-	public final static String PREF_IS_INTRO = "PREF_IS_INTRO";
 	public final static String USER_ID = "USER_ID";
-	public final static String PREF_IS_FIRST_NETWORK_REQUEST = "PREF_IS_FIRST_NETWORK_REQUEST";
-	public final static String IS_LOCK_SCREEN ="IS_LOCK_SCREEN";
 	public final static String WORD_SIZE = "WORD_SIZE";
 	public final static String NOTI_ALARM = "NOTI_ALARM";
+	public final static String PREF_IS_INTRO = "PREF_IS_INTRO";
+	public final static String IS_LOCK_SCREEN ="IS_LOCK_SCREEN";
+	public final static String PREF_IS_FIRST_NETWORK_REQUEST = "PREF_IS_FIRST_NETWORK_REQUEST";
 	
-	
-	private Context context;
-
+	SharedPreferences pref;
+	SharedPreferences.Editor editor;
 	public RbPreference(Context context) {
-		this.context = context;
+		pref= context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
+		editor = pref.edit();
 	}
 
-	public void put(String key, String value) {
-		SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
-				Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = pref.edit();
-
+	public void setValue(String key, String value) {
 		editor.putString(key, value);
 		editor.commit();
 	}
 
-	public void put(String key, boolean value) {
-		SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
-				Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = pref.edit();
-
+	public void setValue(String key, boolean value) {
 		editor.putBoolean(key, value);
 		editor.commit();
 	}
 
-	public void put(String key, int value) {
-		SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = pref.edit();
-
+	public void setValue(String key, int value) {
 		editor.putInt(key, value);
 		editor.commit();
 	}
 
 	public String getValue(String key, String dftValue) {
-		SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
 		try {
 			return pref.getString(key, dftValue);
 		} catch (Exception e) {
@@ -65,7 +53,6 @@ public class RbPreference {
 	}
 
 	public int getValue(String key, int dftValue) {
-		SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
 		try {
 			return pref.getInt(key, dftValue);
 		} catch (Exception e) {
@@ -75,7 +62,6 @@ public class RbPreference {
 	}
 
 	public boolean getValue(String key, boolean dftValue) {
-		SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
 		try {
 			return pref.getBoolean(key, dftValue);
 		} catch (Exception e) {

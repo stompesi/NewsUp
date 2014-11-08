@@ -24,47 +24,47 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import database.Article;
 
-public class Network {
+public class NewsUpNetwork {
 
 	private final static String TAG_OBJECT_JSON = "JSON_OBJECT";
-	private final static String SERVER_ADDRESS = "http://14.63.173.158:5000";
+	
+	// 서버 요청 주소 
+	private final static String ARTICLE_REQUEST_SERVER_ADDRESS = "http://14.63.173.158:5000";
+	private final static String LOG_SEND_SERVER_ADDRESS = "http://14.63.161.26:5000";
 
-	private static Network singletone;
+	private static NewsUpNetwork instance;
 
 	private String deviceId;
 	
-	private Network() {}
+	private NewsUpNetwork() {}
 
-	public static Network getInstance() {
-		if (singletone == null) {
-			singletone = new Network();
+	public static NewsUpNetwork getInstance() {
+		if (instance == null) {
+			instance = new NewsUpNetwork();
 		}
-		return singletone;
+		return instance;
 	}
 	
+	// 디바이스 Id 저장 
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
 
 	// article list 요청 
 	public void requestArticleList(final int category) {
-		Log.i("NewsUp", "Request Article List");
-		
-		String requestURL = SERVER_ADDRESS + "/news/category/" + category;
+		Log.d("NewsUp", "뉴스기사 요청");
+		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/category/" + category;
 
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
-						Log.i("NewsUp", "Network : ArticleList success.");
+						Log.d("NewsUp", "Network : 뉴스기사 요청 성공.");
 						JSONArray articles;
 						try {
 							articles = response.getJSONArray("articles");
 							for (int i = 0; i < articles.length(); i++) {
-								// TODO : 카테고리 임시변경함 - 서버에서 제대로 데이터가 날라온다면 제거해야함 
-								articles.getJSONObject(i).put("category", category);
 								Article.saveArticle(articles.getJSONObject(i));
 							}
-							
 							if(ArticleActivity.getInstance() != null) {
 								ArticleActivity.getInstance().successSaveArticle();
 							} 
@@ -78,7 +78,7 @@ public class Network {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						Log.e("NewsUp", "Network : ArticleList Request Fail.");
+						Log.e("NewsUp", "Network : 뉴스기사 요청 실패.");
 						if(ArticleActivity.getInstance() != null) {
 							ArticleActivity.getInstance().successSaveArticle();
 						} 
@@ -99,67 +99,49 @@ public class Network {
 	
 	// 사용자 device 등록
 	public void requestRegistUser(final Context context) {
-		Log.i("NewsUp", "User 등록");
-		
-		String requestURL = SERVER_ADDRESS + "/users";
-
-		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.POST, requestURL, null, new Response.Listener<JSONObject>() {
+		Log.d("NewsUp", "User 등록");
+		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/users";
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.POST, requestURL, null, 
+				new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
-						int errorCode;
-						try {
-							errorCode = response.getInt("error_code");
-							switch(errorCode) {
-							case 1:
-								Log.e("NewsUp", "Network : Add user fail.");
-								((NewsUpApp) context.getApplicationContext()).refreshDeviceID();
-								setDeviceId(((NewsUpApp) context.getApplicationContext()).getDeviceId());
-								requestRegistUser(context);
-								break;
-							case 0:
-								Log.i("NewsUp", "Network : Add user success.");
-								break;
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
+						Log.d("NewsUp", "Network : User 등록 성공.");
 					}
-				}, new Response.ErrorListener() {
+				}, 
+				new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						Log.e("NewsUp", "Network : ArticleList Request Fail.");
+						Log.e("NewsUp", "Network : User 등록 실패.");
+						requestRegistUser(context);
 					}
 				}) {
 			 @Override
-		       public Map<String, String> getHeaders() throws AuthFailureError {
-		           HashMap<String, String> headers = new HashMap<String, String>();
-		           headers.put("user_token", deviceId);
-		           return headers;
-		       }
+		     public Map<String, String> getHeaders() throws AuthFailureError {
+	           HashMap<String, String> headers = new HashMap<String, String>();
+	           headers.put("user_token", deviceId);
+	           return headers;
+		     }
 		};
-		
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
 	
-	
 	// User Log 서버로 전달 
-	public void updateUserLog(ArticleReadInfo articleReadInfo) {
-
-		String requestURL = SERVER_ADDRESS + "/users/log";
+	public void updateUserLog(final ArticleReadInfo articleReadInfo) {
+		Log.d("NewsUp", "User Log 서버로 전달");
+		String requestURL = LOG_SEND_SERVER_ADDRESS + "/users/log";
 
 		JSONObject params = new JSONObject();
 		try {
             params.put("article_id", articleReadInfo.getArticleId());  
             params.put("start_time", articleReadInfo.getStartTime());  
             params.put("page", articleReadInfo.getPagesReadTime());
+            
+            //TODO : 좋아요 실어요 넣기 
+            params.put("like", 0);
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
 		
-		Log.d("NewsUp", "User Log 서버로 전달");
-		Log.d("NewsUp", "article_id : " + articleReadInfo.getArticleId());  
-		Log.d("NewsUp", "start_time : " + articleReadInfo.getStartTime());  
-		Log.d("NewsUp", "page : " + articleReadInfo.getPagesReadTime());
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.POST, requestURL, params, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
@@ -168,10 +150,11 @@ public class Network {
 							errorCode = response.getInt("error_code");
 							switch(errorCode) {
 							case 1:
-								Log.d("NewsUp", "Network : updateUserLog fail.");
+								Log.e("NewsUp", "Network : updateUserLog 실패.");
+								updateUserLog(articleReadInfo);
 								break;
 							case 0:
-								Log.d("NewsUp", "Network : updateUserLog success.");
+								Log.d("NewsUp", "Network : updateUserLog 성공.");
 								break;
 							}
 						} catch (JSONException e) {
@@ -181,7 +164,8 @@ public class Network {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						Log.d("NewsUp", "Network : ArticleList Request Fail.");
+						Log.e("NewsUp", "Network : updateUserLog 실패.");
+						updateUserLog(articleReadInfo);
 					}
 				}) {
 			 		@Override
@@ -193,7 +177,6 @@ public class Network {
 		};
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
-	
 	
 	// Network 상태 확인 함수 
 	public static boolean isNetworkState(Context context) {

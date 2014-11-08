@@ -1,4 +1,4 @@
-package article.view.detail.splitter;
+package article.view.detail.schema;
 
 import java.util.ArrayList;
 import java.util.List;

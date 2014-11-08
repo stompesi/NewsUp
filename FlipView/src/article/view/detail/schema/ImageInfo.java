@@ -1,11 +1,15 @@
 package article.view.detail.schema;
 
+import android.util.Log;
+
 public class ImageInfo {
 	private String imageURL;
 	private int imageWidth, imageHeight; 
 	private String color;
 	
 	public ImageInfo(String imageURL, int imageWidth,int imageHeight, String color) {
+		Log.d("NewsUp", "이미지 정보 객체 생성");
+		
 		this.imageURL = imageURL;
 		this.imageHeight = imageHeight;
 		this.imageWidth = imageWidth;

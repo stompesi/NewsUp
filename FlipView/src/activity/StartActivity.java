@@ -1,7 +1,7 @@
 package activity;
 
 
-import network.Network;
+import network.NewsUpNetwork;
 import service.ArticleManageService;
 import service.LockScreenService;
 import setting.RbPreference;
@@ -52,13 +52,13 @@ public class StartActivity extends Activity {
 		startService(lockScreenIntent);
 		
 		
-		Network.getInstance().requestArticleList(0);
+		NewsUpNetwork.getInstance().requestArticleList(0);
 		
 		//처음 시작 할때 셋팅 값 저장.
 		RbPreference pref = new RbPreference(this);
-		pref.put(RbPreference.IS_LOCK_SCREEN, true);//락스크린 on
-		pref.put(RbPreference.NOTI_ALARM, true);//락스크린 off
-		pref.put(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
+		pref.setValue(RbPreference.IS_LOCK_SCREEN, true);//락스크린 on
+		pref.setValue(RbPreference.NOTI_ALARM, true);//락스크린 off
+		pref.setValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
 	}
 	
 	public void onClick() {
@@ -68,12 +68,12 @@ public class StartActivity extends Activity {
 		
 		startActivity = StartActivity.this;
 		pref = new RbPreference(startActivity);
-		pref.put(RbPreference.PREF_IS_INTRO, false);
+		pref.setValue(RbPreference.PREF_IS_INTRO, false);
 		
 //		 서비스(background 실행) 실행 용도
 		
-		Network.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
-		Network.getInstance().requestRegistUser(getApplication());
+		NewsUpNetwork.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
+		NewsUpNetwork.getInstance().requestRegistUser(getApplication());
 		
 		intent = new Intent(startActivity, ArticleActivity.class);
 		startActivity(intent);

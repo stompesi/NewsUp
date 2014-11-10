@@ -209,7 +209,6 @@ public class ArticleListManager extends ArticleFlipViewManager {
 
 	@Override
 	public void outArticleDetail() {
-		setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
 		display(detailArticleprevChildIndex);
 	}
 	

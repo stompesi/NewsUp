@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import manager.ImageViewManager;
 import network.NewsUpNetwork;
 import ArticleReadInfo.ArticleReadInfo;
+import activity.ArticleActivity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,8 +16,10 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import application.NewsUpApp;
@@ -38,14 +41,16 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 
 	LayoutInfo layoutInfo;
 
+	boolean isAnimationning;
 	public ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
 		this.context = context;
 	}
+	
+	
 
 	Handler handler = new Handler();
 	ArrayList<Object> list;
-	ArrayList<ArticleDetailPage> articleDetailPageList;
 	PageSplitter splitter;
 
 	public void getArticleDetail(int articleId) {
@@ -68,10 +73,8 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		splitter = new PageSplitter(textPaint);
 
 		// TODO: 시작페이지를 만들어야한다 (상세기사 첫화면)
-		list = (ArrayList<Object>) splitter.split(str);
-		splitter.makePageList(list);
-		articleDetailPageList = (ArrayList<ArticleDetailPage>) splitter
-				.getPageList();
+		splitter.split(str);
+		ArticleDetailPage articleDetailPage = splitter.makePageList();
 
 		// 첫페이지 title, author
 
@@ -89,55 +92,150 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		textView.setText(article.getAuthor());
 		view.addView(textView);
 
+
 		textSize = R.dimen.text_author;
 		textView = setTextView(context, 100, textSize);
 		textView.setPadding(layoutInfo.getTextViewPadding(), 10, 0, 0);
 
 		textView.setText(article.getAuthor());
 		view.addView(textView);
-		viewMaker(view, articleDetailPageList.get(0));
-		setPageNumber(layout, 1, articleDetailPageList.size() + 1);
+		viewMaker(view, articleDetailPage);
 		addView(layout);
-
-		
-
-		InsertArticleTask insertArticleTask = new InsertArticleTask();
-		insertArticleTask.execute();
 		
 		display(getChildChount() - 1);
+
+
+		InsertArticleTask insertArticleTask = new InsertArticleTask(articleId);
+		insertArticleTask.execute();
+
+		
+
 
 		// 마지막 페이지.
 	}
 
-	class InsertArticleTask extends
-			AsyncTask<Void, Void, ArrayList<ArticleDetailPage>> {
+//		class InsertArticleTask extends
+//		AsyncTask<Void, Void, ArticleDetailPage> {
+//	
+//			private int articleId;
+//	
+//			public InsertArticleTask(int articleId) {
+//				this.articleId = articleId;
+//			}
+//	
+//			@Override
+//			protected ArticleDetailPage doInBackground(Void... params) {
+//				// TODO Auto-generated method stub
+//				ArticleDetailPage articleDetailPage = splitter.makePageList();
+//				return articleDetailPage;
+//			}
+//	
+//	
+//			@Override
+//			protected void onPostExecute(final ArticleDetailPage articleDetailPage) {
+//				if(articleDetailPage == null) {
+//					pageReadStartTime = getTimestamp();
+//					articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
+//					ArticleActivity.getInstance().changeIsAnimationningFlag();
+//				} else {
+//					handler.postDelayed((new Runnable() {
+//						@Override
+//						public void run() {
+//							LinearLayout view, layout;
+//							layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
+//							view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
+//							viewMaker(view, articleDetailPage);
+//							addView(layout);
+//							currentChildIndex++;
+//						}
+//					}), 0);
+//					
+//					InsertArticleTask insertArticleTask = new InsertArticleTask(articleId);
+//					insertArticleTask.execute();
+//				}
+//			}
+//		}
 
-		@Override
-		protected ArrayList<ArticleDetailPage> doInBackground(Void... params) {
-			// TODO Auto-generated method stub
-			splitter.makePageList(list);
-			articleDetailPageList = (ArrayList<ArticleDetailPage>) splitter
-					.getPageList();
-			return articleDetailPageList;
+
+
+	class InsertArticleTask extends
+	AsyncTask<Void, ArticleDetailPage, Void> {
+
+		private int articleId;
+
+		private boolean isFinish;
+		
+		private int page;
+		
+		public InsertArticleTask(int articleId) {
+			this.articleId = articleId;
+			this.page = 1;
+			this.isFinish = false;
 		}
 
 		@Override
-		protected void onPostExecute(
-				final ArrayList<ArticleDetailPage> articleDetailPageList) {
-			for (int i = 1; i < articleDetailPageList.size(); i++) {
-				final ArticleDetailPage  articleDetailPage = articleDetailPageList.get(i);
-				handler.postDelayed(new Runnable() {
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			ArticleActivity.getInstance().changeIsAnimationningFlag();
+			ArticleDetailPage next = splitter.makePageList();
+			ArticleDetailPage articleDetailPage;
+			
+			while(next != null) {
+				articleDetailPage = next;
+				next = splitter.makePageList();
+				
+				if(next == null) {
+					isFinish = true; 
+				}
+				page++;
+				publishProgress(articleDetailPage);
+			}
+			return null;
+		}
+
+		@Override
+	    protected void onProgressUpdate(final ArticleDetailPage... articleDetailPage) {
+			
+			if(isFinish) {
+				handler.postDelayed((new Runnable() {
 					@Override
 					public void run() {
+						// TODO : 에니메이션 작업을 끝나면 붙이는방식으로 간다..!!!!
+						Log.e("asdfadsf","asdfasdfad");
 						LinearLayout view, layout;
 						layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
 						view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
-						viewMaker(view, articleDetailPage);
+						viewMaker(view, articleDetailPage[0]);
+						addView(layout);
+						currentChildIndex++;
+						InsertArticleTask insertArticleTask = new InsertArticleTask(articleId);
+						insertArticleTask.execute();
+					}
+				}), 300);
+			} else {
+				handler.postDelayed((new Runnable() {
+					@Override
+					public void run() {
+						// TODO : 에니메이션 작업을 끝나면 붙이는방식으로 간다..!!!!
+						Log.e("asdfadsf","asdfasdfad");
+						LinearLayout view, layout;
+						layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
+						view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
+						viewMaker(view, articleDetailPage[0]);
 						addView(layout);
 						currentChildIndex++;
 					}
-				}, 300);
+				}), 300);
 			}
+			
+			
+			
+	    }
+
+		@Override
+		protected void onPostExecute(Void params) {
+			pageReadStartTime = getTimestamp();
+			articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
 		}
 	}
 
@@ -239,9 +337,8 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	}
 
 	private void ApplyFont(Context context, TextView tv) {
-		Typeface face = Typeface.createFromAsset(context.getAssets(),
-				"NanumGothic.ttf.mp3");
-		tv.setTypeface(face);
+		//		Typeface face = Typeface.createFromAsset(context.getAssets(), "NanumGothic.ttf.mp3");
+		//		tv.setTypeface(face);
 	}
 
 	private void ApplyFont(Context context, TextPaint tv) {
@@ -253,7 +350,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	@Override
 	public void outArticleDetail() {
 		setReadTime();
-		removeAllFlipperItem();
 		if (NewsUpNetwork.isNetworkState(context)) {
 			NewsUpNetwork.getInstance().updateUserLog(articleReadInfo);
 		}
@@ -273,17 +369,14 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	}
 
 	private void setReadTime() {
-		int index = getChildChount() - (currentChildIndex + 1);
-		articleReadInfo.setReadTime(index, getTimestamp() - pageReadStartTime);
-		pageReadStartTime = getTimestamp();
+		//		int index = getChildChount() - (currentChildIndex + 1);
+		//		articleReadInfo.setReadTime(index, getTimestamp() - pageReadStartTime);
+		//		pageReadStartTime = getTimestamp();
 	}
 
 	@Override
 	public void inArticleDetail(int articleId) {
 		getArticleDetail(articleId);
-		pageReadStartTime = getTimestamp();
-		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime,
-				getChildChount());
 	}
 
 	public void changeTextSize(int articleId) {

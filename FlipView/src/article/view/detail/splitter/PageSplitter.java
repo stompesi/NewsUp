@@ -25,7 +25,6 @@ public class PageSplitter {
 	private int currentViewHeight;
 	private int textLineHeight;
 	
-	private List<ArticleDetailPage> pageList;
 	private ArticleDetailPage page;
 	
 	private boolean prevIsPageOver = false;
@@ -34,39 +33,27 @@ public class PageSplitter {
 	
 	Object content;
 	
-	boolean isFirstPage;
-	boolean isSecondRequest;
+	boolean isComplete;
 	
+	
+	ArrayList<Object> list; 
 	public PageSplitter(TextPaint textPaint) {
 		layoutInfo = LayoutInfo.getInstance();
-
 		this.textPaint = textPaint;
-		
 		this.textLineHeight = (int) Math.ceil(textPaint.getFontMetrics(null));
-		
-		
 		this.remnantContent = new LinkedList<Object>(); 
 		this.currentViewHeight = layoutInfo.getAvailableTotalHeight() - layoutInfo.getFirstPageHeight();
-		this.pageList = new ArrayList<ArticleDetailPage>();
-		this.page = new ArticleDetailPage();
 		this.currentInputString = "";
 		this.totalInputString = "";
-		this.isFirstPage = true;
-		this.isSecondRequest = false;
+		this.list = new ArrayList<Object>();
 	}
 	
 
-	public void makePageList(ArrayList<Object> list) {
+	public ArticleDetailPage makePageList() {
 		
-		if(isSecondRequest) {
-			this.remnantContent = new LinkedList<Object>(); 
-			this.currentViewHeight = layoutInfo.getAvailableTotalHeight() - layoutInfo.getFirstPageHeight();
-			this.pageList = new ArrayList<ArticleDetailPage>();
-			this.page = new ArticleDetailPage();
-			this.currentInputString = "";
-			this.totalInputString = "";
-		}
-		for (int i = 0; i < list.size() ; i++) {
+		page = new ArticleDetailPage();
+		isComplete = false;
+		for (int i = 0; i < list.size() ;) {
 			
 			// TODO : 조건문 함수로 변경 
 			if (!(remnantContent.isEmpty()) && (!prevIsPageOver || remnantContent.peek() instanceof String)) {
@@ -76,14 +63,13 @@ public class PageSplitter {
 				content = list.get(i);
 				prevIsPageOver = false;
 				inputContent(content);
+				list.remove(0);
+			}
+			if(isComplete) {
+				return page;
 			}
 			
-			if(!isFirstPage && !isSecondRequest){
-				break;
-			}
 		}
-		isFirstPage = true;
-		isSecondRequest = true;
 		
 		if(!(remnantContent.isEmpty())) {
 			content = remnantContent.poll();
@@ -95,7 +81,10 @@ public class PageSplitter {
 		}
 		
 		if(!(page.isEmpty())) {
-			pageList.add(page);
+			completeMakeView();
+			return page;
+		} else {
+			return null;
 		}
 	}
 	
@@ -141,7 +130,8 @@ public class PageSplitter {
 			page.add(totalInputString);
 			completeMakeView();
 			if (!(currentInputString.isEmpty())) {
-				inputTextContent(currentInputString);
+				remnantContent.offer(currentInputString);
+				prevIsPageOver = true;
 			}
 		}
 	}
@@ -163,7 +153,7 @@ public class PageSplitter {
 			stringEndIndex = textPaint.breakText(text, true, layoutInfo.getAvailableTextViewWidth(), null);
 			if (stringEndIndex > 0) {
 				totalInputString += text.substring(0, stringEndIndex);
-				Log.e("content", text.substring(0, stringEndIndex));
+//				Log.e("content", text.substring(0, stringEndIndex));
 				text = text.substring(stringEndIndex);
 				currentViewHeight -= textLineHeight;
 				
@@ -181,18 +171,9 @@ public class PageSplitter {
 	}
 	
 	private void completeMakeView() {
-		
-		if(isFirstPage) {
-			isFirstPage = false;
-		} 
-		pageList.add(page);
-		page = new ArticleDetailPage();
+		isComplete = true;
 		totalInputString = "";
 		currentViewHeight = layoutInfo.getAvailableTotalHeight();
-	}
-	
-	public List<ArticleDetailPage> getPageList() {
-		return pageList;
 	}
 	
 	private boolean isEndPage() {
@@ -202,24 +183,22 @@ public class PageSplitter {
 	/////////////////////////////
 	
 	
-	public List<Object> split(String str) {
+	public void split(String str) {
 		String[] midTemp, finalTemp, temp;
-		ArrayList<Object> articleContentList = new ArrayList<Object>();
-		
 		temp  = str.split("<I_S>");
 		
 		for(int i = 0 ; i < temp.length ; i++) {
 			if(temp[i].contains("<I_E>")) {
 				midTemp = temp[i].split("<I_E>");
 				if(midTemp.length == 1) {
-					articleContentList.add(imageParser(midTemp[0].trim()));	
+					list.add(imageParser(midTemp[0].trim()));	
 				}
 				else {
-					articleContentList.add(imageParser(midTemp[0].trim()));
+					list.add(imageParser(midTemp[0].trim()));
 					finalTemp = midTemp[1].split("\n\n");
 					for(int j = 0 ; j < finalTemp.length ; j++) {
 						if(finalTemp[j].trim().length() != 0) {
-							articleContentList.add(finalTemp[j].trim());
+							list.add(finalTemp[j].trim());
 						}
 					}
 				}
@@ -228,12 +207,11 @@ public class PageSplitter {
 				midTemp = temp[i].split("\n\n");
 				for(int j = 0 ; j < midTemp.length ; j++) {
 					if(midTemp[j].trim().length() != 0) {
-						articleContentList.add(midTemp[j].trim());
+						list.add(midTemp[j].trim());
 					}
 				}
 			}
 		}
-		return articleContentList;
 	}
 
 	private ImageInfo imageParser(String str) {
@@ -251,9 +229,9 @@ public class PageSplitter {
 		color = imageResult[0];
 		imageURL = "http://14.63.161.26/" + imageResult[1];
 		
-		ratio = (double) layoutInfo.getAvailableTotalWidth() / Integer.parseInt(imageResult[2]);
+		ratio = (double) layoutInfo.getAvailableTotalWidth() / Integer.parseInt(imageResult[3]);
 		imgaeWidth = layoutInfo.getAvailableTotalWidth();
-		imageHeight = (int)(Integer.parseInt(imageResult[3]) * ratio);
+		imageHeight = (int)(Integer.parseInt(imageResult[2]) * ratio);
 		imageInfo = new ImageInfo(imageURL, imgaeWidth, imageHeight, color);
 
 		return imageInfo;

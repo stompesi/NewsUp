@@ -63,6 +63,8 @@ public class NewsUpNetwork {
 						try {
 							articles = response.getJSONArray("articles");
 							for (int i = 0; i < articles.length(); i++) {
+								// TODO : 카테고리 임시변경함 - 서버에서 제대로 데이터가 날라온다면 제거해야함 
+								articles.getJSONObject(i).put("category", category);
 								Article.saveArticle(articles.getJSONObject(i));
 							}
 							if(ArticleActivity.getInstance() != null) {

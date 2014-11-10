@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.Animation;
 import android.widget.ViewFlipper;
 import application.NewsUpApp;
 import article.view.ArticleFlipViewManager;
@@ -47,6 +48,8 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 	
 	private int currentArticleId;
 
+	
+	private boolean isAnimationning;
 	public static ArticleActivity getInstance() {
 		return (ArticleActivity) mainActivity;
 	}
@@ -55,9 +58,6 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_article);
-		
-		
-		Log.e("asdfasdfasdf", NewsUpApp.getInstance().getDeviceId());
 		init();
 		
 		/***
@@ -118,6 +118,7 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 			   articleListManager.getFlipper().getViewTreeObserver().removeOnGlobalLayoutListener(this);
 			 }
 		});
+		
 	}
 	
 	public void changeCategory(int category) {
@@ -158,6 +159,20 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 	// detail -> List
 	// menu -> detail, list
 	private boolean backEvent() {
+		articleListManager.getFlipper().getInAnimation().setAnimationListener(new Animation.AnimationListener() {
+		      public void onAnimationStart(Animation animation) {
+		    	  Log.e("start", "backEvent start");
+		    	  isAnimationning = true;
+		      }
+		      public void onAnimationRepeat(Animation animation) {}
+		      public void onAnimationEnd(Animation animation) {
+		    	  Log.e("end", "backEvent end");
+		    	  articleDetailManager.removeAllFlipperItem();
+		    	  isAnimationning = false;
+		    	  articleListManager.getFlipper().getInAnimation().setAnimationListener(null);
+		      }
+		   });
+		
 		flipperManager = articleListManager;
 		articleDetailManager.outArticleDetail();
 		articleListManager.outArticleDetail();
@@ -166,6 +181,18 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 	
 	// list -> detail
 	private boolean moveArticleDetail(int articleId) {
+		articleListManager.getFlipper().getInAnimation().setAnimationListener(new Animation.AnimationListener() {
+		      public void onAnimationStart(Animation animation) {
+		    	  Log.e("start", "moveArticleDetail start");
+		    	  isAnimationning = true;
+		      }
+		      public void onAnimationRepeat(Animation animation) {}
+		      public void onAnimationEnd(Animation animation) {
+		    	  Log.e("end", "moveArticleDetail end");
+//		    	  isAnimationning = false;
+		    	  articleListManager.getFlipper().getInAnimation().setAnimationListener(null);
+		      }
+		   });
 		this.currentArticleId = articleId;
 		flipperManager = articleDetailManager;
 		articleListManager.inArticleDetail(articleId);
@@ -208,43 +235,52 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 		case MotionEvent.ACTION_UP:
 			yAtUp = event.getY();
 			xAtUp = event.getX();
-			// up
-			if (yAtDown - yAtUp > SWIPE_MIN_DISTANCE) {
-				initClickCount();
-				flipperManager.setAnimation(R.anim.second_up_down_in, R.anim.first_up_down_out);
-				return flipperManager.upDownSwipe(-1);
-				// down
-			} else if (yAtUp - yAtDown > SWIPE_MIN_DISTANCE) {
-				initClickCount();
-				flipperManager.setAnimation(R.anim.first_up_down_in, R.anim.second_up_down_out);
-				return flipperManager.upDownSwipe(1);
-				// left
-			} else if (xAtUp - xAtDown > SWIPE_MIN_DISTANCE) {
-				initClickCount();
-				if (flipperManager != articleDetailManager) {
-					return false;
-				}
-				flipperManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
-				return backEvent();
-				// right
-			} else if (xAtDown - xAtUp > SWIPE_MIN_DISTANCE) {
-				initClickCount();
-				if (flipperManager == articleDetailManager || flipperManager.isErrorView()) {
-					return false;
-				} 
-				flipperManager.setAnimation(R.anim.first_left_right_in, R.anim.second_up_down_out);
-				return moveArticleDetail(articleListManager.getCurrentViewId());
-			}
-			if (clickCount == DOUBLE_TAB) {
-				long time = System.currentTimeMillis() - clickStartTime;
-				if (time <= CLICK_MAX_DURATION) {
+			if(!isAnimationning){
+				// up
+				if (yAtDown - yAtUp > SWIPE_MIN_DISTANCE) {
 					initClickCount();
-					flipperManager.setAnimation(R.anim.fade_in, R.anim.fade_out);
-					return moveMenuPage();
+					flipperManager.setAnimation(R.anim.second_up_down_in, R.anim.first_up_down_out);
+					return flipperManager.upDownSwipe(-1);
+					// down
+				} else if (yAtUp - yAtDown > SWIPE_MIN_DISTANCE) {
+					initClickCount();
+					flipperManager.setAnimation(R.anim.first_up_down_in, R.anim.second_up_down_out);
+					return flipperManager.upDownSwipe(1);
+					// left
+				} else if (xAtUp - xAtDown > SWIPE_MIN_DISTANCE) {
+					initClickCount();
+					if (flipperManager != articleDetailManager) {
+						return false;
+					}
+					articleDetailManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
+					articleListManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
+					return backEvent();
+					// right
+				} else if (xAtDown - xAtUp > SWIPE_MIN_DISTANCE) {
+					initClickCount();
+					if (flipperManager == articleDetailManager || flipperManager.isErrorView()) {
+						return false;
+					}
+					articleListManager.setAnimation(R.anim.first_left_right_in, R.anim.second_up_down_out);
+					return moveArticleDetail(articleListManager.getCurrentViewId());
 				}
-				initClickCount();
+				if (clickCount == DOUBLE_TAB) {
+					long time = System.currentTimeMillis() - clickStartTime;
+					if (time <= CLICK_MAX_DURATION) {
+						initClickCount();
+						flipperManager.setAnimation(R.anim.fade_in, R.anim.fade_out);
+						return moveMenuPage();
+					}
+					initClickCount();
+				}
 			}
 		}
+		
 		return true;
+	}
+	
+	
+	public void changeIsAnimationningFlag() {
+		isAnimationning = false;
 	}
 }

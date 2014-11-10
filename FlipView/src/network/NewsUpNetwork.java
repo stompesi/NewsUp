@@ -167,7 +167,6 @@ public class NewsUpNetwork {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						Log.e("NewsUp", "Network : updateUserLog 실패.");
-						updateUserLog(articleReadInfo);
 					}
 				}) {
 			 		@Override

@@ -30,7 +30,8 @@ abstract public class ArticleFlipViewManager {
 
 	public void removeAllFlipperItem() {
 		while (flipper.getChildCount() > offset) {
-			flipper.removeViewAt(minChildIndex);
+			flipper.removeAllViews();
+//			flipper.removeViewAt(minChildIndex);
 		}
 	}
 	

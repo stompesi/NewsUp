@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B0AEAE" >
+    android:background="@drawable/qwer" >
     <ViewFlipper
         android:id="@+id/articleListFlipper"
         android:layout_width="@dimen/article_viewFlipper_width"

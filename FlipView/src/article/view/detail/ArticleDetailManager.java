@@ -16,10 +16,9 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.animation.Animation;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import application.NewsUpApp;
@@ -158,87 +157,114 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 
 
 
+	
 	class InsertArticleTask extends
 	AsyncTask<Void, ArticleDetailPage, Void> {
 
 		private int articleId;
 
-		private boolean isFinish;
-		
 		private int page;
+		private ArrayList<ArticleDetailPage> articleDetailPageList;
+		private ArticleDetailPage articleDetailPage;
 		
+		private boolean isFinish;
 		public InsertArticleTask(int articleId) {
 			this.articleId = articleId;
 			this.page = 1;
+			articleDetailPageList = new ArrayList<ArticleDetailPage>();
 			this.isFinish = false;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		protected Void doInBackground(Void... params) {
 			// TODO Auto-generated method stub
 			ArticleActivity.getInstance().changeIsAnimationningFlag();
 			ArticleDetailPage next = splitter.makePageList();
-			ArticleDetailPage articleDetailPage;
+			articleDetailPage = splitter.makePageList();
 			
 			while(next != null) {
 				articleDetailPage = next;
 				next = splitter.makePageList();
 				
 				if(next == null) {
-					isFinish = true; 
+					articleDetailPageList.add(articleDetailPage);
+					for(int i = 0 ; i < articleDetailPageList.size() ; i++) {
+						publishProgress(articleDetailPageList.get(i));
+					}
+					isFinish = true;
+					return null;
+				} 
+				else {
+					page++;
+					articleDetailPageList.add(articleDetailPage);
+					if(page % 5 == 0) {
+						for(int i = 0 ; i < articleDetailPageList.size() ; i++) {
+							publishProgress(articleDetailPageList.get(i));
+						}
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						articleDetailPageList.clear();
+						return null;
+					}
+					publishProgress(articleDetailPage);
 				}
-				page++;
-				publishProgress(articleDetailPage);
 			}
+			for(int i = 0 ; i < articleDetailPageList.size() ; i++) {
+				publishProgress(articleDetailPageList.get(i));
+			}
+			
 			return null;
 		}
 
 		@Override
 	    protected void onProgressUpdate(final ArticleDetailPage... articleDetailPage) {
+			LinearLayout view;
+			final LinearLayout layout;
+			layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
+			view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
+			viewMaker(view, articleDetailPage[0]);
 			
-			if(isFinish) {
+			if(isFinish){
 				handler.postDelayed((new Runnable() {
 					@Override
 					public void run() {
+						
 						// TODO : 에니메이션 작업을 끝나면 붙이는방식으로 간다..!!!!
-						Log.e("asdfadsf","asdfasdfad");
-						LinearLayout view, layout;
-						layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
-						view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
-						viewMaker(view, articleDetailPage[0]);
 						addView(layout);
 						currentChildIndex++;
-						InsertArticleTask insertArticleTask = new InsertArticleTask(articleId);
-						insertArticleTask.execute();
+						pageReadStartTime = getTimestamp();
+						articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
+						
 					}
-				}), 300);
+				}), 0);
 			} else {
 				handler.postDelayed((new Runnable() {
 					@Override
 					public void run() {
+//						LinearLayout view, layout;
+//						layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
+//						view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
+//						viewMaker(view, articleDetailPage[0]);
 						// TODO : 에니메이션 작업을 끝나면 붙이는방식으로 간다..!!!!
-						Log.e("asdfadsf","asdfasdfad");
-						LinearLayout view, layout;
-						layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
-						view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
-						viewMaker(view, articleDetailPage[0]);
+						Log.e("aaa", "Aaa");
 						addView(layout);
 						currentChildIndex++;
+//						pageReadStartTime = getTimestamp();
+//						articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
 					}
-				}), 300);
+				}), 0);
 			}
-			
-			
-			
 	    }
-
 		@Override
 		protected void onPostExecute(Void params) {
-			pageReadStartTime = getTimestamp();
-			articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
 		}
 	}
-
+	
 	private void viewMaker(LinearLayout view,
 			ArticleDetailPage articleDetailPage) {
 		ArrayList<Object> articleContent;

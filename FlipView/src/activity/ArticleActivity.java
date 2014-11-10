@@ -189,7 +189,7 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 		      public void onAnimationRepeat(Animation animation) {}
 		      public void onAnimationEnd(Animation animation) {
 		    	  Log.e("end", "moveArticleDetail end");
-//		    	  isAnimationning = false;
+		    	  isAnimationning = false;
 		    	  articleListManager.getFlipper().getInAnimation().setAnimationListener(null);
 		      }
 		   });
@@ -235,6 +235,7 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 		case MotionEvent.ACTION_UP:
 			yAtUp = event.getY();
 			xAtUp = event.getX();
+			
 			if(!isAnimationning){
 				// up
 				if (yAtDown - yAtUp > SWIPE_MIN_DISTANCE) {

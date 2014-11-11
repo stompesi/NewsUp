@@ -28,8 +28,12 @@ import com.example.newsup.splitter.PageSplitter;
 import com.example.newsup.view.structure.ArticleDetailPage;
 import com.example.newsup.view.structure.ImageInfo;
 import com.example.newsup.view.structure.LayoutInfo;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
 
-public class ArticleDetailManager extends ArticleFlipViewManager {
+public class ArticleDetailManager extends ArticleFlipViewManager implements YouTubePlayer.OnInitializedListener {
+	public static final String VIDEO_ID = "o7VVHhK9zf0";
 	private int textSize;
 
 	private ArticleReadInfo articleReadInfo;
@@ -97,7 +101,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		viewMaker(view, articleDetailPage);
 		addView(layout);
 		articleReadInfo.addPage();
-		
+		addView(new ArticleLastPageMaker(context, inflater).getLastPage());
 		display(getChildChount() - 1);
 
 		InsertArticleTask insertArticleTask = new InsertArticleTask(articleId);
@@ -157,10 +161,17 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 				addView(articleContentLayout);
 				currentChildIndex++;
 				articleReadInfo.addPage();
+				
+				
+				
 				for(int i = 0 ; i < getChildChount() ; i++) {
 					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 					setPageNumber(view, getChildChount() - i, getChildChount());
 				}
+				
+				
+				
+				
 			} else {
 				addView(articleContentLayout);
 				currentChildIndex++;
@@ -330,5 +341,22 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	
 	public void removeAllFlipperItem() {
 		flipper.removeAllViews();
+	}
+
+	@Override
+	public void onInitializationFailure(Provider arg0,
+			YouTubeInitializationResult arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onInitializationSuccess(Provider provider, YouTubePlayer player,
+			boolean wasRestored) {
+		
+		 if (!wasRestored) {
+				player.cueVideo(VIDEO_ID);
+			}
+		
 	}
 }

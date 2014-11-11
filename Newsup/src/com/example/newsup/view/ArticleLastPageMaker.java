@@ -25,7 +25,7 @@ YouTubePlayer.OnInitializedListener{
 	private LayoutInflater Inflater;
 	private Context context;
 
-	public static final String API_KEY = "AIzaSyByJ5VokD4At2Q6aUjSXlp_bNpQdWngC8A";
+	public static final String API_KEY = "AIzaSyASbhpfpjbXyEAg9sOejF8hol3dLmJNgHI";
 	public static final String VIDEO_ID = "o7VVHhK9zf0";
 
 

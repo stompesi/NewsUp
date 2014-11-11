@@ -168,8 +168,9 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				currentChildIndex++;
 				articleReadInfo.addPage();
 				
-			addView(new ArticleLastPageMaker(context, inflater).getLastPage());
-
+			    addView(new ArticleLastPageMaker(context, inflater).getLastPage());
+			    currentChildIndex++;
+				articleReadInfo.addPage();
 				
 				for(int i = 0 ; i < getChildChount() ; i++) {
 					LinearLayout view = (LinearLayout) flipper.getChildAt(i);

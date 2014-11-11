@@ -19,6 +19,7 @@ import android.widget.ViewFlipper;
 import com.example.newsup.R;
 import com.example.newsup.activity.transmission.structure.Image;
 import com.example.newsup.activity.transmission.structure.TransmissionArticle;
+import com.example.newsup.data.TimeCalculator;
 import com.example.newsup.database.Article;
 import com.example.newsup.network.NewsUpImageLoader;
 import com.example.newsup.network.NewsUpNetwork;
@@ -67,7 +68,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		// TODO : title 변경 
 		title.setText("" + article.getTitle());
 		content.setText(article.getBody());
-		time.setText(article.getTimestamp());
+		TimeCalculator timeCalculator = new TimeCalculator(Integer.parseInt(article.getTimestamp())); 
+		time.setText(timeCalculator.calculatorTimeDifference());
 		provider.setText(article.getProvider());
 		
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();

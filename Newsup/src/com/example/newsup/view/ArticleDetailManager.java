@@ -1,6 +1,7 @@
 package com.example.newsup.view;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -41,6 +42,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	LayoutInfo layoutInfo;
 
+	boolean pageOut;
 	boolean isAnimationning;
 	public ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
@@ -111,17 +113,14 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	class InsertArticleTask extends
 	AsyncTask<Void, ArticleDetailPage, Void> {
 
-		private int articleId;
-
-		private int page;
-		private ArrayList<ArticleDetailPage> articleDetailPageList;
 		private ArticleDetailPage articleDetailPage;
+		
+		
+		private final Semaphore resource;
 		
 		private boolean isFinish;
 		public InsertArticleTask(int articleId) {
-			this.articleId = articleId;
-			this.page = 1;
-			articleDetailPageList = new ArrayList<ArticleDetailPage>();
+			resource = new Semaphore(1);
 			this.isFinish = false;
 		}
 
@@ -131,26 +130,35 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 			ArticleActivity.getInstance().changeIsAnimationningFlag();
 			ArticleDetailPage next = splitter.makePageList();
 			
+			
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			while(next != null) {
-				articleDetailPage = next;
-				next = splitter.makePageList();
-				if(next == null) {
-					publishProgress(articleDetailPage);
-					isFinish = true;
-					return null;
-				} 
-				else {
-					page++;
-					if(page % 3 == 0){
-						try {
-							Thread.sleep(500);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+				try {
+					resource.acquire();
+					articleDetailPage = next;
+					next = splitter.makePageList();
+					if(next == null) {
+						publishProgress(articleDetailPage);
+						isFinish = true;
+						return null;
+					} 
+					else {
+						publishProgress(articleDetailPage);
 					}
-					publishProgress(articleDetailPage);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				if(pageOut) {
+					removeAllFlipperItem();
+					return null;
+				}
+				
 			}
 			return null;
 		}
@@ -164,6 +172,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 			viewMaker(layoutView, articleDetailPage[0]);
 			
 			if(isFinish){
+				Log.e("last", "last");
 				addView(articleContentLayout);
 				currentChildIndex++;
 				articleReadInfo.addPage();
@@ -176,14 +185,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 					setPageNumber(view, getChildChount() - i, getChildChount());
 				}
-				
-				
-				
-				
+				resource.release();
 			} else {
 				addView(articleContentLayout);
 				currentChildIndex++;
 				articleReadInfo.addPage();
+				resource.release();
 			}
 	    }
 		@Override
@@ -303,6 +310,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	@Override
 	public void outArticleDetail() {
+		pageOut = true;
 		setReadTime();
 		if (NewsUpNetwork.isNetworkState(context)) {
 			NewsUpNetwork.getInstance().updateUserLog(articleReadInfo);
@@ -331,6 +339,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	@Override
 	public void inArticleDetail(int articleId) {
+		pageOut = false;
 		pageReadStartTime = getTimestamp();
 		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime);
 		getArticleDetail(articleId);

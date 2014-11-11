@@ -149,7 +149,8 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
 			if(flipperManager == articleDetailManager) {
-				flipperManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
+				articleDetailManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
+				articleListManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
 				backEvent();
 				return true;
 			}

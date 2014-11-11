@@ -113,7 +113,13 @@ public class ArticleListManager extends ArticleFlipViewManager {
 
 	public int insertArticleList() {
 		int offset = getChildChount() - getChildChount() % 10; 
-		List<Article> articleList = Article.selectArticleList(category, offset);
+		List<Article> articleList;
+		if(category == 0) {
+			articleList = Article.selectMainArticleList(offset);
+		} else {
+			articleList = Article.selectCategoryArticleList(category, offset);
+		}
+		
 		
 		int articleListSize = articleList.size();
 
@@ -147,7 +153,12 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		protected List<Article> doInBackground(Void... params) {
 			// TODO Auto-generated method stub
 			int offset = getChildChount() - getChildChount() % 10;
-			List<Article> articleList = Article.selectArticleList(category, offset);
+			List<Article> articleList;
+			if(category == 0) {
+				articleList = Article.selectMainArticleList(offset);
+			} else {
+				articleList = Article.selectCategoryArticleList(category, offset);
+			}
 			return  articleList;
 			
 		}
@@ -248,7 +259,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	
 	public void removeAllFlipperItem() {
 		while (flipper.getChildCount() > offset) {
-			flipper.removeViewAt(minChildIndex);
+			removeFlipperItem();
 		}
 	}
 }

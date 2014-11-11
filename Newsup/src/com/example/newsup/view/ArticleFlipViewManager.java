@@ -27,10 +27,6 @@ abstract public class ArticleFlipViewManager {
 		minChildIndex = 0;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-
-	
-	abstract public void removeAllFlipperItem();
-	
 	
 	public void removeFlipperItem() {
 		flipper.removeViewAt(minChildIndex);
@@ -77,8 +73,10 @@ abstract public class ArticleFlipViewManager {
 	public boolean isErrorView() {
 		return getChildChount() == 1;
 	}
+	
 	abstract public void inArticleDetail(int articleId);
 	abstract public void outArticleDetail();
 	abstract public boolean upDownSwipe(int page);
+	abstract public void removeAllFlipperItem();
 	
 }

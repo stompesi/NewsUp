@@ -42,16 +42,16 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	LayoutInfo layoutInfo;
 
 	boolean isAnimationning;
+	
+	Handler handler = new Handler();
+	ArrayList<Object> list;
+	PageSplitter splitter;
+	
+	
 	public ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
 		this.context = context;
 	}
-	
-	
-
-	Handler handler = new Handler();
-	ArrayList<Object> list;
-	PageSplitter splitter;
 
 	public void getArticleDetail(int articleId) {
 		String str;
@@ -110,18 +110,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	class InsertArticleTask extends
 	AsyncTask<Void, ArticleDetailPage, Void> {
-
-		private int articleId;
-
 		private int page;
-		private ArrayList<ArticleDetailPage> articleDetailPageList;
 		private ArticleDetailPage articleDetailPage;
 		
 		private boolean isFinish;
 		public InsertArticleTask(int articleId) {
-			this.articleId = articleId;
 			this.page = 1;
-			articleDetailPageList = new ArrayList<ArticleDetailPage>();
 			this.isFinish = false;
 		}
 
@@ -276,7 +270,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	}
 
 	private TextView setTextView(Context context, int height, int textSize) {
-
 		TextView textView = new TextView(context);
 		textView.setWidth(layoutInfo.getAvailableTotalWidth());
 		textView.setHeight(height);
@@ -311,7 +304,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	@Override
 	public boolean upDownSwipe(int increase) {
 		int checkIndex = currentChildIndex + increase;
-
 		if (checkIndex >= getChildChount() || checkIndex < minChildIndex) {
 			return false;
 		}

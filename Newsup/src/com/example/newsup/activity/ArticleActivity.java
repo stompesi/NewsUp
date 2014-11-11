@@ -108,11 +108,7 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 			   int width = articleListManager.getFlipper().getWidth();
 			   int height = articleListManager.getFlipper().getHeight();
 			   
-//			   articleDetailManager.setLayoutWidth(width);
-//			   articleDetailManager.setLayoutHeight(height);
-			   
 			   LayoutInfo layoutInfo = LayoutInfo.getInstance();
-			   
 			   layoutInfo.calLayoutInfo(width, height);
 			   articleListManager.getFlipper().getViewTreeObserver().removeOnGlobalLayoutListener(this);
 			 }

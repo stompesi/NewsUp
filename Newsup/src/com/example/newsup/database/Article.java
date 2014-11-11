@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.newsup.activity.LockScreenActivity;
 import com.orm.SugarRecord;
@@ -49,7 +50,6 @@ public class Article extends SugarRecord<Article> implements Serializable {
 		this.firstImageColor = firstImageColor;
 	}
 	
-//	public int getIdx() { return idx; }
 	public int getArticleId() { return articleId; }
 	public double getScore() { return score; }
 	public int getCategory() { return category; }
@@ -62,7 +62,6 @@ public class Article extends SugarRecord<Article> implements Serializable {
 	public String getFirstImageURL() { return firstImageURL; }
 	public String getFirstImageColor() { return firstImageColor; }
 	
-//	public void setIdx(int idx) { this.idx = idx; }
 	public void setCategory(int category) { this.category = category; }
 	public void setScore(double score) { this.score = score; }
 	public void setArticleId(int articleId) { this.articleId = articleId; }
@@ -75,11 +74,11 @@ public class Article extends SugarRecord<Article> implements Serializable {
 	public void setFirstImageURL(String firstImageURL) { this.firstImageURL = firstImageURL; }
 	public void setFirstImageColor(String firstImageColor) { this.firstImageColor = firstImageColor; }
 	
-	
 	public static void saveArticle(JSONObject articleJSONObject) {
 		ArticleInsertAsyncTask task = new ArticleInsertAsyncTask();
 		task.execute(articleJSONObject);
 	}
+	
 	static class ArticleInsertAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 		@Override
 		protected Void doInBackground(JSONObject... params) {
@@ -87,6 +86,7 @@ public class Article extends SugarRecord<Article> implements Serializable {
 			Article articleORM = new Article();
 			try {
 				articleORM.setArticleId(article.getInt("id"));
+				articleORM.setScore(article.getDouble("score"));
 				articleORM.setCategory(article.getInt("category"));
 				articleORM.setBody(article.getString("body"));
 				articleORM.setDescription(article.getString("description"));
@@ -105,29 +105,30 @@ public class Article extends SugarRecord<Article> implements Serializable {
 		}
 	}
 	
-	public static List<Article> selectArticleList(int category, int offset) {
+	public static List<Article> selectMainArticleList(int offset) {
+		Log.d("NewsUp", "추천기사 요청");
 		Article.executeQuery("VACUUM");
-		// TODO : 점수별 소팅 
-//		List<Article> result = Article.findWithQuery(Article.class, 
-//				"SELECT * FROM Article where category = ? ORDER BY score DESC LIMIT 10 OFFSET ?", "" + category , "" + offset);
-		
-		List<Article> result = Article.find(Article.class, "category = ? ORDER BY id ASC LIMIT 10 OFFSET ?", "" + category , "" + offset);
+		List<Article> result = Article.findWithQuery(Article.class, "SELECT * FROM Article ORDER BY score DESC LIMIT 10 OFFSET ?", "" + offset);
+		return result;
+	}
+	
+	public static List<Article> selectCategoryArticleList(int category, int offset) {
+		Log.d("NewsUp", "카테고리 기사 요청");
+		Article.executeQuery("VACUUM");
+		List<Article> result = Article.findWithQuery(Article.class, "SELECT * FROM Article WHERE category = ? ORDER BY timestamp DESC LIMIT 10 OFFSET ?", "" + category, "" + offset);
 		return result;
 	}
 	
 	public static Article getArticle(int articleId) {
+		Log.d("NewsUp", "상세기사 요청");
 		Article article = Select.from(Article.class).where(Condition.prop("article_id").eq(articleId)).first();
 		return article;
 	}
 	
-	public static int getCategoryArticleCount(int category) {
-		return (int) Select.from(Article.class).where(Condition.prop("category").eq(category)).count();
-	}
-	
 	public static void removeyArticle(){
+		Log.d("NewsUp", "오래된 기사 제거 ");
 		int twoDayAgo = (int)(System.currentTimeMillis() / 1000L) - TWO_DAY_SECOND;
 		Article.deleteAll(Article.class, "timestamp <= ?", "" + twoDayAgo);
-		
 		LockScreenActivity lockScreenActivity = (LockScreenActivity) LockScreenActivity.getInstance();
 		lockScreenActivity.reFresh();
 	}

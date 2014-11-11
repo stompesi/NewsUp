@@ -91,7 +91,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		textView.setText(article.getAuthor());
 		view.addView(textView);
 
-
 		textSize = R.dimen.text_author;
 		textView = setTextView(context, 100, textSize);
 		textView.setPadding(layoutInfo.getTextViewPadding(), 10, 0, 0);
@@ -100,64 +99,14 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		view.addView(textView);
 		viewMaker(view, articleDetailPage);
 		addView(layout);
+		articleReadInfo.addPage();
 		
 		display(getChildChount() - 1);
 
-
 		InsertArticleTask insertArticleTask = new InsertArticleTask(articleId);
 		insertArticleTask.execute();
-
-		
-
-
-		// 마지막 페이지.
 	}
 
-//		class InsertArticleTask extends
-//		AsyncTask<Void, Void, ArticleDetailPage> {
-//	
-//			private int articleId;
-//	
-//			public InsertArticleTask(int articleId) {
-//				this.articleId = articleId;
-//			}
-//	
-//			@Override
-//			protected ArticleDetailPage doInBackground(Void... params) {
-//				// TODO Auto-generated method stub
-//				ArticleDetailPage articleDetailPage = splitter.makePageList();
-//				return articleDetailPage;
-//			}
-//	
-//	
-//			@Override
-//			protected void onPostExecute(final ArticleDetailPage articleDetailPage) {
-//				if(articleDetailPage == null) {
-//					pageReadStartTime = getTimestamp();
-//					articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
-//					ArticleActivity.getInstance().changeIsAnimationningFlag();
-//				} else {
-//					handler.postDelayed((new Runnable() {
-//						@Override
-//						public void run() {
-//							LinearLayout view, layout;
-//							layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
-//							view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
-//							viewMaker(view, articleDetailPage);
-//							addView(layout);
-//							currentChildIndex++;
-//						}
-//					}), 0);
-//					
-//					InsertArticleTask insertArticleTask = new InsertArticleTask(articleId);
-//					insertArticleTask.execute();
-//				}
-//			}
-//		}
-
-
-
-	
 	class InsertArticleTask extends
 	AsyncTask<Void, ArticleDetailPage, Void> {
 
@@ -181,7 +130,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 			// TODO Auto-generated method stub
 			ArticleActivity.getInstance().changeIsAnimationningFlag();
 			ArticleDetailPage next = splitter.makePageList();
-			articleDetailPage = splitter.makePageList();
 			
 			while(next != null) {
 				articleDetailPage = next;
@@ -203,21 +151,15 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 							publishProgress(articleDetailPageList.get(i));
 						}
 						try {
-							Thread.sleep(2000);
+							Thread.sleep(1000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						articleDetailPageList.clear();
-						return null;
 					}
-					publishProgress(articleDetailPage);
 				}
 			}
-			for(int i = 0 ; i < articleDetailPageList.size() ; i++) {
-				publishProgress(articleDetailPageList.get(i));
-			}
-			
 			return null;
 		}
 
@@ -230,34 +172,32 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 			viewMaker(view, articleDetailPage[0]);
 			
 			if(isFinish){
+				viewMaker(view, articleDetailPage[0]);
 				handler.postDelayed((new Runnable() {
 					@Override
 					public void run() {
-						
-						// TODO : 에니메이션 작업을 끝나면 붙이는방식으로 간다..!!!!
 						addView(layout);
 						currentChildIndex++;
-						pageReadStartTime = getTimestamp();
-						articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
-						
+						articleReadInfo.addPage();
+						for(int i = 0 ; i < getChildChount() ; i++) {
+							LinearLayout view = (LinearLayout) flipper.getChildAt(i);
+							setPageNumber(view, getChildChount() - i, getChildChount());
+						}
 					}
-				}), 0);
+				}), 200);
+				
+				
 			} else {
 				handler.postDelayed((new Runnable() {
 					@Override
 					public void run() {
-//						LinearLayout view, layout;
-//						layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
-//						view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
-//						viewMaker(view, articleDetailPage[0]);
 						// TODO : 에니메이션 작업을 끝나면 붙이는방식으로 간다..!!!!
 						Log.e("aaa", "Aaa");
 						addView(layout);
 						currentChildIndex++;
-//						pageReadStartTime = getTimestamp();
-//						articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime, getChildChount());
+						articleReadInfo.addPage();
 					}
-				}), 0);
+				}), 200);
 			}
 	    }
 		@Override
@@ -334,6 +274,8 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 						}
 					} while (end > 0);
 				}
+				
+				Log.e("save", save);
 				textView.setText(save);
 				view.addView(textView);
 			}
@@ -389,31 +331,38 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 			return false;
 		}
 
+		setReadTime();
 		display(checkIndex);
 
 		return true;
 	}
 
 	private void setReadTime() {
-		//		int index = getChildChount() - (currentChildIndex + 1);
-		//		articleReadInfo.setReadTime(index, getTimestamp() - pageReadStartTime);
-		//		pageReadStartTime = getTimestamp();
+		int index = getChildChount() - (currentChildIndex + 1);
+		articleReadInfo.setReadTime(index, getTimestamp() - pageReadStartTime);
+		pageReadStartTime = getTimestamp();
 	}
 
 	@Override
 	public void inArticleDetail(int articleId) {
+		pageReadStartTime = getTimestamp();
+		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime);
 		getArticleDetail(articleId);
+		
 	}
 
 	public void changeTextSize(int articleId) {
-		getArticleDetail(articleId);
 		pageReadStartTime = getTimestamp();
-		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime,
-				getChildChount());
-		display(getChildChount() - 1);
+		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime);
+		getArticleDetail(articleId);
+		
 	}
 
 	private int getTimestamp() {
 		return (int) (System.currentTimeMillis() / 1000L);
+	}
+	
+	public void removeAllFlipperItem() {
+		flipper.removeAllViews();
 	}
 }

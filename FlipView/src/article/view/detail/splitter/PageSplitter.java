@@ -66,9 +66,9 @@ public class PageSplitter {
 				list.remove(0);
 			}
 			if(isComplete) {
+				prevIsPageOver = false;
 				return page;
-			}
-			
+			}	
 		}
 		
 		if(!(remnantContent.isEmpty())) {
@@ -153,7 +153,6 @@ public class PageSplitter {
 			stringEndIndex = textPaint.breakText(text, true, layoutInfo.getAvailableTextViewWidth(), null);
 			if (stringEndIndex > 0) {
 				totalInputString += text.substring(0, stringEndIndex);
-//				Log.e("content", text.substring(0, stringEndIndex));
 				text = text.substring(stringEndIndex);
 				currentViewHeight -= textLineHeight;
 				
@@ -163,8 +162,6 @@ public class PageSplitter {
 				}
 			}
 		} while (stringEndIndex > 0);
-		currentViewHeight = currentViewHeight - textLineHeight;
-		currentViewHeight = currentViewHeight - textLineHeight;
 		currentViewHeight = currentViewHeight - textLineHeight;
 		totalInputString += "\n\n";
 		return false;
@@ -177,7 +174,7 @@ public class PageSplitter {
 	}
 	
 	private boolean isEndPage() {
-		return 0 >= currentViewHeight - textLineHeight;
+		return 0 >= currentViewHeight - (textLineHeight * 2);
 	}
 	
 	/////////////////////////////
@@ -228,6 +225,7 @@ public class PageSplitter {
 
 		color = imageResult[0];
 		imageURL = "http://14.63.161.26/" + imageResult[1];
+//		imageURL = imageResult[1];
 		
 		ratio = (double) layoutInfo.getAvailableTotalWidth() / Integer.parseInt(imageResult[3]);
 		imgaeWidth = layoutInfo.getAvailableTotalWidth();

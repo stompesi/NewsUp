@@ -248,4 +248,10 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	public int getCategory() {
 		return category;
 	}
+	
+	public void removeAllFlipperItem() {
+		while (flipper.getChildCount() > offset) {
+			flipper.removeViewAt(minChildIndex);
+		}
+	}
 }

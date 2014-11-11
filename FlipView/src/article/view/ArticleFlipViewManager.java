@@ -28,12 +28,9 @@ abstract public class ArticleFlipViewManager {
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public void removeAllFlipperItem() {
-		while (flipper.getChildCount() > offset) {
-			flipper.removeAllViews();
-//			flipper.removeViewAt(minChildIndex);
-		}
-	}
+	
+	abstract public void removeAllFlipperItem();
+	
 	
 	public void removeFlipperItem() {
 		flipper.removeViewAt(minChildIndex);

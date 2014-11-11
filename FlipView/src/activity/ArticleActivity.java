@@ -2,6 +2,9 @@ package activity;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import service.LockScreenService;
 import setting.RbPreference;
 import transmission.TransmissionArticle;
@@ -24,6 +27,8 @@ import article.view.detail.schema.LayoutInfo;
 import article.view.list.ArticleListManager;
 
 import com.example.flipview.R;
+
+import database.Article;
 
 public class ArticleActivity extends Activity implements OnTouchListener {
 	
@@ -126,6 +131,19 @@ public class ArticleActivity extends Activity implements OnTouchListener {
 			articleDetailManager.outArticleDetail();
 			flipperManager = articleListManager;
 		}
+		articleListManager.getFlipper().getInAnimation().setAnimationListener(new Animation.AnimationListener() {
+		      public void onAnimationStart(Animation animation) {
+		    	  Log.e("start", "backEvent start");
+		    	  isAnimationning = true;
+		      }
+		      public void onAnimationRepeat(Animation animation) {}
+		      public void onAnimationEnd(Animation animation) {
+		    	  Log.e("end", "backEvent end");
+		    	  articleDetailManager.removeAllFlipperItem();
+		    	  isAnimationning = false;
+		    	  articleListManager.getFlipper().getInAnimation().setAnimationListener(null);
+		      }
+		   });
 		articleListManager.setCategory(category);
 		articleListManager.removeAllFlipperItem();
 		articleListManager.insertArticleList();

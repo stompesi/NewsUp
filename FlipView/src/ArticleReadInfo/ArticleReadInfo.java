@@ -7,18 +7,19 @@ public class ArticleReadInfo {
 	private int startTime;
 	private ArrayList<Integer> pagesReadTime;
 	
-	public ArticleReadInfo(int id, int startTime, int pageNumber) {
+	public ArticleReadInfo(int id, int startTime) {
 		this.id = id;
 		this.startTime = startTime;
 		pagesReadTime = new ArrayList<Integer>();
-		for(int i = 0 ; i < pageNumber ; i++) {
-			pagesReadTime.add(0);
-		}
 	}
 	
 	public void setReadTime(int index, int readTime) {
 		int totalPageReadTime = pagesReadTime.get(index) + readTime;
 		pagesReadTime.set(index, totalPageReadTime);
+	}
+	
+	public void addPage() {
+		pagesReadTime.add(0);
 	}
 	
 	public int getArticleId() {

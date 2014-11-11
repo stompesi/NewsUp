@@ -58,42 +58,7 @@ public class SettingActivity extends Activity implements OnTouchListener {
 	Toast toast;
 	
 	// 글자크기 라디오 버튼 클릭 이벤트 리스너 
-	RadioGroup.OnCheckedChangeListener mRCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
-		RbPreference pref = new RbPreference(SettingActivity.this);
-		
-		@Override
-		public void onCheckedChanged(RadioGroup group, int checkedId) {
-			if(group.getId() == R.id.radioWordSize)
-			{
-				
-				
-				switch(checkedId)
-				{
-				case R.id.btnTextSizeSmall:
-					pref.setValue(RbPreference.WORD_SIZE, SMALL_WORD);
-					NewsUpApp.getInstance().setTextSize(SMALL_WORD);
-					break;
-
-				case R.id.btnTextSizeMedium:
-					pref.setValue(RbPreference.WORD_SIZE, MEDIUM_WORD);
-					NewsUpApp.getInstance().setTextSize(MEDIUM_WORD);
-					break;
-
-				case R.id.btnTextSizeLarge:
-					pref.setValue(RbPreference.WORD_SIZE, LARGE_WORD);
-					NewsUpApp.getInstance().setTextSize(LARGE_WORD);
-					break;
-
-				default:
-					break;
-				}
-				
-				//TODO : AAA
-				ArticleActivity articleDetailActivity = (ArticleActivity) ArticleActivity.getInstance();
-				articleDetailActivity.changeTextSize();
-			}
-		}
-	};
+	RadioGroup.OnCheckedChangeListener mRCheckedChangeListener;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -155,6 +120,38 @@ public class SettingActivity extends Activity implements OnTouchListener {
 		
 		View view = (View) findViewById(R.id.listKeyWord);
 		view.setOnTouchListener(this);
+		
+		mRCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+			RbPreference pref = new RbPreference(context);
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if(group.getId() == R.id.radioWordSize)
+				{
+					switch(checkedId)
+					{
+					case R.id.btnTextSizeSmall:
+						pref.setValue(RbPreference.WORD_SIZE, SMALL_WORD);
+						NewsUpApp.getInstance().setTextSize(SMALL_WORD);
+						break;
+
+					case R.id.btnTextSizeMedium:
+						pref.setValue(RbPreference.WORD_SIZE, MEDIUM_WORD);
+						NewsUpApp.getInstance().setTextSize(MEDIUM_WORD);
+						break;
+
+					case R.id.btnTextSizeLarge:
+						pref.setValue(RbPreference.WORD_SIZE, LARGE_WORD);
+						NewsUpApp.getInstance().setTextSize(LARGE_WORD);
+						break;
+
+					default:
+						break;
+					}
+					ArticleActivity articleDetailActivity = (ArticleActivity) ArticleActivity.getInstance();
+					articleDetailActivity.changeTextSize();
+				}
+			}
+		};
 	}
 
 

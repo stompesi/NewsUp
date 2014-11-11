@@ -114,7 +114,6 @@ public class NewsUpNetwork {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						Log.e("NewsUp", "Network : User 등록 실패.");
-						requestRegistUser(context);
 					}
 				}) {
 			 @Override
@@ -137,12 +136,18 @@ public class NewsUpNetwork {
             params.put("article_id", articleReadInfo.getArticleId());  
             params.put("start_time", articleReadInfo.getStartTime());  
             params.put("page", articleReadInfo.getPagesReadTime());
-            
             //TODO : 좋아요 실어요 넣기 
             params.put("like", 0);
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
+		
+		Log.e("updateUserLog", ""+ articleReadInfo.getArticleId());  
+		Log.e("updateUserLog", ""+ articleReadInfo.getStartTime());
+		Log.e("updateUserLog", ""+ (articleReadInfo.getPagesReadTime()));
+		Log.e("updateUserLog", ""+ (articleReadInfo.getPagesReadTime()).size());
+        //TODO : 좋아요 실어요 넣기 
+		Log.e("updateUserLog", ""+ 0);
 		
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.POST, requestURL, params, new Response.Listener<JSONObject>() {
 					@Override

@@ -23,9 +23,8 @@ import com.example.newsup.view.ArticleDetailManager;
 import com.example.newsup.view.ArticleFlipViewManager;
 import com.example.newsup.view.ArticleListManager;
 import com.example.newsup.view.structure.LayoutInfo;
-import com.google.android.youtube.player.YouTubeBaseActivity;
 
-public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListener {
+public class ArticleActivity extends Activity implements OnTouchListener {
 	
 	private static final int NONE_TAB = 0;
 	private static final int DOUBLE_TAB = 2;

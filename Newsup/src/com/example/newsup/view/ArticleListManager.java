@@ -67,7 +67,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 
 		// TODO : title 변경 
 		title.setText("" + article.getTitle());
-		content.setText(article.getBody());
+		content.setText(article.getDescription());
 		TimeCalculator timeCalculator = new TimeCalculator(Integer.parseInt(article.getTimestamp())); 
 		time.setText(timeCalculator.calculatorTimeDifference());
 		provider.setText(article.getProvider());

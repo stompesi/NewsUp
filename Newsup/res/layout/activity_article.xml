@@ -6,11 +6,8 @@
 
     <ViewFlipper
         android:id="@+id/articleListFlipper"
-        android:layout_width="312dp"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
         <ViewFlipper
             android:id="@+id/articleDetailFlipper"

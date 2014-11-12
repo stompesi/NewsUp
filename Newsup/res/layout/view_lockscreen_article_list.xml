@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aa="http://schemas.android.com/apk/res/android/com.example.flipview"
+    xmlns:androidhuman="http://schemas.android.com/apk/res/com.example.newsup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,18 +22,20 @@
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="264dp" />
+            android:layout_height="264dp"
+            android:scaleType="fitXY" />
 
-        <TextView
+        <com.example.newsup.text.StyledTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="73dp"
-            android:gravity="center"
+            android:lineSpacingExtra="7dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
-            android:paddingTop="17dp"
+            android:paddingTop="2dp"
             android:textColor="#000000"
-            android:textSize="33sp" />
+            android:textSize="21sp"
+            androidhuman:typeface="NotoSansKR-Medium.ttf.mp3" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,52 +44,53 @@
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="@dimen/lockscreen_description_time_textView_width"
-                android:layout_height="@dimen/lockscreen_description_time_textView_height"
-                android:layout_marginLeft="@dimen/lockscreen_description_time_textView_margin_left"
-                android:layout_marginTop="@dimen/lockscreen_description_time_textView_margin_top"
+            <com.example.newsup.text.StyledTextView
+                android:id="@+id/provider"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Large Text"
+                android:paddingLeft="14dp"
                 android:textColor="#000000"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
 
             <LinearLayout
                 android:layout_width="12dp"
                 android:layout_height="33dp" >
 
-                <TextView
+                <com.example.newsup.text.StyledTextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="."
-                    android:textSize="10sp" />
+                    android:text="·"
+                    android:textSize="12sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/provider"
-                android:layout_width="@dimen/lockscreen_description_provider_textView_width"
-                android:layout_height="@dimen/lockscreen_description_provider_textView_height"
-                android:layout_marginRight="@dimen/lockscreen_description_provider_textView_margin_right"
-                android:layout_marginTop="@dimen/lockscreen_description_provider_textView_margin_top"
-                android:gravity="center"
-                android:text="Large Text"
+            <com.example.newsup.text.StyledTextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:textColor="#000000"
-                android:textSize="10sp" />
+                android:gravity="center"
+                android:textSize="10sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
         </LinearLayout>
 
-        <TextView
+        <com.example.newsup.text.StyledTextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:ellipsize="end"
-            android:maxLines="@integer/lockscreen_content_textView_maxlines"
+            android:lineSpacingExtra="7dp"
+            android:maxLines="5"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
-            android:paddingTop="16dp"
+            android:paddingTop="7dp"
+             android:paddingBottom="7dp"
             android:textColor="#000000"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
     </LinearLayout>
 
 </LinearLayout>

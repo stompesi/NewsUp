@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aa="http://schemas.android.com/apk/res/android/com.example.flipview"
+    xmlns:aa="http://schemas.android.com/apk/res/android/com.example.new"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -37,8 +37,8 @@
 
         <TextView
             android:id="@+id/time"
-            android:layout_width="@dimen/lockscreen_description_time_textView_width"
-            android:layout_height="@dimen/lockscreen_description_time_textView_height"
+            android:layout_width="50dp"
+            android:layout_height="100dp"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:text="Large Text"
@@ -59,10 +59,10 @@
 
         <TextView
             android:id="@+id/provider"
-            android:layout_width="@dimen/lockscreen_description_provider_textView_width"
-            android:layout_height="@dimen/lockscreen_description_provider_textView_height"
-            android:layout_marginRight="@dimen/lockscreen_description_provider_textView_margin_right"
-            android:layout_marginTop="@dimen/lockscreen_description_provider_textView_margin_top"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="50dp"
             android:gravity="center"
             android:text="Large Text"
             android:textColor="#000000"
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="186dp"
         android:ellipsize="end"
-        android:maxLines="@integer/lockscreen_content_textView_maxlines"
+        android:maxLines="3"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"

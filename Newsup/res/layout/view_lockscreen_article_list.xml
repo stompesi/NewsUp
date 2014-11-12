@@ -1,43 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aa="http://schemas.android.com/apk/res/android/com.example.flipview"
+    xmlns:androidhuman="http://schemas.android.com/apk/res/com.example.newsup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="1" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="81dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.09" >
+    </LinearLayout>
+    
+    
+<!--     <com.example.newsup.StyledTextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ㅁㄴㅇ"
+        androidhuman="NanumPen.otf"
+       />
+ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.88"
         android:background="#FFFFFF"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="#000000" >
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="264dp" />
+        android:orientation="vertical"
+        android:weightSum="1" >
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="73dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.215"
             android:gravity="center"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
-            android:paddingTop="17dp"
-            android:textColor="#000000"
-            android:textSize="33sp" />
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.430" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.260"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="@integer/lockscreen_content_textView_maxlines"
+            android:text="Large Text"
+            android:textColor="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="33dp"
-            android:background="@drawable/lockscreen_text_back"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/lockscreen_description_layout_margin_bottom"
+            android:layout_weight="0.086"
+            android:background="#00BFFF"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
@@ -49,19 +73,11 @@
                 android:layout_marginTop="@dimen/lockscreen_description_time_textView_margin_top"
                 android:gravity="center"
                 android:text="Large Text"
-                android:textColor="#000000"
-                android:textSize="10sp" />
+                android:textColor="#000000" />
 
             <LinearLayout
-                android:layout_width="12dp"
-                android:layout_height="33dp" >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="."
-                    android:textSize="10sp" />
+                android:layout_width="@dimen/lockscreen_description_empty_layout_width"
+                android:layout_height="@dimen/lockscreen_description_empty_layout_height" >
             </LinearLayout>
 
             <TextView
@@ -72,21 +88,20 @@
                 android:layout_marginTop="@dimen/lockscreen_description_provider_textView_margin_top"
                 android:gravity="center"
                 android:text="Large Text"
-                android:textColor="#000000"
-                android:textSize="10sp" />
+                android:textColor="#000000" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/content"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:ellipsize="end"
-            android:maxLines="@integer/lockscreen_content_textView_maxlines"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
-            android:paddingTop="16dp"
-            android:textColor="#000000"
-            android:textSize="12sp" />
+            android:layout_height="0dp"
+            android:layout_weight="0.096" >
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.03" >
     </LinearLayout>
 
 </LinearLayout>

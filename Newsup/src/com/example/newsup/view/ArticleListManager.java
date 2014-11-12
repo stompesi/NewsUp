@@ -27,7 +27,8 @@ import com.example.newsup.network.NewsUpNetwork;
 public class ArticleListManager extends ArticleFlipViewManager {
 	
 	private static final int MINIMUM_ARTICLE_LIST_ATTACH_INDEX = 5;
-	
+	private static final String[] providers = {"", "중앙일보", "중앙선데이", "조선일보", "동아일보", "한겨례", "경향신문", "스포츠경향"
+		, "허핑턴포스트", "블로터닷", "인벤", "테크홀릭", "고함20", "뉴스페퍼민트", "슬로우뉴스", "오마이뉴스", "아주경제"};
 	private int category;
 	
 	private int detailArticleprevChildIndex;
@@ -70,7 +71,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		content.setText(article.getDescription());
 		TimeCalculator timeCalculator = new TimeCalculator(Integer.parseInt(article.getTimestamp())); 
 		time.setText(timeCalculator.calculatorTimeDifference());
-		provider.setText(article.getProvider());
+		provider.setText(providers[Integer.parseInt(article.getProvider())]);
 		
 		NewsUpImageLoader.loadImage(image, article.getFirstImageURL(), article.getFirstImageColor());
 		Image imageInfo = new Image(article.getFirstImageURL(), article.getFirstImageColor());

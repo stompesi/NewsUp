@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/settingLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -63,67 +63,10 @@
                 android:text="큰 글자" />
         </RadioGroup>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Switch
-            android:id="@+id/swPushNotify"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="푸시 알람" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="관심 키워드를 등록 하세요" />
-
-    <LinearLayout
-        android:id="@+id/layoutWordList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="62dp" >
-
-            <EditText
-                android:id="@+id/edtWord"
-                android:layout_width="191dp"
-                android:layout_height="wrap_content" >
-
-                <requestFocus />
-            </EditText>
-
-            <Button
-                android:id="@+id/btnWordRegister"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="등록" />
-
-            <Button
-                android:id="@+id/btnWordDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="삭제" />
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/listKeyWord"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:layout_weight="2.08" >
-        </ListView>
-    </LinearLayout>
-
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:id="@+id/swipeArea"
+	    android:orientation="vertical" >
+	</LinearLayout>
 </LinearLayout>

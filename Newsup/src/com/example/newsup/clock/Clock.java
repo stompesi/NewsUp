@@ -14,7 +14,7 @@ public class Clock {
 		public Clock() {
 			
 			// 시간 포맷 지정
-			CurDateFormat = new SimpleDateFormat("MM.dd ");
+			CurDateFormat = new SimpleDateFormat("MM월 dd일  ");
 			CurTimeFormat = new SimpleDateFormat("hh : mm ");
 		}
 		

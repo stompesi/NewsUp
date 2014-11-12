@@ -35,7 +35,7 @@ public class TransmissionArticle implements Serializable {
 		this.time = time.getText().toString();
 		this.provider = provider.getText().toString();
 		this.imageURL = ((Image) image.getTag()).getURL();
-		this.imageURL = ((Image) image.getTag()).getColor();
+		this.imageColor = ((Image) image.getTag()).getColor();
 	}
 	
 	public String getImageColor() {

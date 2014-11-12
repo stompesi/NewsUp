@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidhuman="http://schemas.android.com/apk/res/com.example.newsup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/lockscreen_back"
-    android:scaleType="fitXY"
-     >
+    android:orientation="vertical"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-     
-        >
+        android:layout_height="match_parent" >
 
         <ViewFlipper
             android:id="@+id/lockScreenViewFlipper"
@@ -19,15 +17,14 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="24dp"
             android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            >
+            android:layout_marginRight="24dp" >
         </ViewFlipper>
 
         <LinearLayout
             android:layout_width="312dp"
             android:layout_height="56dp"
             android:layout_marginLeft="24dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="23dp"
             android:orientation="vertical"
             android:visibility="visible" >
 
@@ -36,37 +33,40 @@
                 android:layout_height="31dp"
                 android:orientation="horizontal" >
 
-                <TextView
+                <com.example.newsup.text.StyledTextView
                     android:id="@+id/lockScreenTime"
                     android:layout_width="80dp"
                     android:layout_height="31dp"
                     android:textColor="#FFFFFF"
-                    android:textSize="26sp" />
+                    android:textSize="26sp"
+                    androidhuman:typeface="RobotoMedium.ttf.mp3" />
 
                 <LinearLayout
                     android:layout_width="4dp"
                     android:layout_height="31dp" >
                 </LinearLayout>
 
-                <TextView
+                <com.example.newsup.text.StyledTextView
                     android:id="@+id/lockScreenAM"
                     android:layout_width="21dp"
                     android:layout_height="31dp"
                     android:gravity="left|bottom"
                     android:textColor="#FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13sp" 
+                    androidhuman:typeface="Roboto-Regular.ttf.mp3" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="312dp"
                 android:layout_height="25dp" >
 
-                <TextView
+                <com.example.newsup.text.StyledTextView
                     android:id="@+id/lockScreenDate"
                     android:layout_width="125dp"
                     android:layout_height="25dp"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    androidhuman:typeface="RobotoMedium.ttf.mp3" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

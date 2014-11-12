@@ -94,6 +94,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		contentView.setText(article.getContent());
 		timeView.setText(article.getTime());
 		providerView.setText(article.getProvider());
+		Log.e("article.getImageColor()", "" + article.getImageColor());
 		NewsUpImageLoader.loadImage(image, article.getImageURL(), article.getImageColor());
 		addView(view);
 	}

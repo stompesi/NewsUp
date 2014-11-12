@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.example.newsup.R;
-import com.example.newsup.R.styleable;
 
 public class StyledTextView extends TextView {
 
@@ -29,7 +28,7 @@ public class StyledTextView extends TextView {
 	private void applyTypeface(Context context, AttributeSet attrs){
 		TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.StyledTextView);
 		String typefaceName = arr.getString(R.styleable.StyledTextView_typeface);
-		Typeface typeface = null;
+		
 		try{
 			if(typeface ==null){
 				typeface = Typeface.createFromAsset(context.getAssets(), typefaceName);

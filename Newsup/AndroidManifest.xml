@@ -53,19 +53,19 @@
         </activity>
         
         <service 
-            android:name="com.example.newsup.service.LockScreenService" >
+            android:name="com.example.newsup.background.service.LockScreenService" >
         </service>
         
         <service 
-            android:name="com.example.newsup.service.ArticleManageService" >
+            android:name="com.example.newsup.background.service.ArticleManageService" >
         </service>
 		
         <receiver 
-            android:name="com.example.newsup.receiver.LockScreenReceiver" >
+            android:name="com.example.newsup.background.receiver.LockScreenReceiver" >
         </receiver>
         
         <receiver 
-            android:name="com.example.newsup.receiver.ScreenOnOffReceiver" >
+            android:name="com.example.newsup.background.receiver.ScreenOnOffReceiver" >
         </receiver>
         
         <meta-data

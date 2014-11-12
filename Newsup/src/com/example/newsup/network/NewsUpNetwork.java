@@ -52,6 +52,7 @@ public class NewsUpNetwork {
 	// article list 요청 
 	public void requestArticleList(final int category) {
 		Log.d("NewsUp", "뉴스기사 요청");
+		Log.d("NewsUp", "deviceId : " + deviceId);
 		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/category/" + category;
 
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {

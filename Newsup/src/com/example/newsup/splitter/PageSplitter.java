@@ -211,7 +211,7 @@ public class PageSplitter {
 		String[] imageResult = str.split(" ");
 
 		color = imageResult[0];
-		imageURL = "http://14.63.161.26/" + imageResult[1];
+		imageURL = imageResult[1];
 		
 		ratio = (double) layoutInfo.getAvailableTotalWidth() / Integer.parseInt(imageResult[3]);
 		imgaeWidth = layoutInfo.getAvailableTotalWidth();

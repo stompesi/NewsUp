@@ -20,6 +20,7 @@ public class TransmissionArticle implements Serializable {
 	private int idx;
 	private String title, content, provider, time;
 	private String imageURL;
+	private String imageColor;
 	
 	public TransmissionArticle(View view) {
 		TextView title = (TextView) view.findViewById(R.id.title);
@@ -34,8 +35,12 @@ public class TransmissionArticle implements Serializable {
 		this.time = time.getText().toString();
 		this.provider = provider.getText().toString();
 		this.imageURL = ((Image) image.getTag()).getURL();
+		this.imageURL = ((Image) image.getTag()).getColor();
 	}
 	
+	public String getImageColor() {
+		return imageColor;
+	}
 	public int getIdx() {
 		return idx;
 	}

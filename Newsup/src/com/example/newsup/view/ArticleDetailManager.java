@@ -223,7 +223,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				imageView.getLayoutParams().width = imageInfo.getWidth();
 				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
-				NewsUpImageLoader.loadImage(imageView, imageInfo.getURL());
+				NewsUpImageLoader.loadImage(imageView, imageInfo.getURL(), imageInfo.getColor());
 			}
 			// 텍스트 처리
 			else {

@@ -72,18 +72,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		time.setText(timeCalculator.calculatorTimeDifference());
 		provider.setText(article.getProvider());
 		
-		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-		int width = metrics.widthPixels;
-		int height = metrics.heightPixels;
-		
-		ShapeDrawable drawable = new ShapeDrawable(new RectShape());
-		drawable.setIntrinsicWidth(width);
-		drawable.setIntrinsicHeight((int)(height * 0.3));
-		drawable.getPaint().setColor(Color.parseColor(article.getFirstImageColor()));
-		image.setImageDrawable(drawable);
-
-		NewsUpImageLoader.loadImage(image, article.getFirstImageURL());
-		Image imageInfo = new Image(article.getFirstImageURL());
+		NewsUpImageLoader.loadImage(image, article.getFirstImageURL(), article.getFirstImageColor());
+		Image imageInfo = new Image(article.getFirstImageURL(), article.getFirstImageColor());
 		image.setTag(imageInfo);
 		
 		addView(view);
@@ -103,7 +93,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		contentView.setText(article.getContent());
 		timeView.setText(article.getTime());
 		providerView.setText(article.getProvider());
-		NewsUpImageLoader.loadImage(image, article.getImageURL());
+		NewsUpImageLoader.loadImage(image, article.getImageURL(), article.getImageColor());
 		addView(view);
 	}
 	

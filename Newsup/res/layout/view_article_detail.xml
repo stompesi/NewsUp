@@ -10,7 +10,8 @@
         android:layout_height="@dimen/view_article_detail_content_height"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:gravity="center_horizontal">
     </LinearLayout>
 
     <FrameLayout

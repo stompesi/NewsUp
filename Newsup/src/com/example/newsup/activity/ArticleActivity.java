@@ -102,23 +102,9 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 		
 		flipperManager = articleListManager;
 		
-		articleListManager.getFlipper().getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			 @Override
-			  public void onGlobalLayout() {
-			   //now we can retrieve the width and height
-			   int width = articleListManager.getFlipper().getWidth();
-			   int height = articleListManager.getFlipper().getHeight();
-			   
-//			   articleDetailManager.setLayoutWidth(width);
-//			   articleDetailManager.setLayoutHeight(height);
-			   
-			   LayoutInfo layoutInfo = LayoutInfo.getInstance();
-			   
-			   layoutInfo.calLayoutInfo(width, height);
-			   articleListManager.getFlipper().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-			 }
-		});
 		
+		LayoutInfo layoutInfo = LayoutInfo.getInstance();
+		layoutInfo.calLayoutInfo(this);
 	}
 	
 	public void changeCategory(int category) {

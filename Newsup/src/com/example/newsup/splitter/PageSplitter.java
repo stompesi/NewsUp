@@ -62,15 +62,15 @@ public class PageSplitter {
 				return page;
 			}	
 		}
-		
-		if(!(remnantContent.isEmpty())) {
-			content = remnantContent.poll();
-			page.add(content);
-		}
-		
 		if (!(totalInputString.isEmpty())){
 			page.add(totalInputString);
 		}
+		
+		if(!(remnantContent.isEmpty())) {
+			content = remnantContent.poll();
+			inputContent(content);
+		}
+		
 		
 		if(!(page.isEmpty())) {
 			completeMakeView();
@@ -82,7 +82,7 @@ public class PageSplitter {
 	
 	private void inputImageContent(ImageInfo imageInfo) {
 		if (currentViewHeight > imageInfo.getHeight()) {
-			if (!(totalInputString.isEmpty())) {
+			if (!(totalInputString.isEmpty()) || imageInfo.getHeight() >= layoutInfo.getAvailableTotalHeight()) {
 				page.add(totalInputString);
 				// TODO : 함수로 뺄까 ?
 				totalInputString = "";
@@ -141,7 +141,7 @@ public class PageSplitter {
 		}
 			
 		do {
-			stringEndIndex = textPaint.breakText(text, true, layoutInfo.getAvailableTextViewWidth(), null);
+			stringEndIndex = textPaint.breakText(text, true, layoutInfo.getAvailableTotalWidth(), null);
 			if (stringEndIndex > 0) {
 				totalInputString += text.substring(0, stringEndIndex);
 				text = text.substring(stringEndIndex);
@@ -165,7 +165,7 @@ public class PageSplitter {
 	}
 	
 	private boolean isEndPage() {
-		return 0 >= currentViewHeight - (textLineHeight * 2);
+		return 0 >= currentViewHeight - (textLineHeight);
 	}
 	
 	/////////////////////////////
@@ -216,6 +216,16 @@ public class PageSplitter {
 		ratio = (double) layoutInfo.getAvailableTotalWidth() / Integer.parseInt(imageResult[3]);
 		imgaeWidth = layoutInfo.getAvailableTotalWidth();
 		imageHeight = (int)(Integer.parseInt(imageResult[2]) * ratio);
+		
+		
+		// 세로보다 긴경우 (width > height)
+		if(imageHeight > layoutInfo.getAvailableTotalHeight()) {
+			ratio =  (double) (layoutInfo.getAvailableTotalHeight() / 2) / imageHeight;
+			imageHeight = layoutInfo.getAvailableTotalHeight() / 2;
+			imgaeWidth = (int)(imgaeWidth * ratio);
+		} 
+			
+		
 		imageInfo = new ImageInfo(imageURL, imgaeWidth, imageHeight, color);
 
 		return imageInfo;

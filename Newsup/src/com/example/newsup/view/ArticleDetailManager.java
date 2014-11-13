@@ -69,7 +69,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 		TextView textView = setTextView(context,
 				layoutInfo.getAvailableTotalHeight(), NewsUpApp.getInstance().getTextSize());
-		textView.setPadding(layoutInfo.getTextViewPadding(), 0, layoutInfo.getTextViewPadding(), 0);
 		textPaint = textView.getPaint();
 
 		splitter = new PageSplitter(textPaint);
@@ -127,10 +126,28 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		@SuppressWarnings("unchecked")
 		@Override
 		protected Void doInBackground(Void... params) {
-			ArticleActivity.getInstance().changeIsAnimationningFlag();
 			ArticleDetailPage next = splitter.makePageList();
 			
-			
+			if(next == null) {
+				handler.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						addView(new ArticleLastPageMaker(context, inflater).getLastPage());
+					    currentChildIndex++;
+						articleReadInfo.addPage();
+						
+						// TODO Auto-generated method stub
+						for(int i = 0 ; i < getChildChount() ; i++) {
+							LinearLayout view = (LinearLayout) flipper.getChildAt(i);
+							setPageNumber(view, getChildChount() - i, getChildChount());
+						}
+						
+					}
+				});
+				isFinish = true;
+				return null;
+			} 
 			try {
 				Thread.sleep(300);
 			} catch (InterruptedException e) {
@@ -238,8 +255,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 				textView = new TextView(context);
 				textView.setWidth(layoutInfo.getAvailableTotalWidth());
-				textView.setPadding(layoutInfo.getTextViewPadding(), 0,
-						layoutInfo.getTextViewPadding(), 0);
 				textView.setLineSpacing((float) 1.1, (float) 1.1);
 
 				int textSize = NewsUpApp.getInstance().getTextSize();
@@ -258,7 +273,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					do {
 						// 글자가 width 보다 넘어가는지 체크
 						end = mPaint.breakText(textArr[j], true,
-								layoutInfo.getAvailableTextViewWidth(), null);
+								layoutInfo.getAvailableTotalWidth(), null);
 						if (end > 0) {
 							// 자른 문자열을 문자열 배열에 담아 놓는다.
 							save += textArr[j].substring(0, end) + "\n";

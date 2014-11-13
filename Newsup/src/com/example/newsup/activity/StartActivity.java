@@ -48,7 +48,6 @@ public class StartActivity extends Activity {
 		//처음 시작 할때 셋팅 값 저장.
 		RbPreference pref = new RbPreference(this);
 		pref.setValue(RbPreference.IS_LOCK_SCREEN, true);//락스크린 on
-		pref.setValue(RbPreference.NOTI_ALARM, true);//락스크린 off
 		pref.setValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
 	}
 	

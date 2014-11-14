@@ -34,7 +34,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 
 public class ArticleDetailManager extends ArticleFlipViewManager implements YouTubePlayer.OnInitializedListener {
-	public static final String VIDEO_ID = "o7VVHhK9zf0";
+	public static final String VIDEO_ID = "V7dmCpyCtA4";
 	private int textSize;
 
 	private ArticleReadInfo articleReadInfo;
@@ -48,8 +48,8 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		super(context, flipper, offset);
 		this.context = context;
 	}
-	
-	
+
+
 
 	Handler handler = new Handler();
 	ArrayList<Object> list;
@@ -80,27 +80,52 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		// 첫페이지 title, author
 
 		LinearLayout view, layout;
-		layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail,
-				null);
-		view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
+		layout = (LinearLayout)inflater.inflate(R.layout.view_article_detail_first_page,null);
+		view = (LinearLayout)(layout).findViewById(R.id.viewArticleDetail);
+		TextView titleText = (TextView)view.findViewById(R.id.title);
+		titleText.setText(article.getTitle());
 
-		textSize = R.dimen.text_title;
-		textView = setTextView(context, 300, textSize);
-		textView.setPadding(layoutInfo.getTextViewPadding(), 100, 0, 0);
-		textView.setMaxLines(2);
-		textView.setEllipsize(TextUtils.TruncateAt.END);
+		TextView auhtorText = (TextView)view.findViewById(R.id.author);
+		auhtorText.setText(article.getAuthor());
 
-		textView.setText(article.getAuthor());
-		view.addView(textView);
+		TextView proviewrText = (TextView)view.findViewById(R.id.provider);
+		proviewrText.setText(ArticleListManager.providers[Integer.parseInt(article.getProvider())]);
 
-		textSize = R.dimen.text_author;
-		textView = setTextView(context, 100, textSize);
-		textView.setPadding(layoutInfo.getTextViewPadding(), 10, 0, 0);
+		TextView facebookText = (TextView)view.findViewById(R.id.cnt_facebook);
+		facebookText.setText("1,100");
 
-		textView.setText(article.getAuthor());
-		view.addView(textView);
+		TextView twitterText = (TextView)view.findViewById(R.id.cnt_twitter);
+		twitterText.setText("1,200");
+		
 		viewMaker(view, articleDetailPage);
 		addView(layout);
+
+//
+//				LinearLayout view, layout;
+//				layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail,
+//						null);
+//				view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
+//		
+//				textSize = R.dimen.text_title;
+//				textView = setTextView(context, 300, textSize);
+//				textView.setPadding(layoutInfo.getTextViewPadding(), 100, 0, 0);
+//				textView.setMaxLines(2);
+//				textView.setEllipsize(TextUtils.TruncateAt.END);
+//		
+//				textView.setText(article.getAuthor());
+//				view.addView(textView);
+//		
+//				textSize = R.dimen.text_author;
+//				textView = setTextView(context, 100, textSize);
+//				textView.setPadding(layoutInfo.getTextViewPadding(), 10, 0, 0);
+//		
+//				textView.setText(article.getAuthor());
+//				view.addView(textView);
+//				viewMaker(view, articleDetailPage);
+//				addView(layout);
+
+
+
 		articleReadInfo.addPage();
 		//여기	
 		display(getChildChount() - 1);
@@ -113,10 +138,10 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	AsyncTask<Void, ArticleDetailPage, Void> {
 
 		private ArticleDetailPage articleDetailPage;
-		
-		
+
+
 		private final Semaphore resource;
-		
+
 		private boolean isFinish;
 		public InsertArticleTask(int articleId) {
 			resource = new Semaphore(1);
@@ -127,22 +152,22 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		@Override
 		protected Void doInBackground(Void... params) {
 			ArticleDetailPage next = splitter.makePageList();
-			
+
 			if(next == null) {
 				handler.post(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						addView(new ArticleLastPageMaker(context, inflater).getLastPage());
-					    currentChildIndex++;
+						currentChildIndex++;
 						articleReadInfo.addPage();
-						
+
 						// TODO Auto-generated method stub
 						for(int i = 0 ; i < getChildChount() ; i++) {
 							LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 							setPageNumber(view, getChildChount() - i, getChildChount());
 						}
-						
+
 					}
 				});
 				isFinish = true;
@@ -175,29 +200,29 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					removeAllFlipperItem();
 					return null;
 				}
-				
+
 			}
 			return null;
 		}
 
 		@Override
-	    protected void onProgressUpdate(final ArticleDetailPage... articleDetailPage) {
+		protected void onProgressUpdate(final ArticleDetailPage... articleDetailPage) {
 			LinearLayout layoutView;
 			final LinearLayout articleContentLayout;
 			articleContentLayout = (LinearLayout) inflater.inflate(R.layout.view_article_detail, null);
 			layoutView = (LinearLayout) (articleContentLayout).findViewById(R.id.viewArticleDetail);
 			viewMaker(layoutView, articleDetailPage[0]);
-			
+
 			if(isFinish){
 				Log.e("last", "last");
 				addView(articleContentLayout);
 				currentChildIndex++;
 				articleReadInfo.addPage();
-				
-			    addView(new ArticleLastPageMaker(context, inflater).getLastPage());
-			    currentChildIndex++;
+
+				addView(new ArticleLastPageMaker(context, inflater).getLastPage());
+				currentChildIndex++;
 				articleReadInfo.addPage();
-				
+
 				for(int i = 0 ; i < getChildChount() ; i++) {
 					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 					setPageNumber(view, getChildChount() - i, getChildChount());
@@ -209,12 +234,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				articleReadInfo.addPage();
 				resource.release();
 			}
-	    }
+		}
 		@Override
 		protected void onPostExecute(Void params) {
 		}
 	}
-	
+
 	private void viewMaker(LinearLayout view,
 			ArticleDetailPage articleDetailPage) {
 		ArrayList<Object> articleContent;
@@ -282,7 +307,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 						}
 					} while (end > 0);
 				}
-				
+
 				Log.e("save", save);
 				textView.setText(save);
 				view.addView(textView);
@@ -358,7 +383,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		pageReadStartTime = getTimestamp();
 		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime);
 		getArticleDetail(articleId);
-		
+
 	}
 
 	public void changeTextSize(int articleId) {
@@ -366,13 +391,13 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		pageReadStartTime = getTimestamp();
 		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime);
 		getArticleDetail(articleId);
-		
+
 	}
 
 	private int getTimestamp() {
 		return (int) (System.currentTimeMillis() / 1000L);
 	}
-	
+
 	public void removeAllFlipperItem() {
 		flipper.removeAllViews();
 	}
@@ -381,16 +406,16 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	public void onInitializationFailure(Provider arg0,
 			YouTubeInitializationResult arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onInitializationSuccess(Provider provider, YouTubePlayer player,
 			boolean wasRestored) {
-		
-		 if (!wasRestored) {
-				player.cueVideo(VIDEO_ID);
-			}
-		
+
+		if (!wasRestored) {
+			player.cueVideo(VIDEO_ID);
+		}
+
 	}
 }

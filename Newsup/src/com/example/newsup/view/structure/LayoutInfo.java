@@ -35,7 +35,7 @@ public class LayoutInfo {
 		
 		availableTotalHeight = (int)context.getResources().getDimension(R.dimen.view_article_detail_content_height) - (textViewPadding * 2);
 		
-		firstPageHeight = Math.round((float)(availableTotalHeight * 0.4));
+		firstPageHeight = 546;//.round((float)(availableTotalHeight * 0.4));
 	}
 	
 	

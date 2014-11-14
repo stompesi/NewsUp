@@ -8,7 +8,7 @@
     <dimen name="divice_height">640dp</dimen>
     
     <!-- 상세기사 -->
-    <dimen name="view_article_detail_content_height">543dp</dimen>
+    <dimen name="view_article_detail_content_height">575dp</dimen>
     <dimen name="view_article_detail_content_padding">16dp</dimen>
     
     <dimen name="view_article_detail_bottom_height">32dp</dimen>

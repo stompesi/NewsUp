@@ -1,42 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidhuman="http://schemas.android.com/apk/res/com.example.newsup"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:orientation="horizontal" 
-    android:weightSum="1">
+    android:layout_height="120dp"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="horizontal" 
-        android:layout_weight="0.3">
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/iamgeItem"
+        <LinearLayout
+            android:layout_width="216dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="2dp" >
+
+            <com.example.newsup.text.StyledLastArticleTextView
+                android:id="@+id/titleItem"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:ellipsize="end"
+                android:gravity="top"
+                android:maxLines="2"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+            <com.example.newsup.text.StyledLastArticleTextView
+                android:id="@+id/authorItem"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:ellipsize="end"
+                android:gravity="top"
+                android:maxLines="3"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/iamgeItem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.7"
-        android:orientation="vertical"
-        android:weightSum="1" >
-
-        <TextView
-            android:id="@+id/titleItem"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.7" />
-
-        <TextView
-            android:id="@+id/authorItem"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" 
-             android:layout_weight="0.3" />
-        
-        
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#F4F4F4" >
     </LinearLayout>
 
 </LinearLayout>

@@ -26,7 +26,7 @@ YouTubePlayer.OnInitializedListener{
 	private Context context;
 
 	public static final String API_KEY = "AIzaSyASbhpfpjbXyEAg9sOejF8hol3dLmJNgHI";
-	public static final String VIDEO_ID = "o7VVHhK9zf0";
+	public static final String VIDEO_ID = "V7dmCpyCtA4";
 
 
 	public ArticleLastPageMaker(Context context, LayoutInflater Inflater)

@@ -7,17 +7,16 @@
     <LinearLayout
         android:id="@+id/viewArticleDetail"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_article_detail_content_height"
+        android:layout_height="575dp"
         android:background="#FFFFFF"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal">
+        android:padding="16dp" >
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_article_detail_bottom_height"
-        android:layout_marginBottom="@dimen/view_article_detail_bottom_margin_bottom"
+        android:layout_height="40dp"
         android:background="#FFFFFF"
         android:gravity="center" >
 
@@ -25,24 +24,35 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center" >
+
             <!-- 좋아요 싫어요 나타내야한다 -->
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="end"
             android:visibility="visible" >
 
             <TextView
                 android:id="@+id/viewArticleBottom"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/view_article_detail_page_margin_bottom"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/view_article_detail_page_margin_end"
-                android:layout_marginTop="@dimen/view_article_detail_page_margin_top"
-                android:textSize="@dimen/view_article_detail_page_text_size" 
-                android:text="1 / 10"/>
+                android:gravity="right|center_vertical"
+                android:text="1 / 10"
+                android:textSize="@dimen/view_article_detail_page_text_size" />
         </LinearLayout>
     </FrameLayout>
+
 </LinearLayout>
+
+
+
+
+
+
+
+
+
+

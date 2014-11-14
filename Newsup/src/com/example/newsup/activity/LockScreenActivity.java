@@ -19,6 +19,7 @@ import android.widget.ViewFlipper;
 import com.example.newsup.R;
 import com.example.newsup.activity.transmission.structure.TransmissionArticle;
 import com.example.newsup.clock.Clock;
+import com.example.newsup.database.Article;
 import com.example.newsup.view.ArticleListManager;
 
 
@@ -51,6 +52,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	public static LockScreenActivity getInstance() {
 		return lockScreenActivity;
 	}
+	
 	
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +112,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	@Override
     protected void onDestroy() {
         Log.i("test", "onDstory()");
+        Article.setZeroScore(articleListManager.getChildChount() - articleListManager.getCurrentChildIndex() - 1);
         timerHandler.removeCallbacks(timerRunnable);
         super.onDestroy();
     }
@@ -126,6 +129,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		ArrayList<TransmissionArticle> articleList = new ArrayList<TransmissionArticle>();
 		
 		for(int i = articleListManager.getChildChount() - 1 ; i >= ARTICLE_END_ITEM_INDEX  ; i--) {
+			//TODO : 여기해야한다 
 			TransmissionArticle transmissionArticle = new TransmissionArticle(articleListManager.getChildAt(i));
 			articleList.add(transmissionArticle);
 		}

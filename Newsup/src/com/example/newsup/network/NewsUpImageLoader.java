@@ -21,6 +21,8 @@ public class NewsUpImageLoader {
 		int width = 200;
 		int height = 200;
 		
+	
+		
 		
 		// TODO : 여기 이미지 처리해야한다 
 		ShapeDrawable drawable = new ShapeDrawable(new RectShape());
@@ -34,6 +36,11 @@ public class NewsUpImageLoader {
 				.showImageForEmptyUri(drawable) // 처음 이미지 파일 보여주는 것 
 				.showImageOnFail(drawable) // 이미지 로드 실패시 보여주는 것 
 				.showImageOnLoading(drawable).build(); // 이미지 로딩중 보여주는것;
-		imageLoader.displayImage(imageUrl + path, imageView, options);
+		if(path.startsWith("http")) {
+			imageLoader.displayImage(path, imageView, options);
+		} else {
+			imageLoader.displayImage(imageUrl + path, imageView, options);
+		}
+		
 	}
 }

@@ -28,7 +28,7 @@ public class StartActivity extends Activity {
 //		 앱 처음 실행 
 		if(pref.getValue(RbPreference.PREF_IS_INTRO, true)) {
 			init();
-			onClick();
+			settingStart();
 		} else {
 			Intent intent = new Intent(StartActivity.this, ArticleActivity.class);
 			startActivity(intent);
@@ -42,7 +42,6 @@ public class StartActivity extends Activity {
 		startService(articleManageIntent);
 		startService(lockScreenIntent);
 		
-		
 		NewsUpNetwork.getInstance().requestArticleList(0);
 		
 		//처음 시작 할때 셋팅 값 저장.
@@ -51,16 +50,14 @@ public class StartActivity extends Activity {
 		pref.setValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
 	}
 	
-	public void onClick() {
+	public void settingStart() {
 		StartActivity startActivity;
-		Intent intent;
 		RbPreference pref;
+		Intent intent;
 		
 		startActivity = StartActivity.this;
 		pref = new RbPreference(startActivity);
 		pref.setValue(RbPreference.PREF_IS_INTRO, false);
-		
-//		 서비스(background 실행) 실행 용도
 		
 		NewsUpNetwork.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
 		NewsUpNetwork.getInstance().requestRegistUser(getApplication());
@@ -68,7 +65,6 @@ public class StartActivity extends Activity {
 		intent = new Intent(startActivity, ArticleActivity.class);
 		startActivity(intent);
 		startActivity.finish();
-		
 	}
 }
 

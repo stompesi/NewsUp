@@ -22,7 +22,7 @@
                 android:layout_width="188dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingTopS="2dp"
+                android:paddingTop="2dp"
                 android:paddingRight="1dp"
                 android:paddingLeft="2dp" >
 
@@ -316,7 +316,4 @@
                 android:text="설정" />
         </LinearLayout>
     </LinearLayout>
-
-   
-
 </LinearLayout>

@@ -11,13 +11,13 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
 import android.widget.ViewFlipper;
 
 import com.example.newsup.R;
 import com.example.newsup.activity.transmission.structure.TransmissionArticle;
 import com.example.newsup.background.service.LockScreenService;
+import com.example.newsup.database.Article;
 import com.example.newsup.setting.RbPreference;
 import com.example.newsup.view.ArticleDetailManager;
 import com.example.newsup.view.ArticleFlipViewManager;
@@ -53,6 +53,12 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 	public static ArticleActivity getInstance() {
 		return (ArticleActivity) mainActivity;
 	}
+	@Override
+    public void onDestroy()
+    {
+		Article.setZeroScore(articleListManager.getChildChount() - articleListManager.getCurrentChildIndex() - 1);
+        super.onDestroy();
+    }
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -101,7 +107,6 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 		articleDetailManager = new ArticleDetailManager(this, articleDetailFlipper, 0);
 		
 		flipperManager = articleListManager;
-		
 		
 		LayoutInfo layoutInfo = LayoutInfo.getInstance();
 		layoutInfo.calLayoutInfo(this);

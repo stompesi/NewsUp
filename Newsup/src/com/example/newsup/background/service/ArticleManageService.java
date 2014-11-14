@@ -82,6 +82,11 @@ public class ArticleManageService extends Service {
 			NewsUpNetwork.getInstance().requestArticleList(i);
 		}
 	}
+	
+	// 서버에 Article score 요청  
+		private static void refreshArticleScore() {
+			NewsUpNetwork.getInstance().refreshArticleScore();
+		}
 
 	// 서버에 기사 요청하는 기능 실행 
 	private static void startRequestArticleManage() {
@@ -104,6 +109,7 @@ public class ArticleManageService extends Service {
 		@Override
 		public void run() {
 			requestArticles();
+			refreshArticleScore();
 		}
 	}
 	

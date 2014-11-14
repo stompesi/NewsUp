@@ -21,6 +21,7 @@ public class TransmissionArticle implements Serializable {
 	private String title, content, provider, time;
 	private String imageURL;
 	private String imageColor;
+	private boolean isExistFirstImage;
 	
 	public TransmissionArticle(View view) {
 		TextView title = (TextView) view.findViewById(R.id.title);
@@ -34,8 +35,18 @@ public class TransmissionArticle implements Serializable {
 		this.content = content.getText().toString();
 		this.time = time.getText().toString();
 		this.provider = provider.getText().toString();
-		this.imageURL = ((Image) image.getTag()).getURL();
-		this.imageColor = ((Image) image.getTag()).getColor();
+		if(((Image) image.getTag()) != null) {
+			this.imageURL = ((Image) image.getTag()).getURL();
+			this.imageColor = ((Image) image.getTag()).getColor();
+			this.isExistFirstImage = true;
+		}else {
+			this.isExistFirstImage = false;
+		}
+		
+	}
+	
+	public boolean getIsExistFirstImage() {
+		return isExistFirstImage;
 	}
 	
 	public String getImageColor() {

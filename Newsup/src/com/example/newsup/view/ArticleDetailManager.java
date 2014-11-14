@@ -19,13 +19,13 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.newsup.R;
-import com.example.newsup.activity.ArticleActivity;
 import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.data.ArticleReadInfo;
 import com.example.newsup.database.Article;
 import com.example.newsup.network.NewsUpImageLoader;
 import com.example.newsup.network.NewsUpNetwork;
 import com.example.newsup.splitter.PageSplitter;
+import com.example.newsup.view.structure.ArticleDetailInfomation;
 import com.example.newsup.view.structure.ArticleDetailPage;
 import com.example.newsup.view.structure.ImageInfo;
 import com.example.newsup.view.structure.LayoutInfo;
@@ -44,6 +44,9 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	boolean pageOut;
 	boolean isAnimationning;
+	
+	ArticleDetailInfomation articleDetailInfomation;
+	
 	public ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
 		this.context = context;
@@ -283,7 +286,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					} while (end > 0);
 				}
 				
-				Log.e("save", save);
+//				Log.e("save", save);
 				textView.setText(save);
 				view.addView(textView);
 			}
@@ -354,10 +357,22 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	@Override
 	public void inArticleDetail(int articleId) {
+		articleDetailInfomation = new ArticleDetailInfomation();
+		requestInfomation(articleId);
 		pageOut = false;
 		pageReadStartTime = getTimestamp();
 		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime);
 		getArticleDetail(articleId);
+		
+	}
+	
+	public void requestInfomation(int articleId) {
+		Article article = Article.getArticle(articleId);
+		
+		NewsUpNetwork.getInstance().requestFacebook(article.getArticleURL(), articleDetailInfomation);
+		NewsUpNetwork.getInstance().requestTwitter(article.getArticleURL(), articleDetailInfomation);
+//		NewsUpNetwork.getInstance().requestArticleDetail(articleId);
+		
 		
 	}
 

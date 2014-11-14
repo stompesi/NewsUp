@@ -1,5 +1,7 @@
 package com.example.newsup.network;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import com.example.newsup.activity.LockScreenActivity;
 import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.data.ArticleReadInfo;
 import com.example.newsup.database.Article;
+import com.example.newsup.view.structure.ArticleDetailInfomation;
 
 public class NewsUpNetwork {
 
@@ -48,6 +51,42 @@ public class NewsUpNetwork {
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
+	
+	
+	public void refreshArticleScore() {
+		Log.d("NewsUp", "뉴스기사 점수 요청");
+		Log.d("NewsUp", "deviceId : " + deviceId);
+		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/category/";
+
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						Log.d("NewsUp", "Network : 뉴스기사 점수 요청 성공.");
+						JSONArray articles;
+						try {
+							articles = response.getJSONArray("articles");
+							for (int i = 0; i < articles.length(); i++) {
+								Article.refreshArticleScore(articles.getJSONObject(i));
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Log.e("NewsUp", "Network : 뉴스기사 점수 요청 실패.");
+					}
+				}) {
+			 @Override
+		       public Map<String, String> getHeaders() throws AuthFailureError {
+		           HashMap<String, String> headers = new HashMap<String, String>();
+		           headers.put("user_token", deviceId);
+		           return headers;
+		       }
+		};
+		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
+	}
 
 	// article list 요청 
 	public void requestArticleList(final int category) {
@@ -63,6 +102,8 @@ public class NewsUpNetwork {
 						try {
 							articles = response.getJSONArray("articles");
 							for (int i = 0; i < articles.length(); i++) {
+								Log.e("Id", "" + articles.getJSONObject(i).getDouble("score"));
+								articles.getJSONObject(i).put("category", category);
 								// TODO : 카테고리 임시변경함 - 서버에서 제대로 데이터가 날라온다면 제거해야함 
 								articles.getJSONObject(i).put("category", category);
 								Article.saveArticle(articles.getJSONObject(i));
@@ -203,4 +244,132 @@ public class NewsUpNetwork {
         }
         return false; 
 	}
+	
+	
+	
+	public void requestVideo(String query) {
+		Log.d("NewsUp", "동영상 요청");
+		String requestURL = "https://www.googleapis.com/youtube/v3/search?"
+				+ "part=snippet&"
+				+ "key=AIzaSyBUlYE_3MYaqnTFaegtKhSy0BzvkdQTfqY&"
+				+ "type=video&"
+				+ "order=date&"
+				+ "q=" + query;
+
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						Log.d("NewsUp", "동영상 요청 성공");
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+					}
+				}) {
+		};
+		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
+	}
+	
+	public void requestFacebook(String query, final ArticleDetailInfomation articleDetailInfomation) {
+		Log.d("NewsUp", "페이스북 좋아요 요청");
+		String requestURL = "http://api.facebook.com/method/links.getStats?";
+		try {
+			query = URLEncoder.encode("format=json&urls=" + query,"UTF-8");
+			requestURL += query;
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		Log.d("NewsUp", "requestURL : " + requestURL);
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						try {
+							Log.d("NewsUp", "Network : 페이스북 좋아요 요청 성공. count : " + response.getInt("like_count"));
+							articleDetailInfomation.setTwitterCount(response.getInt("like_count"));
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Log.d("NewsUp", "Network : 페이스북 좋아요 요청 실패");
+					}
+				}) {
+		};
+		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
+	}
+	
+	public void requestTwitter(String query, final ArticleDetailInfomation articleDetailInfomation) {
+		Log.d("NewsUp", "트위터 트윗수 요청");
+		String requestURL = "http://urls.api.twitter.com/1/urls/count.json?url=";
+		
+		try {
+			query = URLEncoder.encode(query,"UTF-8");
+			requestURL += query;
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Log.d("NewsUp", "requestURL : " + requestURL);
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						try {
+							Log.d("NewsUp", "트위터 트윗수 요청 성공. count : " + response.getInt("count"));
+							articleDetailInfomation.setTwitterCount(response.getInt("count"));
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Log.d("NewsUp", "Network : 트위터 트윗수 요청 실패");
+					}
+				}) {
+		};
+		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
+	}
+	
+	
+	
+	public void requestArticleDetail(final int articleId) {
+		Log.d("NewsUp", "뉴스 상세정보 요청");
+		Log.d("NewsUp", "deviceId : " + deviceId);
+		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/articles/" + articleId;
+
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						Log.d("NewsUp", "Network : 뉴스 상서 정보 요청 성공.");
+						try {
+							JSONArray relatedArticles = response.getJSONArray("related_article");
+							for (int i = 0; i < relatedArticles.length(); i++) {
+//								relatedArticles.getJSONObject(i)
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Log.e("NewsUp", "Network : 뉴스상세정보 요청 실패.");
+					}
+				}) {
+			 @Override
+		       public Map<String, String> getHeaders() throws AuthFailureError {
+		           HashMap<String, String> headers = new HashMap<String, String>();
+		           headers.put("user_token", deviceId);
+		           return headers;
+		       }
+		};
+		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
+	}
+	
 }

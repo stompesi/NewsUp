@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.util.DisplayMetrics;
+import android.text.TextUtils.TruncateAt;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -59,6 +57,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		View view = inflater.inflate(itemId, null);
 
 		// TODO : Idx를 Id로 변경해야 한다
+		Log.e("article.getArticleId()", "article.getArticleId() : " + article.getTitle() + " idx : " + article.getIdx() );
 		view.setId(article.getArticleId());
 		TextView title = (TextView) view.findViewById(R.id.title);
 		TextView content = (TextView) view.findViewById(R.id.content);
@@ -73,10 +72,13 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		time.setText(timeCalculator.calculatorTimeDifference());
 		provider.setText(providers[Integer.parseInt(article.getProvider())]);
 		
-		NewsUpImageLoader.loadImage(image, article.getFirstImageURL(), article.getFirstImageColor());
-		Image imageInfo = new Image(article.getFirstImageURL(), article.getFirstImageColor());
-		image.setTag(imageInfo);
-		
+		if(article.getIsExistFirstImage()) {
+			NewsUpImageLoader.loadImage(image, article.getFirstImageURL(), article.getFirstImageColor());
+			Image imageInfo = new Image(article.getFirstImageURL(), article.getFirstImageColor());
+			image.setTag(imageInfo);
+		} else {
+			image.setVisibility(View.GONE);;
+		}
 		addView(view);
 	}
 	
@@ -94,8 +96,13 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		contentView.setText(article.getContent());
 		timeView.setText(article.getTime());
 		providerView.setText(article.getProvider());
-		Log.e("article.getImageColor()", "" + article.getImageColor());
-		NewsUpImageLoader.loadImage(image, article.getImageURL(), article.getImageColor());
+		
+		if(article.getIsExistFirstImage()) {
+			NewsUpImageLoader.loadImage(image, article.getImageURL(), article.getImageColor());
+		} else {
+			image.setVisibility(View.GONE);;
+		}
+		
 		addView(view);
 	}
 	
@@ -106,8 +113,14 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 
 	public int insertArticleList() {
-		int offset = getChildChount() - getChildChount() % 10; 
-		List<Article> articleList = Article.selectArticleList(category, offset);
+		int articleOffset = getArticleOffset(); 
+		List<Article> articleList = null;
+		
+		if(category == 0) {
+			articleList = Article.selectMainArticleList(articleOffset);
+		} else {
+			articleList = Article.selectOtherArticleList(category, articleOffset);
+		}
 		
 		int articleListSize = articleList.size();
 
@@ -134,17 +147,33 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		return articleListSize;	
 	}
 	
-	
+	private int getArticleOffset() {
+		int articleOffset = getChildChount() == 1 ? 0 : getChildChount();
+		Log.e("articleOffset", "" + articleOffset);
+		
+		if(isFailInsertArticleList) {
+			articleOffset--;
+		}
+		
+		return articleOffset;
+	}
 	class InsertArticleTask extends AsyncTask<Void, Void, List<Article>> {
 
 		@Override
 		protected List<Article> doInBackground(Void... params) {
 			// TODO Auto-generated method stub
-			int offset = getChildChount() - getChildChount() % 10;
-			List<Article> articleList = Article.selectArticleList(category, offset);
-			return  articleList;
+			int articleOffset = getArticleOffset();
+			List<Article> articleList = null;
 			
+			
+			if(category == 0) {
+				articleList = Article.selectMainArticleList(articleOffset);
+			} else {
+				articleList = Article.selectOtherArticleList(category, articleOffset);
+			}
+			return  articleList;
 		}
+		
 		
 		 @Override
 		 protected void onPostExecute(final List<Article> articleList) {
@@ -213,13 +242,10 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			InsertArticleTask insertArticleTask = new InsertArticleTask();
 			insertArticleTask.execute();
 		}
-		Log.e("index", "count : " + getChildChount() + "  currentChildIndex : " + currentChildIndex + " checkIndex : " + checkIndex);
 		if (checkIndex >= getChildChount() || checkIndex < minChildIndex) {
 			return false;
 		}
-		
 		display(checkIndex);
-		
 		return true;
 	}
 	
@@ -244,5 +270,9 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		while (flipper.getChildCount() > offset) {
 			flipper.removeViewAt(minChildIndex);
 		}
+	}
+	
+	public void setZeroScore() {
+		Article.setZeroScore(currentChildIndex + 1);
 	}
 }

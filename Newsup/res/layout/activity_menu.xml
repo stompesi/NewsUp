@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidhuman="http://schemas.android.com/apk/res/com.example.newsup"
     android:id="@+id/menuLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,9 +23,9 @@
                 android:layout_width="188dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingTop="2dp"
+                android:paddingLeft="2dp"
                 android:paddingRight="1dp"
-                android:paddingLeft="2dp" >
+                android:paddingTop="2dp" >
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -33,15 +34,19 @@
                     <Button
                         android:id="@+id/politicalSociety"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:background="@drawable/politics" />
 
-                    <TextView
+                    <com.example.newsup.text.StyledCategoryTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="left|top"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="2dp"
                         android:text="정치/사회"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -56,16 +61,19 @@
                     <Button
                         android:id="@+id/it"
                         android:layout_width="match_parent"
-                        android:layout_height="117dp" />
+                        android:layout_height="117dp"
+                        android:background="@drawable/it" />
 
-                    <TextView
+                    <com.example.newsup.text.StyledCategoryTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|bottom"
-                        android:layout_marginBottom="15dp"
+                        android:layout_marginBottom="2dp"
                         android:layout_marginRight="15dp"
                         android:text="IT/과학"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -85,16 +93,18 @@
                         android:id="@+id/economy"
                         android:layout_width="match_parent"
                         android:layout_height="101dp"
-                        android:text="경제" />
+                        android:background="@drawable/economic" />
 
-                    <TextView
+                    <com.example.newsup.text.StyledCategoryTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|bottom"
-                        android:layout_marginBottom="15dp"
+                        android:layout_marginBottom="2dp"
                         android:layout_marginLeft="15dp"
                         android:text="경제"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -110,16 +120,18 @@
                         android:id="@+id/culture"
                         android:layout_width="match_parent"
                         android:layout_height="159dp"
-                        android:text="문화" />
+                        android:background="@drawable/culture" />
 
-                    <TextView
+                    <com.example.newsup.text.StyledCategoryTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|top"
                         android:layout_marginRight="15dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="2dp"
                         android:text="문화"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
@@ -141,16 +153,18 @@
                     android:id="@+id/sports"
                     android:layout_width="142dp"
                     android:layout_height="match_parent"
-                    android:text="스포츠" />
+                    android:background="@drawable/sports" />
 
-                <TextView
+                <com.example.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginRight="15dp"
                     android:text="스포츠"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
             </FrameLayout>
 
             <LinearLayout
@@ -166,16 +180,18 @@
                     android:id="@+id/entertainment"
                     android:layout_width="105dp"
                     android:layout_height="match_parent"
-                    android:text="연예" />
+                    android:background="@drawable/entertainment" />
 
-                <TextView
+                <com.example.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginRight="15dp"
                     android:text="연예"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
             </FrameLayout>
 
             <LinearLayout
@@ -191,16 +207,18 @@
                     android:id="@+id/world"
                     android:layout_width="105dp"
                     android:layout_height="match_parent"
-                    android:text="국제" />
+                    android:background="@drawable/international" />
 
-                <TextView
+                <com.example.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginRight="15dp"
                     android:text="국제"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
             </FrameLayout>
         </LinearLayout>
 
@@ -221,16 +239,18 @@
                     android:id="@+id/health"
                     android:layout_width="105dp"
                     android:layout_height="match_parent"
-                    android:text="건강" />
+                    android:background="@drawable/health" />
 
-                <TextView
+                <com.example.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginLeft="15dp"
-                    android:text="국제"
-                    android:textColor="#FFFFFF" />
+                    android:text="건강"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
             </FrameLayout>
 
             <LinearLayout
@@ -246,16 +266,18 @@
                     android:id="@+id/game"
                     android:layout_width="105dp"
                     android:layout_height="match_parent"
-                    android:text="게임" />
+                    android:background="@drawable/game" />
 
-                <TextView
+                <com.example.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginRight="15dp"
-                    android:text="국제"
-                    android:textColor="#FFFFFF" />
+                    android:text="게임"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
             </FrameLayout>
 
             <LinearLayout
@@ -271,16 +293,18 @@
                     android:id="@+id/sympathy"
                     android:layout_width="142dp"
                     android:layout_height="match_parent"
-                    android:text="공감" />
+                    android:background="@drawable/sympathy" />
 
-                <TextView
+                <com.example.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|top"
-                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="15dp"
-                    android:text="국제"
-                    android:textColor="#FFFFFF" />
+                    android:layout_marginTop="2dp"
+                    android:text="공감"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
             </FrameLayout>
         </LinearLayout>
 
@@ -307,13 +331,14 @@
                 android:id="@+id/main"
                 android:layout_width="177dp"
                 android:layout_height="match_parent"
-                android:text="메인" />
+                android:background="@drawable/icon" />
 
             <Button
                 android:id="@+id/setting"
                 android:layout_width="177dp"
                 android:layout_height="match_parent"
-                android:text="설정" />
+                android:background="@drawable/setting" />
         </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

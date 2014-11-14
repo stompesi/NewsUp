@@ -84,19 +84,21 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		LinearLayout view, layout;
 		layout = (LinearLayout)inflater.inflate(R.layout.view_article_detail_first_page,null);
 		view = (LinearLayout)(layout).findViewById(R.id.viewArticleDetail);
-		TextView titleText = (TextView)view.findViewById(R.id.title);
+		
+		
+		TextView titleText = (TextView)layout.findViewById(R.id.title);
 		titleText.setText(article.getTitle());
 
-		TextView auhtorText = (TextView)view.findViewById(R.id.author);
+		TextView auhtorText = (TextView)layout.findViewById(R.id.author);
 		auhtorText.setText(article.getAuthor());
 
-		TextView proviewrText = (TextView)view.findViewById(R.id.provider);
+		TextView proviewrText = (TextView)layout.findViewById(R.id.provider);
 		proviewrText.setText(ArticleListManager.providers[Integer.parseInt(article.getProvider())]);
 
-		TextView facebookText = (TextView)view.findViewById(R.id.cnt_facebook);
+		TextView facebookText = (TextView)layout.findViewById(R.id.cnt_facebook);
 		facebookText.setText("1,100");
 
-		TextView twitterText = (TextView)view.findViewById(R.id.cnt_twitter);
+		TextView twitterText = (TextView)layout.findViewById(R.id.cnt_twitter);
 		twitterText.setText("1,200");
 		
 		viewMaker(view, articleDetailPage);

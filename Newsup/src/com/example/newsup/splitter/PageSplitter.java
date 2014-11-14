@@ -37,7 +37,7 @@ public class PageSplitter {
 		this.textPaint = textPaint;
 		this.textLineHeight = (int) Math.ceil(textPaint.getFontMetrics(null));
 		this.remnantContent = new LinkedList<Object>(); 
-		this.currentViewHeight = layoutInfo.getFirstPageHeight();
+		this.currentViewHeight = layoutInfo.getFirstPageAvailableHeight();
 		this.currentInputString = "";
 		this.totalInputString = "";
 		this.list = new ArrayList<Object>();

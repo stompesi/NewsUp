@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ViewFlipper;
 
 import com.example.newsup.R;
@@ -89,6 +92,13 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 	}
 
 	private void init() {
+		
+		EditText myEditText = new EditText(this);
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+
+		
+		
 		mainActivity = ArticleActivity.this;
 		
 		RbPreference pref = new RbPreference(ArticleActivity.this);

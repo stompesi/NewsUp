@@ -8,8 +8,7 @@ public class LayoutInfo {
 	
 	private int availableTotalWidth, availableTotalHeight;
 	
-	private int firstPageHeight;
-	private int bottomHeight;
+	private int firstPageAbailableHeight;
 	
 	private int textViewPadding;
 	
@@ -35,7 +34,7 @@ public class LayoutInfo {
 		
 		availableTotalHeight = (int)context.getResources().getDimension(R.dimen.view_article_detail_content_height) - (textViewPadding * 2);
 		
-		firstPageHeight = 546;//.round((float)(availableTotalHeight * 0.4));
+		firstPageAbailableHeight = (int)context.getResources().getDimension(R.dimen.view_article_detail_first_page_available_height);
 	}
 	
 	
@@ -47,8 +46,8 @@ public class LayoutInfo {
 		return availableTotalHeight;
 	}
 	
-	public int getFirstPageHeight() {
-		return firstPageHeight;
+	public int getFirstPageAvailableHeight() {
+		return firstPageAbailableHeight;
 	}
 	
 	public int getTextViewPadding() {

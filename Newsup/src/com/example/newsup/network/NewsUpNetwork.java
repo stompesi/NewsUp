@@ -81,7 +81,7 @@ public class NewsUpNetwork {
 			 @Override
 		       public Map<String, String> getHeaders() throws AuthFailureError {
 		           HashMap<String, String> headers = new HashMap<String, String>();
-		           headers.put("user_token", deviceId);
+		           headers.put("User-Token", deviceId);
 		           return headers;
 		       }
 		};
@@ -133,7 +133,7 @@ public class NewsUpNetwork {
 			 @Override
 		       public Map<String, String> getHeaders() throws AuthFailureError {
 		           HashMap<String, String> headers = new HashMap<String, String>();
-		           headers.put("user_token", deviceId);
+		           headers.put("User-Token", deviceId);
 		           return headers;
 		       }
 		};
@@ -160,7 +160,7 @@ public class NewsUpNetwork {
 			 @Override
 		     public Map<String, String> getHeaders() throws AuthFailureError {
 	           HashMap<String, String> headers = new HashMap<String, String>();
-	           headers.put("user_token", deviceId);
+	           headers.put("User-Token", deviceId);
 	           return headers;
 		     }
 		};
@@ -218,7 +218,7 @@ public class NewsUpNetwork {
 			 		@Override
 			 		public Map<String, String> getHeaders() throws AuthFailureError {
 			           HashMap<String, String> headers = new HashMap<String, String>();
-			           headers.put("user_token", deviceId);
+			           headers.put("User-Token", deviceId);
 			           return headers;
 			       }
 		};
@@ -272,14 +272,9 @@ public class NewsUpNetwork {
 	
 	public void requestFacebook(String query, final ArticleDetailInfomation articleDetailInfomation) {
 		Log.d("NewsUp", "페이스북 좋아요 요청");
-		String requestURL = "http://api.facebook.com/method/links.getStats?";
-		try {
-			query = URLEncoder.encode("format=json&urls=" + query,"UTF-8");
+		String requestURL = "http://api.facebook.com/method/links.getStats?format=json&urls=";
+//			query = URLEncoder.encode("format=json&urls=" + query,"UTF-8");
 			requestURL += query;
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		Log.d("NewsUp", "requestURL : " + requestURL);
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
@@ -307,13 +302,8 @@ public class NewsUpNetwork {
 		Log.d("NewsUp", "트위터 트윗수 요청");
 		String requestURL = "http://urls.api.twitter.com/1/urls/count.json?url=";
 		
-		try {
-			query = URLEncoder.encode(query,"UTF-8");
-			requestURL += query;
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//			query = URLEncoder.encode(query,"UTF-8");
+		requestURL += query;
 		Log.d("NewsUp", "requestURL : " + requestURL);
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 					@Override
@@ -365,7 +355,7 @@ public class NewsUpNetwork {
 			 @Override
 		       public Map<String, String> getHeaders() throws AuthFailureError {
 		           HashMap<String, String> headers = new HashMap<String, String>();
-		           headers.put("user_token", deviceId);
+		           headers.put("User-Token", deviceId);
 		           return headers;
 		       }
 		};

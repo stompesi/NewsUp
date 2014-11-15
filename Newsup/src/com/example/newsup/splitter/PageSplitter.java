@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.example.newsup.view.structure.ArticleDetailPage;
 import com.example.newsup.view.structure.ImageInfo;
@@ -46,7 +47,7 @@ public class PageSplitter {
 	public ArticleDetailPage makePageList() {
 		page = new ArticleDetailPage();
 		isComplete = false;
-		for (int i = 0; i < list.size() ;) {
+		for (int i = 0; i < list.size() || !(remnantContent.isEmpty()) ;) {
 			// TODO : 조건문 함수로 변경 
 			if (!(remnantContent.isEmpty()) && (!prevIsPageOver || remnantContent.peek() instanceof String)) {
 				content = remnantContent.poll();
@@ -62,15 +63,10 @@ public class PageSplitter {
 				return page;
 			}	
 		}
+		
 		if (!(totalInputString.isEmpty())){
 			page.add(totalInputString);
 		}
-		
-		if(!(remnantContent.isEmpty())) {
-			content = remnantContent.poll();
-			inputContent(content);
-		}
-		
 		
 		if(!(page.isEmpty())) {
 			completeMakeView();
@@ -95,7 +91,13 @@ public class PageSplitter {
 				completeMakeView();
 			}
 			
-		} else {
+		} else if(list.size() == 0) {
+			remnantContent.offer(imageInfo);
+			if (!(totalInputString.isEmpty())){
+				page.add(totalInputString);
+			}
+			completeMakeView();
+		}	else {
 			remnantContent.offer(imageInfo);
 			prevIsPageOver = true;
 		}
@@ -139,22 +141,29 @@ public class PageSplitter {
 			}
 			text += (splittedText[i] + " ");
 		}
-			
-		do {
-			stringEndIndex = textPaint.breakText(text, true, layoutInfo.getAvailableTotalWidth(), null);
-			if (stringEndIndex > 0) {
+		String testString = "안녕하세요. .??아씨발 못하겟네 저는 한종빈입니다 만나서 반갑습니다. 이 데이터는 무엇일까요? 이것은 테스트 데이터입니다. 한줄의 최대 index를 가져오기 위함입니다. ㅎㅎㅎ "; 
+		stringEndIndex = textPaint.breakText(testString, true, layoutInfo.getAvailableTotalWidth(), null);
+		while(!text.equals("")){
+			if(stringEndIndex > text.length()) {
+				Log.e("text.substring(0, stringEndIndex);", text.substring(0, text.length()));
+				totalInputString += text.substring(0, text.length());
+				text = text.substring(text.length());
+			} else {
+				Log.e("text.substring(0, stringEndIndex);", text.substring(0, stringEndIndex));
 				totalInputString += text.substring(0, stringEndIndex);
 				text = text.substring(stringEndIndex);
-				currentViewHeight -= textLineHeight;
-				
-				if (isEndPage()) {
-					currentInputString += text;
-					return true;
-				}
 			}
-		} while (stringEndIndex > 0);
-		currentViewHeight = currentViewHeight - textLineHeight;
+			if (isEndPage()) {
+				currentInputString += text;
+				return true;
+			}
+		}
+
+		currentViewHeight = currentViewHeight - (textLineHeight * 2);
 		totalInputString += "\n\n";
+		if (isEndPage()) {
+			return true;
+		}
 		return false;
 	}
 	
@@ -165,7 +174,7 @@ public class PageSplitter {
 	}
 	
 	private boolean isEndPage() {
-		return 0 >= currentViewHeight - (textLineHeight);
+		return 0 >= currentViewHeight - (textLineHeight * 3);
 	}
 	
 	/////////////////////////////

@@ -30,11 +30,11 @@ public class LayoutInfo {
 		textViewPadding = (int)context.getResources().getDimension(R.dimen.view_article_detail_content_padding); 
 		
 		
-		availableTotalWidth = (int)context.getResources().getDimension(R.dimen.divice_width) - (textViewPadding * 2); 
+		availableTotalWidth = (int)context.getResources().getDimension(R.dimen.divice_width) - (textViewPadding * 3); 
 		
 		availableTotalHeight = (int)context.getResources().getDimension(R.dimen.view_article_detail_content_height) - (textViewPadding * 2);
 		
-		firstPageAbailableHeight = (int)context.getResources().getDimension(R.dimen.view_article_detail_first_page_available_height);
+		firstPageAbailableHeight = (int)context.getResources().getDimension(R.dimen.view_article_detail_first_page_available_height) - (textViewPadding * 2);
 	}
 	
 	

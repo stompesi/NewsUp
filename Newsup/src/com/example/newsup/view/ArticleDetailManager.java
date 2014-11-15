@@ -69,8 +69,18 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 		layoutInfo = LayoutInfo.getInstance();
 
-		TextView textView = setTextView(context,
-				layoutInfo.getAvailableTotalHeight(), NewsUpApp.getInstance().getTextSize());
+		TextView textView;
+		
+		textView = new TextView(context);
+		textView.setWidth(layoutInfo.getAvailableTotalWidth());
+		textView.setLineSpacing((float) 1.1, (float) 1.1);
+
+		int textSize = NewsUpApp.getInstance().getTextSize();
+		textView.setTextColor(Color.BLACK);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context
+				.getResources().getDimension(textSize));
+		ApplyFont(context, textView);
+		
 		textPaint = textView.getPaint();
 
 		splitter = new PageSplitter(textPaint);
@@ -103,35 +113,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		
 		viewMaker(view, articleDetailPage);
 		addView(layout);
-
-//
-//				LinearLayout view, layout;
-//				layout = (LinearLayout) inflater.inflate(R.layout.view_article_detail,
-//						null);
-//				view = (LinearLayout) (layout).findViewById(R.id.viewArticleDetail);
-//		
-//				textSize = R.dimen.text_title;
-//				textView = setTextView(context, 300, textSize);
-//				textView.setPadding(layoutInfo.getTextViewPadding(), 100, 0, 0);
-//				textView.setMaxLines(2);
-//				textView.setEllipsize(TextUtils.TruncateAt.END);
-//		
-//				textView.setText(article.getAuthor());
-//				view.addView(textView);
-//		
-//				textSize = R.dimen.text_author;
-//				textView = setTextView(context, 100, textSize);
-//				textView.setPadding(layoutInfo.getTextViewPadding(), 10, 0, 0);
-//		
-//				textView.setText(article.getAuthor());
-//				view.addView(textView);
-//				viewMaker(view, articleDetailPage);
-//				addView(layout);
-
-
-
 		articleReadInfo.addPage();
-		//여기	
 		display(getChildChount() - 1);
 
 		InsertArticleTask insertArticleTask = new InsertArticleTask(articleId);
@@ -204,6 +186,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					removeAllFlipperItem();
 					return null;
 				}
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 			return null;
@@ -265,7 +253,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 				view.addView(imageView);
 
-				imageView.getLayoutParams().height = imageInfo.getHeight() - 50;
+				imageView.getLayoutParams().height = imageInfo.getHeight();
 				imageView.getLayoutParams().width = imageInfo.getWidth();
 				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
@@ -277,7 +265,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				TextView textView;
 				Paint mPaint;
 				int end;
-				String[] textArr;
 
 				text = (String) object;
 				save = "";
@@ -294,25 +281,26 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 				mPaint = textView.getPaint();
 
-				end = 0;
-				textArr = text.split("\n");
-				for (int j = 0; j < textArr.length; j++) {
-					if (textArr[j].length() == 0)
-						textArr[j] = " ";
-					do {
-						// 글자가 width 보다 넘어가는지 체크
-						end = mPaint.breakText(textArr[j], true,
-								layoutInfo.getAvailableTotalWidth(), null);
-						if (end > 0) {
-							// 자른 문자열을 문자열 배열에 담아 놓는다.
-							save += textArr[j].substring(0, end) + "\n";
-							// 넘어간 글자 모두 잘라 다음에 사용하도록 세팅
-							textArr[j] = textArr[j].substring(end);
-						}
-					} while (end > 0);
-				}
-				Log.e("save", save);
+				String[] textArr;
+	    		textArr = text.split("\n");
+	    		for (int j = 0; j < textArr.length; j++) {
+	    			if (textArr[j].length() == 0)
+	    				textArr[j] = " ";
+	    			do {
+	    				// 글자가 width 보다 넘어가는지 체크
+	    				end = mPaint.breakText(textArr[j], true, layoutInfo.getAvailableTotalWidth(), null);
+	    				if (end > 0) {
+	    					// 자른 문자열을 문자열 배열에 담아 놓는다.
+	    					 save += textArr[j].substring(0, end) + "\n";
+	    					// 넘어간 글자 모두 잘라 다음에 사용하도록 세팅
+	    					textArr[j] = textArr[j].substring(end);
+	    				}
+	    			} while (end > 0);
+	    		}
 				textView.setText(save);
+				
+				
+				
 				view.addView(textView);
 			}
 		}

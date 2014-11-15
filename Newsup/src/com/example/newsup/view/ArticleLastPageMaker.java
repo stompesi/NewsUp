@@ -13,6 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.newsup.R;
+import com.example.newsup.activity.transmission.structure.Image;
+import com.example.newsup.network.NewsUpImageLoader;
+import com.example.newsup.view.structure.ArticleDetailInfomation;
+import com.example.newsup.view.structure.RelatedArticle;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -26,13 +30,19 @@ YouTubePlayer.OnInitializedListener{
 	private Context context;
 
 	public static final String API_KEY = "AIzaSyASbhpfpjbXyEAg9sOejF8hol3dLmJNgHI";
-	public static final String VIDEO_ID = "V7dmCpyCtA4";
+	public String videoId;
 
+	private boolean isExistVideo;
 
-	public ArticleLastPageMaker(Context context, LayoutInflater Inflater)
+	private ArticleDetailInfomation articleDetailInfomation;
+
+	public ArticleLastPageMaker(Context context, LayoutInflater Inflater, boolean isExistVideo,
+			ArticleDetailInfomation articleDetailInfomation)
 	{
 		this.context = context;
 		this.Inflater = Inflater;
+		this.isExistVideo = isExistVideo;
+		this.articleDetailInfomation = articleDetailInfomation;
 	}
 
 	public LinearLayout getLastPage(){
@@ -44,15 +54,36 @@ YouTubePlayer.OnInitializedListener{
 		LinearLayout lastLayout = (LinearLayout) Inflater.inflate(R.layout.view_article_detail_last_page, null);
 		itemList =(ListView)(lastLayout).findViewById(R.id.itemList);
 		textview = (TextView)(lastLayout).findViewById(R.id.viewArticleBottom);
-
+		
 		youTubePlayerView = (YouTubePlayerView)(lastLayout).findViewById(R.id.youtube_view);
-		youTubePlayerView.initialize(API_KEY, this);
+		if(articleDetailInfomation.getRelatedArticleList().size() == 0) {
+			itemList.setVisibility(View.GONE);
+			TextView relatedArticle = (TextView)(lastLayout).findViewById(R.id.relatedArticle);
+			relatedArticle.setVisibility(View.GONE);
+			
+
+		}
+
+		if(isExistVideo) {
+			videoId = articleDetailInfomation.getVideoId();
+			youTubePlayerView.initialize(API_KEY, this);
+		} else {
+			TextView relatedArticleTitle = (TextView)(lastLayout).findViewById(R.id.relatedArticleTitle);
+			youTubePlayerView.setVisibility(View.GONE);
+			relatedArticleTitle.setVisibility(View.GONE);
+		}
 
 		itemArray = new ArrayList<ListItem>();
 		ListItem listItem; 
-		listItem = new ListItem(R.drawable.ic_launcher, "오늘의 기사1", "최희철");itemArray.add(listItem);
-		listItem = new ListItem(R.drawable.ic_launcher, "오늘의 기사2", "최희철");itemArray.add(listItem);
-		listItem = new ListItem(R.drawable.ic_launcher, "오늘의 기사3", "최희철");itemArray.add(listItem);
+		ArrayList<RelatedArticle> relatedArticleList = articleDetailInfomation.getRelatedArticleList();
+		for(int i = 0 ; i < relatedArticleList.size() ; i++) {
+			String title = relatedArticleList.get(i).getTitle();
+			String description = relatedArticleList.get(i).getDescription();
+
+			listItem = new ListItem(relatedArticleList.get(i).getImageInfo(), title, description);
+			itemArray.add(listItem);
+		}
+
 		LastPageListAdapter lastPageListAdapter = new LastPageListAdapter(context, R.layout.view_article_detail_last_page_list_item, itemArray);
 		itemList.setAdapter(lastPageListAdapter);
 
@@ -62,11 +93,10 @@ YouTubePlayer.OnInitializedListener{
 	}
 	public class ListItem{
 
-		int sumNail;
+		Image imageInfo;
 		String title,author;
-		public ListItem(int sumNail,String title, String author) {
-
-			this.sumNail = sumNail;
+		public ListItem(Image imageInfo,String title, String author) {
+			this.imageInfo = imageInfo;
 			this.title = title;
 			this.author = author;
 
@@ -110,8 +140,10 @@ YouTubePlayer.OnInitializedListener{
 			if(convertView ==null){
 				convertView = Inflater.inflate(layout, parent,false);
 			}
-			ImageView imageItem = (ImageView)convertView.findViewById(R.id.iamgeItem);
-			imageItem.setImageResource(array.get(position).sumNail);
+			ImageView imageView = (ImageView)convertView.findViewById(R.id.iamgeItem);
+
+			NewsUpImageLoader.loadImage(imageView, array.get(position).imageInfo.getURL(), 
+					array.get(position).imageInfo.getColor());
 
 			TextView titleItem = (TextView)convertView.findViewById(R.id.titleItem);
 			titleItem.setText(array.get(position).title);
@@ -130,18 +162,18 @@ YouTubePlayer.OnInitializedListener{
 			com.google.android.youtube.player.YouTubePlayer.Provider provider,
 			YouTubeInitializationResult result) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onInitializationSuccess(
 			com.google.android.youtube.player.YouTubePlayer.Provider provider,
 			YouTubePlayer player, boolean wasRestored) {
-		
-		 if (!wasRestored) {
-				player.cueVideo(VIDEO_ID);
-			}
-		
+
+		if (!wasRestored) {
+			player.cueVideo(videoId);
+		}
+
 	}
 
 

@@ -15,6 +15,7 @@
         android:orientation="vertical" >
 
         <com.example.newsup.text.StyledLastArticleTextView
+            android:id="@+id/relatedArticle"
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:gravity="center_vertical"
@@ -26,10 +27,12 @@
         <ListView
             android:id="@+id/itemList"
             android:layout_width="match_parent"
-            android:layout_height="360dp" >
+            android:layout_height="240dp"
+            android:scrollbars="none" >
         </ListView>
 
         <com.example.newsup.text.StyledLastArticleTextView
+            android:id="@+id/relatedArticleTitle"
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:gravity="center_vertical"
@@ -40,7 +43,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="105dp"
+            android:layout_height="225dp"
             android:orientation="horizontal" >
 
             <com.google.android.youtube.player.YouTubePlayerView

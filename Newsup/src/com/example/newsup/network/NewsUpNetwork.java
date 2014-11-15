@@ -24,6 +24,7 @@ import com.example.newsup.activity.LockScreenActivity;
 import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.data.ArticleReadInfo;
 import com.example.newsup.database.Article;
+import com.example.newsup.view.ArticleDetailManager;
 import com.example.newsup.view.structure.ArticleDetailInfomation;
 
 public class NewsUpNetwork {
@@ -244,45 +245,28 @@ public class NewsUpNetwork {
         }
         return false; 
 	}
-	
-	
-	
-	public void requestVideo(String query) {
-		Log.d("NewsUp", "동영상 요청");
-		String requestURL = "https://www.googleapis.com/youtube/v3/search?"
-				+ "part=snippet&"
-				+ "key=AIzaSyBUlYE_3MYaqnTFaegtKhSy0BzvkdQTfqY&"
-				+ "type=video&"
-				+ "order=date&"
-				+ "q=" + query;
 
-		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
-					@Override
-					public void onResponse(JSONObject response) {
-						Log.d("NewsUp", "동영상 요청 성공");
-					}
-				}, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError error) {
-					}
-				}) {
-		};
-		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
-	}
-	
-	public void requestFacebook(String query, final ArticleDetailInfomation articleDetailInfomation) {
-		Log.d("NewsUp", "페이스북 좋아요 요청");
-		String requestURL = "http://api.facebook.com/method/links.getStats?format=json&urls=";
-//			query = URLEncoder.encode("format=json&urls=" + query,"UTF-8");
-			requestURL += query;
-		
+	public void requestFacebook(String query, final ArticleDetailManager articleDetailManager) {
+		Log.d("NewsUp", "페이스북 공유 정보 요청");
+		String requestURL = "https://graph.facebook.com/?id=";
+		try {
+			requestURL += URLEncoder.encode(query,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Log.d("NewsUp", "requestURL : " + requestURL);
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
 						try {
-							Log.d("NewsUp", "Network : 페이스북 좋아요 요청 성공. count : " + response.getInt("like_count"));
-							articleDetailInfomation.setTwitterCount(response.getInt("like_count"));
+							Log.d("NewsUp", "Network : 페이스북 공유 정보 요청 성공.");
+							if(response.has("shares")) {
+								articleDetailManager.setFacebookLikeCount(response.getInt("shares"));
+							} else {
+								articleDetailManager.setFacebookLikeCount(0);
+							}
+							
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -291,56 +275,71 @@ public class NewsUpNetwork {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						Log.d("NewsUp", "Network : 페이스북 좋아요 요청 실패");
+						Log.d("NewsUp", "Network : 페이스북 공유 정보 요청 실패");
+						articleDetailManager.setFacebookLikeCount(0);
 					}
 				}) {
 		};
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
 	
-	public void requestTwitter(String query, final ArticleDetailInfomation articleDetailInfomation) {
+	public void requestTwitter(String query, final ArticleDetailManager articleDetailManager) {
 		Log.d("NewsUp", "트위터 트윗수 요청");
 		String requestURL = "http://urls.api.twitter.com/1/urls/count.json?url=";
-		
-//			query = URLEncoder.encode(query,"UTF-8");
-		requestURL += query;
+		try {
+			requestURL += URLEncoder.encode(query,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Log.d("NewsUp", "requestURL : " + requestURL);
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
-					@Override
-					public void onResponse(JSONObject response) {
-						try {
-							Log.d("NewsUp", "트위터 트윗수 요청 성공. count : " + response.getInt("count"));
-							articleDetailInfomation.setTwitterCount(response.getInt("count"));
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+				@Override
+				public void onResponse(JSONObject response) {
+					try {
+						Log.d("NewsUp", "트위터 트윗수 요청 성공");
+						articleDetailManager.setTwitterCount(response.getInt("count"));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				}, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						Log.d("NewsUp", "Network : 트위터 트윗수 요청 실패");
-					}
-				}) {
+				}
+			}, new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.d("NewsUp", "Network : 트위터 트윗수 요청 실패");
+					articleDetailManager.setTwitterCount(0);
+				}
+			}) {
 		};
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
+
 	
 	
-	
-	public void requestArticleDetail(final int articleId) {
+	public void requestArticleDetail(final int articleId, final ArticleDetailManager articleDetailManager) {
 		Log.d("NewsUp", "뉴스 상세정보 요청");
 		Log.d("NewsUp", "deviceId : " + deviceId);
 		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/articles/" + articleId;
-
+		Log.d("NewsUp", "requestURL : " + requestURL);
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
-						Log.d("NewsUp", "Network : 뉴스 상서 정보 요청 성공.");
+						Log.d("NewsUp", "Network : 뉴스 상세 정보 요청 성공.");
 						try {
 							JSONArray relatedArticles = response.getJSONArray("related_article");
-							for (int i = 0; i < relatedArticles.length(); i++) {
-//								relatedArticles.getJSONObject(i)
+							JSONArray entity = response.getJSONArray("video");
+							String videoEntity = "";
+							
+							if(entity.length() == 0) {
+								articleDetailManager.setRelatedArticle(relatedArticles, false);
+							} else {
+								for(int i = 0 ; i < entity.length() ; i++) {
+									videoEntity = videoEntity + entity.getString(i) + "+"; 
+								}
+								Log.e("entity", "" +entity);
+								requestVideo(videoEntity, articleDetailManager);
+								articleDetailManager.setRelatedArticle(relatedArticles, true);
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -358,6 +357,48 @@ public class NewsUpNetwork {
 		           headers.put("User-Token", deviceId);
 		           return headers;
 		       }
+		};
+		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
+	}
+	
+	
+	public void requestVideo(String query, final ArticleDetailManager articleDetailManager) {
+		Log.d("NewsUp", "동영상 요청");
+		
+		String requestURL = "https://www.googleapis.com/youtube/v3/search?"
+				+ "part=snippet&"
+				+ "key=AIzaSyBUlYE_3MYaqnTFaegtKhSy0BzvkdQTfqY&"
+				+ "type=video&"
+				+ "order=date&"
+				+ "q=";
+		try {
+			requestURL += URLEncoder.encode(query,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Log.d("NewsUp", "requestURL : " + requestURL);
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						Log.d("NewsUp", "동영상 요청 성공");
+						String videoId;
+						try {
+							JSONArray entity = response.getJSONArray("items");
+							JSONObject videoObject = entity.getJSONObject(0);
+							JSONObject id = videoObject.getJSONObject("id");
+							videoId = id.getString("videoId");
+							articleDetailManager.setRelatedArticle(videoId);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+					}
+				}) {
 		};
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}

@@ -20,10 +20,10 @@
             android:paddingRight="12dp"
             android:paddingTop="2dp" >
 
-            <com.example.newsup.text.StyledLastArticleTextView
+            <com.example.newsup.text.EllipsizingTextView
                 android:id="@+id/titleItem"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="50dp"
                 android:ellipsize="end"
                 android:gravity="top"
                 android:maxLines="2"
@@ -31,10 +31,10 @@
                 android:textSize="15sp"
                 androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
 
-            <com.example.newsup.text.StyledLastArticleTextView
+            <com.example.newsup.text.EllipsizingTextView
                 android:id="@+id/authorItem"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="62dp"
                 android:ellipsize="end"
                 android:gravity="top"
                 android:maxLines="3"

@@ -3,6 +3,10 @@ package com.example.newsup.view;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.newsup.R;
+import com.example.newsup.activity.transmission.structure.Image;
 import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.data.ArticleReadInfo;
 import com.example.newsup.database.Article;
@@ -28,6 +33,7 @@ import com.example.newsup.view.structure.ArticleDetailInfomation;
 import com.example.newsup.view.structure.ArticleDetailPage;
 import com.example.newsup.view.structure.ImageInfo;
 import com.example.newsup.view.structure.LayoutInfo;
+import com.example.newsup.view.structure.RelatedArticle;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
@@ -52,10 +58,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	}
 
 
-
+	private LinearLayout firstLayout;
 	Handler handler = new Handler();
 	ArrayList<Object> list;
 	PageSplitter splitter;
+	
+	private int totalCount;
 
 	public void getArticleDetail(int articleId) {
 		String str;
@@ -91,28 +99,22 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 		// 첫페이지 title, author
 
-		LinearLayout view, layout;
-		layout = (LinearLayout)inflater.inflate(R.layout.view_article_detail_first_page,null);
-		view = (LinearLayout)(layout).findViewById(R.id.viewArticleDetail);
+		LinearLayout view;
+		firstLayout = (LinearLayout)inflater.inflate(R.layout.view_article_detail_first_page,null);
+		view = (LinearLayout)(firstLayout).findViewById(R.id.viewArticleDetail);
 		
 		
-		TextView titleText = (TextView)layout.findViewById(R.id.title);
+		TextView titleText = (TextView)firstLayout.findViewById(R.id.title);
 		titleText.setText(article.getTitle());
 
-		TextView auhtorText = (TextView)layout.findViewById(R.id.author);
+		TextView auhtorText = (TextView)firstLayout.findViewById(R.id.author);
 		auhtorText.setText(article.getAuthor());
 
-		TextView proviewrText = (TextView)layout.findViewById(R.id.provider);
+		TextView proviewrText = (TextView)firstLayout.findViewById(R.id.provider);
 		proviewrText.setText(ArticleListManager.providers[Integer.parseInt(article.getProvider())]);
-
-		TextView facebookText = (TextView)layout.findViewById(R.id.cnt_facebook);
-		facebookText.setText("1,100");
-
-		TextView twitterText = (TextView)layout.findViewById(R.id.cnt_twitter);
-		twitterText.setText("1,200");
 		
 		viewMaker(view, articleDetailPage);
-		addView(layout);
+		addView(firstLayout);
 		articleReadInfo.addPage();
 		display(getChildChount() - 1);
 
@@ -128,10 +130,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 		private final Semaphore resource;
 
+		private int articleId;
 		private boolean isFinish;
 		public InsertArticleTask(int articleId) {
 			resource = new Semaphore(1);
 			this.isFinish = false;
+			this.articleId = articleId;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -144,15 +148,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 					@Override
 					public void run() {
-						addView(new ArticleLastPageMaker(context, inflater).getLastPage());
-						currentChildIndex++;
-						articleReadInfo.addPage();
-
 						// TODO Auto-generated method stub
 						for(int i = 0 ; i < getChildChount() ; i++) {
 							LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 							setPageNumber(view, getChildChount() - i, getChildChount());
 						}
+						NewsUpNetwork.getInstance().requestArticleDetail(articleId, ArticleDetailManager.this);
 
 					}
 				});
@@ -211,14 +212,11 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				currentChildIndex++;
 				articleReadInfo.addPage();
 
-				addView(new ArticleLastPageMaker(context, inflater).getLastPage());
-				currentChildIndex++;
-				articleReadInfo.addPage();
-
 				for(int i = 0 ; i < getChildChount() ; i++) {
 					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 					setPageNumber(view, getChildChount() - i, getChildChount());
 				}
+				NewsUpNetwork.getInstance().requestArticleDetail(articleId, ArticleDetailManager.this);
 				resource.release();
 			} else {
 				addView(articleContentLayout);
@@ -382,11 +380,69 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	public void requestInfomation(int articleId) {
 		Article article = Article.getArticle(articleId);
 		
-		NewsUpNetwork.getInstance().requestFacebook(article.getArticleURL(), articleDetailInfomation);
-		NewsUpNetwork.getInstance().requestTwitter(article.getArticleURL(), articleDetailInfomation);
-//		NewsUpNetwork.getInstance().requestArticleDetail(articleId);
+		NewsUpNetwork.getInstance().requestFacebook(article.getArticleURL(), ArticleDetailManager.this);
+		NewsUpNetwork.getInstance().requestTwitter(article.getArticleURL(), ArticleDetailManager.this);
+	}
+	
+	public void setFacebookLikeCount(int shareCount) {
+		articleDetailInfomation.setFacebookLikeCount(shareCount);
+		totalCount++;
 		
+		if(totalCount == 2) {
+			setFacebookTwitterCount();
+		}
+	}
+	
+	public void setTwitterCount(int shareCount) {
+		articleDetailInfomation.setTwitterCount(shareCount);
+		totalCount++;
 		
+		if(totalCount == 2) {
+			setFacebookTwitterCount();
+		}
+	}
+	
+	private void setFacebookTwitterCount() {
+		TextView facebookText = (TextView)firstLayout.findViewById(R.id.cnt_facebook);
+		facebookText.setText("" + articleDetailInfomation.getFacebookLikeCount());
+
+		TextView twitterText = (TextView)firstLayout.findViewById(R.id.cnt_twitter);
+		twitterText.setText("" + articleDetailInfomation.getTwitterCount());
+		totalCount = 0;
+	}
+	
+	public void setRelatedArticle(String videoId) {
+		articleDetailInfomation.setVideoId(videoId);
+		addView(new ArticleLastPageMaker(context, inflater, true, articleDetailInfomation).getLastPage());
+		currentChildIndex++;
+		articleReadInfo.addPage();
+	}
+
+	public void setRelatedArticle(JSONArray relatedArticles, boolean isExistVideo) {
+		
+		try {
+			for (int i = 0; i < relatedArticles.length(); i++) {
+				JSONObject item = relatedArticles.getJSONObject(i);
+				RelatedArticle relatedArticle = new RelatedArticle();
+				
+				relatedArticle.setTitle(item.getString("title"));
+				relatedArticle.setDescription(item.getString("description"));
+				relatedArticle.setURL(item.getString("url"));
+				
+				JSONObject imageObject = item.getJSONObject("image");
+				Image imageInfo = new Image(imageObject.getString("url"), imageObject.getString("color"));
+				relatedArticle.setImageInfo(imageInfo);
+				articleDetailInfomation.addRelatedArticle(relatedArticle);
+			}
+			if(!isExistVideo && articleDetailInfomation.getRelatedArticleList().size() != 0) {
+				addView(new ArticleLastPageMaker(context, inflater, isExistVideo, articleDetailInfomation).getLastPage());
+				currentChildIndex++;
+				articleReadInfo.addPage();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void changeTextSize(int articleId) {

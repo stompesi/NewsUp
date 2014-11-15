@@ -3,8 +3,8 @@
     xmlns:androidhuman="http://schemas.android.com/apk/res/com.example.newsup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFFFFF" >
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,8 +14,6 @@
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp" >
-        
-
 
         <com.example.newsup.text.EllipsizingTextView
             android:id="@+id/title"
@@ -26,8 +24,7 @@
             android:maxLines="2"
             android:textColor="#000000"
             android:textSize="27sp"
-            androidhuman:typeface="NotoSansKR-Medium.ttf.mp3" 
-            android:text="안녕하세요 반갑습니다 저는 한종빈 입니다."/>
+            androidhuman:typeface="NotoSansKR-Medium.ttf.mp3" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,12 +40,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:orientation="horizontal" >
-
+			
                 <com.example.newsup.text.StyledFirstArticleTextView
                     android:id="@+id/author"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingTop="5dp"
+                    android:maxLength="10"
+            
                     android:textColor="#000000"
                     android:textSize="16sp"
                     androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
@@ -85,9 +84,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="8dp"
                     android:textColor="#000000"
                     android:textSize="8sp"
-                    android:layout_marginRight="8dp"
                     androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
 
                 <ImageView
@@ -108,13 +107,14 @@
         </FrameLayout>
     </LinearLayout>
 
-    <LinearLayout 
+    <LinearLayout
         android:id="@+id/viewArticleDetail"
-        android:orientation="vertical"
-        android:layout_height="409dp"
         android:layout_width="match_parent"
-        android:padding="16dp">
+        android:layout_height="409dp"
+        android:orientation="vertical"
+        android:padding="16dp" >
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"

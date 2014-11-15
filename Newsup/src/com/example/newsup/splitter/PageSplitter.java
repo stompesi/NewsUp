@@ -145,11 +145,11 @@ public class PageSplitter {
 		stringEndIndex = textPaint.breakText(testString, true, layoutInfo.getAvailableTotalWidth(), null);
 		while(!text.equals("")){
 			if(stringEndIndex > text.length()) {
-				Log.e("text.substring(0, stringEndIndex);", text.substring(0, text.length()));
+//				Log.e("text.substring(0, stringEndIndex);", text.substring(0, text.length()));
 				totalInputString += text.substring(0, text.length());
 				text = text.substring(text.length());
 			} else {
-				Log.e("text.substring(0, stringEndIndex);", text.substring(0, stringEndIndex));
+//				Log.e("text.substring(0, stringEndIndex);", text.substring(0, stringEndIndex));
 				totalInputString += text.substring(0, stringEndIndex);
 				text = text.substring(stringEndIndex);
 			}

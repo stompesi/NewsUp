@@ -14,16 +14,16 @@
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp" >
+        
 
-        <com.example.newsup.text.StyledArticleTextView
+
+        <com.example.newsup.text.EllipsizingTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="86dp"
-            android:ellipsize="end"
+            android:ellipsize="middle"
             android:lineSpacingExtra="6dp"
             android:maxLines="2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:textColor="#000000"
             android:textSize="27sp"
             androidhuman:typeface="NotoSansKR-Medium.ttf.mp3" 

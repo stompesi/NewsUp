@@ -10,13 +10,15 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="304dp"
-        android:scaleType="fitXY" />
+        android:scaleType="fitCenter" />
 
-    <com.example.newsup.text.StyledArticleTextView
+    <com.example.newsup.text.EllipsizingTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="86dp"
+        android:ellipsize="middle"
         android:lineSpacingExtra="6dp"
+        android:maxLines="2"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="1dp"

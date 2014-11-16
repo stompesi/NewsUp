@@ -6,7 +6,7 @@
     android:background="#F4F4F4"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="559dp"
         android:layout_marginBottom="16dp"
@@ -14,44 +14,64 @@
         android:layout_marginRight="16dp"
         android:orientation="vertical" >
 
-        <com.example.newsup.text.StyledLastArticleTextView
-            android:id="@+id/relatedArticle"
+        <LinearLayout
+            android:id="@+id/relatevie_original_layout"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
-            android:gravity="center_vertical"
-            android:text="관련기사"
-            android:textColor="#000000"
-            android:textSize="17sp"
-            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+            android:layout_height="559dp"
+            android:orientation="vertical" >
 
-        <ListView
-            android:id="@+id/itemList"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:scrollbars="none" >
-        </ListView>
+            <com.example.newsup.text.StyledLastArticleTextView
+                android:id="@+id/relatedArticle"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:gravity="center_vertical"
+                android:text="관련기사"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
 
-        <com.example.newsup.text.StyledLastArticleTextView
-            android:id="@+id/relatedArticleTitle"
-            android:layout_width="match_parent"
-            android:layout_height="47dp"
-            android:gravity="center_vertical"
-            android:text="관련 동영상"
-            android:textColor="#000000"
-            android:textSize="17sp"
-            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+            <ListView
+                android:id="@+id/itemList"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:scrollbars="none" >
+            </ListView>
+
+            <com.example.newsup.text.StyledLastArticleTextView
+                android:id="@+id/relatedArticleTitle"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:gravity="center_vertical"
+                android:text="관련 동영상"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="225dp"
+                android:orientation="horizontal" >
+
+                <com.google.android.youtube.player.YouTubePlayerView
+                    android:id="@+id/youtube_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/relatevie_second_layout"
             android:layout_width="match_parent"
-            android:layout_height="225dp"
-            android:orientation="horizontal" >
+            android:layout_height="match_parent"
+            android:orientation="vertical" 
+            android:visibility="invisible">
 
-            <com.google.android.youtube.player.YouTubePlayerView
-                android:id="@+id/youtube_view"
+            <WebView
+                android:id="@+id/relative_webview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

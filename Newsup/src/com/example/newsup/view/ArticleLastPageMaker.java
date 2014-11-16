@@ -3,9 +3,13 @@ package com.example.newsup.view;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,8 +35,9 @@ YouTubePlayer.OnInitializedListener{
 
 	public static final String API_KEY = "AIzaSyASbhpfpjbXyEAg9sOejF8hol3dLmJNgHI";
 	public String videoId;
-
+	WebView webView;
 	private boolean isExistVideo;
+	LinearLayout relatevie_second_layout,relatevie_original_layout;
 
 	private ArticleDetailInfomation articleDetailInfomation;
 
@@ -50,18 +55,21 @@ YouTubePlayer.OnInitializedListener{
 		ListView itemList; 
 		TextView textview;
 		YouTubePlayerView youTubePlayerView;
+		
+
 
 		LinearLayout lastLayout = (LinearLayout) Inflater.inflate(R.layout.view_article_detail_last_page, null);
 		itemList =(ListView)(lastLayout).findViewById(R.id.itemList);
 		textview = (TextView)(lastLayout).findViewById(R.id.viewArticleBottom);
-		
+		webView = (WebView)(lastLayout).findViewById(R.id.relative_webview);
+		relatevie_second_layout = (LinearLayout)(lastLayout).findViewById(R.id.relatevie_second_layout);
+		relatevie_original_layout = (LinearLayout)(lastLayout).findViewById(R.id.relatevie_second_layout);
+
 		youTubePlayerView = (YouTubePlayerView)(lastLayout).findViewById(R.id.youtube_view);
 		if(articleDetailInfomation.getRelatedArticleList().size() == 0) {
 			itemList.setVisibility(View.GONE);
 			TextView relatedArticle = (TextView)(lastLayout).findViewById(R.id.relatedArticle);
 			relatedArticle.setVisibility(View.GONE);
-			
-
 		}
 
 		if(isExistVideo) {
@@ -86,11 +94,35 @@ YouTubePlayer.OnInitializedListener{
 
 		LastPageListAdapter lastPageListAdapter = new LastPageListAdapter(context, R.layout.view_article_detail_last_page_list_item, itemArray);
 		itemList.setAdapter(lastPageListAdapter);
+		itemList.setOnItemClickListener(mItemClickListener);
 
 		//		setPageNumber(lastLayout, maxPageNumber+1, maxPageNumber+1);
 		return lastLayout;
 
 	}
+	private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long l_position) {
+			relatevie_original_layout.setVisibility(View.INVISIBLE);
+			relatevie_second_layout.setVisibility(View.VISIBLE);
+			String URL = articleDetailInfomation.getRelatedArticleList().get(position).getURL();
+
+			webView.getSettings().setJavaScriptEnabled(true);
+			webView.loadUrl(URL);
+			webView.setWebViewClient(new WebViewClientClass());
+		}
+	};
+
+	private class WebViewClientClass extends WebViewClient { 
+		@Override 
+		public boolean shouldOverrideUrlLoading(WebView view, String url) { 
+			view.loadUrl(url); 
+			return true; 
+		} 
+	}
+
+
 	public class ListItem{
 
 		Image imageInfo;
@@ -140,11 +172,11 @@ YouTubePlayer.OnInitializedListener{
 			if(convertView ==null){
 				convertView = Inflater.inflate(layout, parent,false);
 			}
-			
+
 			if(array.get(position).imageInfo != null){
-			ImageView imageView = (ImageView)convertView.findViewById(R.id.iamgeItem);
-			NewsUpImageLoader.loadImage(imageView, array.get(position).imageInfo.getURL(), 
-					array.get(position).imageInfo.getColor());
+				ImageView imageView = (ImageView)convertView.findViewById(R.id.iamgeItem);
+				NewsUpImageLoader.loadImage(imageView, array.get(position).imageInfo.getURL(), 
+						array.get(position).imageInfo.getColor());
 			}
 
 			TextView titleItem = (TextView)convertView.findViewById(R.id.titleItem);
@@ -176,6 +208,15 @@ YouTubePlayer.OnInitializedListener{
 			player.cueVideo(videoId);
 		}
 
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_BACK:
+	
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 

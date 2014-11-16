@@ -15,100 +15,193 @@ public final class R {
         public static final int first_left_right_out=0x7f040003;
         public static final int first_up_down_in=0x7f040004;
         public static final int first_up_down_out=0x7f040005;
-        public static final int push_left_in=0x7f040006;
-        public static final int push_left_out=0x7f040007;
-        public static final int push_right_in=0x7f040008;
-        public static final int push_right_out=0x7f040009;
-        public static final int second_left_right_in=0x7f04000a;
-        public static final int second_left_right_out=0x7f04000b;
-        public static final int second_up_down_in=0x7f04000c;
-        public static final int second_up_down_out=0x7f04000d;
+        public static final int in=0x7f040006;
+        public static final int out=0x7f040007;
+        public static final int push_left_in=0x7f040008;
+        public static final int push_left_out=0x7f040009;
+        public static final int push_right_in=0x7f04000a;
+        public static final int push_right_out=0x7f04000b;
+        public static final int second_left_right_in=0x7f04000c;
+        public static final int second_left_right_out=0x7f04000d;
+        public static final int second_up_down_in=0x7f04000e;
+        public static final int second_up_down_out=0x7f04000f;
     }
     public static final class attr {
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
-
-         Example customization of dimensions originally defined in res/values/dimens.xml
-         (such as screen margins) for screens with more than 820dp of available width. This
-         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
-    
+ Default screen margins, per the Android Design guidelines. 
+ Default screen margins, per the Android Design guidelines. 
          */
         public static final int activity_horizontal_margin=0x7f050000;
         public static final int activity_vertical_margin=0x7f050001;
-        public static final int text_size=0x7f050002;
+        public static final int article_content_textView_height=0x7f050007;
+        public static final int article_description_empty_layout_height=0x7f05000f;
+        public static final int article_description_empty_layout_width=0x7f05000e;
+        public static final int article_description_layout_height=0x7f050008;
+        public static final int article_description_layout_margin_bottom=0x7f050009;
+        public static final int article_description_provider_textView_height=0x7f050011;
+        public static final int article_description_provider_textView_margin_right=0x7f050012;
+        public static final int article_description_provider_textView_margin_top=0x7f050013;
+        public static final int article_description_provider_textView_width=0x7f050010;
+        public static final int article_description_time_textView_height=0x7f05000b;
+        public static final int article_description_time_textView_margin_left=0x7f05000c;
+        public static final int article_description_time_textView_margin_top=0x7f05000d;
+        public static final int article_description_time_textView_width=0x7f05000a;
+        /**  view_article_detail.xml 
+ view_article_detail.xml 
+ view_article_detail.xml 
+         */
+        public static final int article_detail_padding_top=0x7f050014;
+        /**  view_article_list.xml 
+ view_article_list.xml 
+ view_article_list.xml 
+         */
+        public static final int article_empty_margin_top=0x7f050004;
+        public static final int article_image_imageView_height=0x7f050006;
+        public static final int article_title_textView_height=0x7f050005;
+        public static final int article_viewFlipper_margin_left=0x7f050003;
+        /**  activity_article.xml  
+ activity_article.xml  
+ activity_article.xml  
+         */
+        public static final int article_viewFlipper_width=0x7f050002;
+        public static final int layout_padding_bottom=0x7f05003f;
+        public static final int layout_padding_top=0x7f05003e;
+        public static final int layout_width=0x7f05003d;
+        public static final int lockscreen_ampm_textView_height=0x7f05001f;
+        public static final int lockscreen_ampm_textView_margin_top=0x7f050020;
+        public static final int lockscreen_ampm_textView_textSize=0x7f050021;
+        public static final int lockscreen_ampm_textView_width=0x7f05001e;
+        public static final int lockscreen_content_textView_height=0x7f05002a;
+        public static final int lockscreen_date_textView_height=0x7f050023;
+        public static final int lockscreen_date_textView_margin_left=0x7f050024;
+        public static final int lockscreen_date_textView_margin_top=0x7f050025;
+        public static final int lockscreen_date_textView_textSize=0x7f050026;
+        public static final int lockscreen_date_textView_width=0x7f050022;
+        public static final int lockscreen_description_empty_layout_height=0x7f050032;
+        public static final int lockscreen_description_empty_layout_width=0x7f050031;
+        public static final int lockscreen_description_layout_height=0x7f05002b;
+        public static final int lockscreen_description_layout_margin_bottom=0x7f05002c;
+        public static final int lockscreen_description_provider_textView_height=0x7f050034;
+        public static final int lockscreen_description_provider_textView_margin_right=0x7f050035;
+        public static final int lockscreen_description_provider_textView_margin_top=0x7f050036;
+        public static final int lockscreen_description_provider_textView_width=0x7f050033;
+        public static final int lockscreen_description_time_textView_height=0x7f05002e;
+        public static final int lockscreen_description_time_textView_margin_left=0x7f05002f;
+        public static final int lockscreen_description_time_textView_margin_top=0x7f050030;
+        public static final int lockscreen_description_time_textView_width=0x7f05002d;
+        /**  view_lockscreen_article_list.xml 
+ view_lockscreen_article_list.xml 
+ view_lockscreen_article_list.xml 
+         */
+        public static final int lockscreen_empty_height=0x7f050027;
+        public static final int lockscreen_image_imageView_height=0x7f050029;
+        public static final int lockscreen_time_textView_height=0x7f05001b;
+        public static final int lockscreen_time_textView_margin_top=0x7f05001c;
+        public static final int lockscreen_time_textView_textSize=0x7f05001d;
+        public static final int lockscreen_time_textView_width=0x7f05001a;
+        public static final int lockscreen_timer_layout_height=0x7f050019;
+        public static final int lockscreen_timer_layout_margin_left=0x7f050017;
+        public static final int lockscreen_timer_layout_width=0x7f050018;
+        public static final int lockscreen_title_textView_height=0x7f050028;
+        public static final int lockscreen_viewFlipper_margin_left=0x7f050016;
+        /**  activity_lockscreen.xml 
+ activity_lockscreen.xml 
+ activity_lockscreen.xml 
+         */
+        public static final int lockscreen_viewFlipper_width=0x7f050015;
+        public static final int text_author=0x7f050038;
+        public static final int text_large=0x7f05003b;
+        public static final int text_medium=0x7f05003a;
+        public static final int text_pagenumber=0x7f05003c;
+        /**  default 
+ default 
+         */
+        public static final int text_small=0x7f050039;
+        /**  default 
+         */
+        public static final int text_title=0x7f050037;
     }
     public static final class drawable {
-        public static final int back1=0x7f020000;
-        public static final int back2=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
+        public static final int asdf=0x7f020000;
+        public static final int ba=0x7f020001;
+        public static final int back1=0x7f020002;
+        public static final int back2=0x7f020003;
+        public static final int bad=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int qwer=0x7f020006;
     }
     public static final class id {
-        public static final int action_settings=0x7f090028;
-        public static final int articleDetailFlipper=0x7f09000a;
-        public static final int articleListFlipper=0x7f090009;
-        public static final int btn=0x7f090027;
-        public static final int btn_text_size_large=0x7f09001f;
-        public static final int btn_text_size_medium=0x7f09001e;
-        public static final int btn_text_size_small=0x7f09001d;
-        public static final int btn_wordDelete=0x7f090024;
-        public static final int btn_wordRegister=0x7f090023;
-        public static final int content=0x7f090002;
-        public static final int culture=0x7f09000e;
-        public static final int economy=0x7f09000d;
-        public static final int edt_wordEnter=0x7f090022;
-        public static final int entertainment=0x7f090013;
-        public static final int game=0x7f090010;
-        public static final int health=0x7f090012;
-        public static final int image=0x7f090001;
-        public static final int imageView1=0x7f090017;
-        public static final int it=0x7f090011;
-        public static final int item_list=0x7f090025;
-        public static final int layout_list=0x7f090021;
-        public static final int layout_size=0x7f09001b;
-        public static final int lockScreenDate=0x7f090008;
-        public static final int lockScreenTime=0x7f090007;
-        public static final int lockScreenViewFlipper=0x7f090005;
-        public static final int main=0x7f09000b;
-        public static final int notthing=0x7f090006;
-        public static final int politicalSociety=0x7f09000c;
-        public static final int provider=0x7f090004;
-        public static final int radio=0x7f09001c;
-        public static final int setting=0x7f090016;
-        public static final int sports=0x7f09000f;
-        public static final int startFlipper=0x7f090026;
-        public static final int sw_lockScreen=0x7f090019;
-        public static final int sw_wordSetting=0x7f090020;
-        public static final int sw_wordSize=0x7f09001a;
-        public static final int sympathy=0x7f090015;
-        public static final int textView1=0x7f090018;
-        public static final int time=0x7f090003;
-        public static final int title=0x7f090000;
-        public static final int world=0x7f090014;
+        public static final int action_settings=0x7f0a002b;
+        public static final int articleDetailFlipper=0x7f0a0001;
+        public static final int articleListFlipper=0x7f0a0000;
+        public static final int btnTextSizeLarge=0x7f0a001a;
+        public static final int btnTextSizeMedium=0x7f0a0019;
+        public static final int btnTextSizeSmall=0x7f0a0018;
+        public static final int btnWordDelete=0x7f0a001f;
+        public static final int btnWordRegister=0x7f0a001e;
+        public static final int content=0x7f0a0026;
+        public static final int culture=0x7f0a000a;
+        public static final int economy=0x7f0a0009;
+        public static final int edtWord=0x7f0a001d;
+        public static final int entertainment=0x7f0a000f;
+        public static final int game=0x7f0a000c;
+        public static final int health=0x7f0a000e;
+        public static final int image=0x7f0a0025;
+        public static final int imageView1=0x7f0a0029;
+        public static final int it=0x7f0a000d;
+        public static final int layoutWordList=0x7f0a001c;
+        public static final int listKeyWord=0x7f0a0020;
+        public static final int lockScreenAM=0x7f0a0004;
+        public static final int lockScreenDate=0x7f0a0005;
+        public static final int lockScreenTime=0x7f0a0003;
+        public static final int lockScreenViewFlipper=0x7f0a0002;
+        public static final int main=0x7f0a0007;
+        public static final int menuLayout=0x7f0a0006;
+        public static final int politicalSociety=0x7f0a0008;
+        public static final int provider=0x7f0a0028;
+        public static final int radioWordSize=0x7f0a0017;
+        public static final int setting=0x7f0a0012;
+        public static final int settingLayout=0x7f0a0013;
+        public static final int sports=0x7f0a000b;
+        public static final int startFlipper=0x7f0a0021;
+        public static final int swLockScreen=0x7f0a0014;
+        public static final int swPushNotify=0x7f0a001b;
+        public static final int swWordSize=0x7f0a0015;
+        public static final int sympathy=0x7f0a0011;
+        public static final int textSizeLayout=0x7f0a0016;
+        public static final int textView1=0x7f0a002a;
+        public static final int time=0x7f0a0027;
+        public static final int title=0x7f0a0024;
+        public static final int viewArticleBottom=0x7f0a0023;
+        public static final int viewArticleDetail=0x7f0a0022;
+        public static final int world=0x7f0a0010;
+    }
+    public static final class integer {
+        public static final int lockscreen_content_textView_maxlines=0x7f060000;
     }
     public static final class layout {
-        public static final int article_list_item=0x7f030000;
-        public static final int image_text=0x7f030001;
-        public static final int lockscreen=0x7f030002;
-        public static final int lockscreen_article_list_item=0x7f030003;
-        public static final int main=0x7f030004;
-        public static final int menu=0x7f030005;
-        public static final int network_error=0x7f030006;
-        public static final int setting=0x7f030007;
-        public static final int start=0x7f030008;
-        public static final int start_item=0x7f030009;
-        public static final int text=0x7f03000a;
-        public static final int text_image=0x7f03000b;
+        public static final int activity_article=0x7f030000;
+        public static final int activity_lockscreen=0x7f030001;
+        public static final int activity_menu=0x7f030002;
+        public static final int activity_setting=0x7f030003;
+        public static final int activity_start=0x7f030004;
+        public static final int view_article_detail=0x7f030005;
+        public static final int view_article_detail_last_page=0x7f030006;
+        public static final int view_article_list=0x7f030007;
+        public static final int view_lockscreen_article_list=0x7f030008;
+        public static final int view_network_error=0x7f030009;
     }
     public static final class menu {
-        public static final int main=0x7f080000;
-        public static final int start=0x7f080001;
+        public static final int main=0x7f090000;
+        public static final int start=0x7f090001;
     }
     public static final class string {
-        public static final int action_settings=0x7f060002;
-        public static final int app_name=0x7f060000;
-        public static final int hello_world=0x7f060001;
-        public static final int title_activity_start=0x7f060003;
+        public static final int action_settings=0x7f070002;
+        public static final int app_name=0x7f070000;
+        public static final int hello_world=0x7f070001;
+        public static final int title_activity_start=0x7f070003;
     }
     public static final class style {
         /** 
@@ -121,21 +214,32 @@ public final class R {
             backward-compatibility can go here.
         
 
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     
- API 11 theme customizations can go here. 
 
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     
- API 14 theme customizations can go here. 
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
+        public static final int AppTheme=0x7f080001;
     }
 }

@@ -21,7 +21,7 @@ import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.background.service.LockScreenService;
 import com.example.newsup.setting.RbPreference;
 
-public class SettingActivity extends Activity implements OnTouchListener,OnClickListener{
+public class asdfsadfsaf extends Activity implements OnTouchListener,OnClickListener{
 
 	Button btnSmallWorld, btnLargeWorld, btnMediumWorld,btnlockScreen;
 
@@ -73,13 +73,20 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 		btnMediumWorld.setOnClickListener(this);
 		btnLargeWorld.setOnClickListener(this);
 
-		
+
 		if(pref.getValue(RbPreference.IS_LOCK_SCREEN, false))
 		{
-			btnlockScreen.setBackgroundResource(R.drawable.switch_on);
+			Intent intent = new Intent(context, LockScreenService.class);
+			stopService(intent);
+			pref.setValue(RbPreference.IS_LOCK_SCREEN, false);
+			Log.d("TAG", "락스크린 스탑");
+
 		}else
 		{
-			btnlockScreen.setBackgroundResource(R.drawable.switch_off);
+			Intent intent = new Intent(context, LockScreenService.class);
+			startService(intent);
+			pref.setValue(RbPreference.IS_LOCK_SCREEN, true);
+			Log.d("TAG", "락스크린 시");
 		}
 
 		int index = pref.getValue(RbPreference.WORD_SIZE, MEDIUM_WORD) / 5 - 2;
@@ -143,8 +150,8 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 
 		case R.id.swLockScreen:
 			Log.d("TAG", "4번 클");
-			isLockScreen = toggleButton(isLockScreen); 
-			pref.setValue(RbPreference.IS_LOCK_SCREEN, isLockScreen);
+
+			pref.setValue(RbPreference.IS_LOCK_SCREEN, toggleButton(isLockScreen));
 			break;
 		default:
 			break;
@@ -193,17 +200,10 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 			Log.d("TAG", "드루와1 ");
 			btnlockScreen.setBackgroundResource(R.drawable.switch_off);
 			isLockScreen = false;
-			Intent intent = new Intent(context, LockScreenService.class);
-			stopService(intent);
-			
-			
 		}else{
 			Log.d("TAG", "드루와2 ");
 			btnlockScreen.setBackgroundResource(R.drawable.switch_on);
 			isLockScreen = true;
-			Intent intent = new Intent(context, LockScreenService.class);
-			startService(intent);
-			
 		}
 
 		return isLockScreen;

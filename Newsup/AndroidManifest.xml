@@ -47,9 +47,14 @@
             android:name="com.example.newsup.activity.StartActivity"
             android:label="@string/title_activity_start"
             android:screenOrientation="portrait" >
+        </activity>
+        
+        <activity
+            android:name="com.example.newsup.activity.SplashActivity"
+             android:label="@string/title_activity_start"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

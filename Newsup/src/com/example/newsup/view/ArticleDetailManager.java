@@ -157,7 +157,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 					}
 				});
-				isFinish = true;
 				return null;
 			} 
 			try {
@@ -429,9 +428,13 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				relatedArticle.setDescription(item.getString("description"));
 				relatedArticle.setURL(item.getString("url"));
 				
-				JSONObject imageObject = item.getJSONObject("image");
-				Image imageInfo = new Image(imageObject.getString("url"), imageObject.getString("color"));
-				relatedArticle.setImageInfo(imageInfo);
+				
+				if(item.has("image")) {
+					JSONObject imageObject = item.getJSONObject("image");
+					Image imageInfo = new Image(imageObject.getString("url"), imageObject.getString("color"));
+					relatedArticle.setImageInfo(imageInfo);
+				}
+				
 				articleDetailInfomation.addRelatedArticle(relatedArticle);
 			}
 			if(!isExistVideo && articleDetailInfomation.getRelatedArticleList().size() != 0) {

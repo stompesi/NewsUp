@@ -19,8 +19,8 @@ public class PageSplitter {
 
 	private TextPaint textPaint;
 	
-	private int currentViewHeight;
-	private int textLineHeight;
+	private double currentViewHeight;
+	private double textLineHeight;
 	
 	private ArticleDetailPage page;
 	
@@ -36,7 +36,7 @@ public class PageSplitter {
 	public PageSplitter(TextPaint textPaint) {
 		layoutInfo = LayoutInfo.getInstance();
 		this.textPaint = textPaint;
-		this.textLineHeight = (int) Math.ceil(textPaint.getFontMetrics(null));
+		this.textLineHeight = Math.ceil(textPaint.getFontMetrics(null) * 1.1 + 1);
 		this.remnantContent = new LinkedList<Object>(); 
 		this.currentViewHeight = layoutInfo.getFirstPageAvailableHeight();
 		this.currentInputString = "";
@@ -145,21 +145,22 @@ public class PageSplitter {
 		stringEndIndex = textPaint.breakText(testString, true, layoutInfo.getAvailableTotalWidth(), null);
 		while(!text.equals("")){
 			if(stringEndIndex > text.length()) {
-//				Log.e("text.substring(0, stringEndIndex);", text.substring(0, text.length()));
+				Log.e("text.substring(0, stringEndIndex);", text.substring(0, text.length()));
 				totalInputString += text.substring(0, text.length());
 				text = text.substring(text.length());
 			} else {
-//				Log.e("text.substring(0, stringEndIndex);", text.substring(0, stringEndIndex));
+				Log.e("text.substring(0, stringEndIndex);", text.substring(0, stringEndIndex));
 				totalInputString += text.substring(0, stringEndIndex);
 				text = text.substring(stringEndIndex);
 			}
+			currentViewHeight = currentViewHeight - textLineHeight;
 			if (isEndPage()) {
 				currentInputString += text;
 				return true;
 			}
 		}
 
-		currentViewHeight = currentViewHeight - (textLineHeight * 2);
+		currentViewHeight = currentViewHeight - textLineHeight;
 		totalInputString += "\n\n";
 		if (isEndPage()) {
 			return true;
@@ -174,7 +175,7 @@ public class PageSplitter {
 	}
 	
 	private boolean isEndPage() {
-		return 0 >= currentViewHeight - (textLineHeight * 3);
+		return 0 >= currentViewHeight - textLineHeight;
 	}
 	
 	/////////////////////////////

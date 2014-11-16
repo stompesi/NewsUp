@@ -88,6 +88,7 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 			}
 		}
 		articleListManager.insertArticleList();
+//		flipperManager.setAnimation(R.anim.fade_out, R.anim.fade_in);
 		articleListManager.display(articleListManager.getChildChount() - 1);
 	}
 
@@ -254,6 +255,7 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 				} else if (xAtUp - xAtDown > SWIPE_MIN_DISTANCE) {
 					initClickCount();
 					if (flipperManager != articleDetailManager) {
+						finish();
 						return false;
 					}
 					articleDetailManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);

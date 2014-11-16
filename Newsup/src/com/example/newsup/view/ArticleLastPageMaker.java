@@ -140,10 +140,12 @@ YouTubePlayer.OnInitializedListener{
 			if(convertView ==null){
 				convertView = Inflater.inflate(layout, parent,false);
 			}
+			
+			if(array.get(position).imageInfo != null){
 			ImageView imageView = (ImageView)convertView.findViewById(R.id.iamgeItem);
-
 			NewsUpImageLoader.loadImage(imageView, array.get(position).imageInfo.getURL(), 
 					array.get(position).imageInfo.getColor());
+			}
 
 			TextView titleItem = (TextView)convertView.findViewById(R.id.titleItem);
 			titleItem.setText(array.get(position).title);

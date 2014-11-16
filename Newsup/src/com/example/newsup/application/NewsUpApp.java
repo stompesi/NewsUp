@@ -34,7 +34,7 @@ public class NewsUpApp extends com.orm.SugarApp {
 		
 		RbPreference pref = new RbPreference(this);
 		deviceId = pref.getValue(RbPreference.USER_ID, null);
-		
+		deviceId = "asdfasdf";
 		// 앱 처음 실행 
 		if(deviceId == null) {
 			deviceId = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);

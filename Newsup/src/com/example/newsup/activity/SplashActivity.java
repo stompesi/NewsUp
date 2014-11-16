@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.newsup.R;
+import com.example.newsup.application.NewsUpApp;
+import com.example.newsup.network.NewsUpNetwork;
 import com.example.newsup.setting.RbPreference;
 import com.urqa.clientinterface.URQAController;
 
@@ -23,17 +25,22 @@ public class SplashActivity extends Activity {
 		hd.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-//				RbPreference pref = new RbPreference(SplashActivity.this);
-////				 앱 처음 실행 
-//				if(pref.getValue(RbPreference.PREF_IS_INTRO, true)) {
-//					Intent intent = new Intent(SplashActivity.this, StartActivity.class);
-//					startActivity(intent);
-//					finish();
-//				} else {
+				RbPreference pref = new RbPreference(SplashActivity.this);
+//				 앱 처음 실행 
+				if(pref.getValue(RbPreference.PREF_IS_INTRO, true)) {
+					Intent intent = new Intent(SplashActivity.this, StartActivity.class);
+					startActivity(intent);
+					finish();
+				} else {
+					
+					//TODO : 지울것 
+					NewsUpNetwork.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
+					NewsUpNetwork.getInstance().requestRegistUser(getApplication());
+					
 					Intent intent = new Intent(SplashActivity.this, ArticleActivity.class);
 					startActivity(intent);
 					finish();
-//				}
+				}
 			}
 		}, 1500);
 	}

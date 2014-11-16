@@ -2,6 +2,7 @@ package com.example.newsup.network;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +91,7 @@ public class NewsUpNetwork {
 	}
 
 	// article list 요청 
-	public void requestArticleList(final int category) {
+	public void requestArticleList(final int category, final boolean isUserRequest) {
 		Log.d("NewsUp", "뉴스기사 요청");
 		Log.d("NewsUp", "deviceId : " + deviceId);
 		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/category/" + category;
@@ -102,18 +103,28 @@ public class NewsUpNetwork {
 						JSONArray articles;
 						try {
 							articles = response.getJSONArray("articles");
-							for (int i = 0; i < articles.length(); i++) {
-								Log.e("Id", "" + articles.getJSONObject(i).getDouble("score"));
-								articles.getJSONObject(i).put("category", category);
-								// TODO : 카테고리 임시변경함 - 서버에서 제대로 데이터가 날라온다면 제거해야함 
-								articles.getJSONObject(i).put("category", category);
-								Article.saveArticle(articles.getJSONObject(i));
-							}
-							if(ArticleActivity.getInstance() != null) {
-								ArticleActivity.getInstance().successSaveArticle();
-							} 
-							if(LockScreenActivity.getInstance() != null) {
-								LockScreenActivity.getInstance().successSaveArticle();
+							Log.d("NewsUp", "articles.length() : " + articles.length());
+							if(articles.length() == 0) {
+								if(ArticleActivity.getInstance() != null && isUserRequest) {
+									ArticleActivity.getInstance().runOutArticle();
+								} 
+								if(LockScreenActivity.getInstance() != null && isUserRequest) {
+									LockScreenActivity.getInstance().runOutArticle();
+								}
+							} else {
+								for (int i = 0; i < articles.length(); i++) {
+									Log.e("Id", "" + articles.getJSONObject(i).getDouble("score"));
+									articles.getJSONObject(i).put("category", category);
+									// TODO : 카테고리 임시변경함 - 서버에서 제대로 데이터가 날라온다면 제거해야함 
+									articles.getJSONObject(i).put("category", category);
+									Article.saveArticle(articles.getJSONObject(i));
+								}
+								if(ArticleActivity.getInstance() != null && isUserRequest) {
+									ArticleActivity.getInstance().successSaveArticle();
+								} 
+								if(LockScreenActivity.getInstance() != null && isUserRequest) {
+									LockScreenActivity.getInstance().successSaveArticle();
+								}
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -246,7 +257,7 @@ public class NewsUpNetwork {
         return false; 
 	}
 
-	public void requestFacebook(String query, final ArticleDetailManager articleDetailManager) {
+	public void requestFacebook(String query) {
 		Log.d("NewsUp", "페이스북 공유 정보 요청");
 		String requestURL = "https://graph.facebook.com/?id=";
 		try {
@@ -259,6 +270,7 @@ public class NewsUpNetwork {
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
+						ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
 						try {
 							Log.d("NewsUp", "Network : 페이스북 공유 정보 요청 성공.");
 							if(response.has("shares")) {
@@ -276,6 +288,7 @@ public class NewsUpNetwork {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						Log.d("NewsUp", "Network : 페이스북 공유 정보 요청 실패");
+						ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
 						articleDetailManager.setFacebookLikeCount(0);
 					}
 				}) {
@@ -283,7 +296,7 @@ public class NewsUpNetwork {
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
 	
-	public void requestTwitter(String query, final ArticleDetailManager articleDetailManager) {
+	public void requestTwitter(String query) {
 		Log.d("NewsUp", "트위터 트윗수 요청");
 		String requestURL = "http://urls.api.twitter.com/1/urls/count.json?url=";
 		try {
@@ -296,6 +309,7 @@ public class NewsUpNetwork {
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 				@Override
 				public void onResponse(JSONObject response) {
+					ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
 					try {
 						Log.d("NewsUp", "트위터 트윗수 요청 성공");
 						articleDetailManager.setTwitterCount(response.getInt("count"));
@@ -308,6 +322,7 @@ public class NewsUpNetwork {
 				@Override
 				public void onErrorResponse(VolleyError error) {
 					Log.d("NewsUp", "Network : 트위터 트윗수 요청 실패");
+					ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
 					articleDetailManager.setTwitterCount(0);
 				}
 			}) {
@@ -316,8 +331,7 @@ public class NewsUpNetwork {
 	}
 
 	
-	
-	public void requestArticleDetail(final int articleId, final ArticleDetailManager articleDetailManager) {
+	public void requestArticleDetail(final int articleId) {
 		Log.d("NewsUp", "뉴스 상세정보 요청");
 		Log.d("NewsUp", "deviceId : " + deviceId);
 		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/articles/" + articleId;
@@ -325,6 +339,7 @@ public class NewsUpNetwork {
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
+						ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
 						Log.d("NewsUp", "Network : 뉴스 상세 정보 요청 성공.");
 						try {
 							JSONArray relatedArticles = response.getJSONArray("related_article");
@@ -338,7 +353,7 @@ public class NewsUpNetwork {
 									videoEntity = videoEntity + entity.getString(i) + "+"; 
 								}
 								Log.e("entity", "" +entity);
-								requestVideo(videoEntity, articleDetailManager);
+								requestVideo(videoEntity);
 								articleDetailManager.setRelatedArticle(relatedArticles, true);
 							}
 						} catch (JSONException e) {
@@ -362,7 +377,7 @@ public class NewsUpNetwork {
 	}
 	
 	
-	public void requestVideo(String query, final ArticleDetailManager articleDetailManager) {
+	public void requestVideo(String query) {
 		Log.d("NewsUp", "동영상 요청");
 		
 		String requestURL = "https://www.googleapis.com/youtube/v3/search?"
@@ -382,6 +397,7 @@ public class NewsUpNetwork {
 					@Override
 					public void onResponse(JSONObject response) {
 						Log.d("NewsUp", "동영상 요청 성공");
+						ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
 						String videoId;
 						try {
 							JSONArray entity = response.getJSONArray("items");
@@ -403,4 +419,51 @@ public class NewsUpNetwork {
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
 	
+	// Preference 서버로 전달 
+		public void requestPreference(ArrayList<Integer> likeCategoryList) {
+			Log.d("NewsUp", "Preference 서버로 전달");
+			String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/users/preference";
+
+			JSONObject params = new JSONObject();
+			try {
+	            params.put("category_preference", likeCategoryList);  
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+			
+			Log.e("PreferenceLog", ""+ likeCategoryList);  
+			
+			JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.POST, requestURL, params, new Response.Listener<JSONObject>() {
+						@Override
+						public void onResponse(JSONObject response) {
+							int errorCode;
+							try {
+								errorCode = response.getInt("error_code");
+								switch(errorCode) {
+								case 1:
+									Log.e("NewsUp", "Network : Preference set 실패.");
+									break;
+								case 0:
+									Log.d("NewsUp", "Network : Preference set 성공.");
+									break;
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					}, new Response.ErrorListener() {
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.e("NewsUp", "Network : Preference set 실패.");
+						}
+					}) {
+				 		@Override
+				 		public Map<String, String> getHeaders() throws AuthFailureError {
+				           HashMap<String, String> headers = new HashMap<String, String>();
+				           headers.put("User-Token", deviceId);
+				           return headers;
+				       }
+			};
+			NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
+		}
 }

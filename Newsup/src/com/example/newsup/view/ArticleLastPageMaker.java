@@ -3,7 +3,8 @@ package com.example.newsup.view;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.view.KeyEvent;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.newsup.R;
+import com.example.newsup.activity.ArticleActivity;
 import com.example.newsup.activity.transmission.structure.Image;
 import com.example.newsup.network.NewsUpImageLoader;
 import com.example.newsup.view.structure.ArticleDetailInfomation;
@@ -104,13 +106,12 @@ YouTubePlayer.OnInitializedListener{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long l_position) {
-			relatevie_original_layout.setVisibility(View.INVISIBLE);
-			relatevie_second_layout.setVisibility(View.VISIBLE);
 			String URL = articleDetailInfomation.getRelatedArticleList().get(position).getURL();
-
-			webView.getSettings().setJavaScriptEnabled(true);
-			webView.loadUrl(URL);
-			webView.setWebViewClient(new WebViewClientClass());
+			
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
+			context.startActivity(intent);
+			
+			context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=cxLG2wtE7TM")));
 		}
 	};
 
@@ -209,18 +210,4 @@ YouTubePlayer.OnInitializedListener{
 		}
 
 	}
-	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_BACK:
-	
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-
-
-
-
 }

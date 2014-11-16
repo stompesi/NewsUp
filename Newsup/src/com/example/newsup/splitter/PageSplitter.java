@@ -213,7 +213,7 @@ public class PageSplitter {
 		ImageInfo imageInfo;
 		String imageURL;
 		String color;
-		int imageHeight, imgaeWidth;
+		int imageHeight = 0, imgaeWidth;
 		
 		double ratio;
 		
@@ -223,19 +223,20 @@ public class PageSplitter {
 		color = imageResult[0];
 		imageURL = imageResult[1];
 		
-		ratio = (double) layoutInfo.getAvailableTotalWidth() / Integer.parseInt(imageResult[3]);
-		imgaeWidth = layoutInfo.getAvailableTotalWidth();
-		imageHeight = (int)(Integer.parseInt(imageResult[2]) * ratio);
 		
+		
+		//가로가 세로보다 클때 
+		if(Integer.parseInt(imageResult[3]) >= Integer.parseInt(imageResult[2])) {
+			imgaeWidth = layoutInfo.getAvailableTotalWidth();
+			ratio = (double) layoutInfo.getAvailableTotalWidth() / Integer.parseInt(imageResult[3]);
+			imageHeight = (int)(Integer.parseInt(imageResult[2]) * ratio);
+		} else {
+			imageHeight = layoutInfo.getAvailableTotalHeight() / 2;
+			ratio = (double) (layoutInfo.getAvailableTotalHeight() / 2) / Integer.parseInt(imageResult[2]);
+			imgaeWidth = (int)(Integer.parseInt(imageResult[3]) * ratio);
+		}
 		
 		// 세로보다 긴경우 (width > height)
-		if(imageHeight > layoutInfo.getAvailableTotalHeight()) {
-			ratio =  (double) (layoutInfo.getAvailableTotalHeight() / 2) / imageHeight;
-			imageHeight = layoutInfo.getAvailableTotalHeight() / 2;
-			imgaeWidth = (int)(imgaeWidth * ratio);
-		} 
-			
-		
 		imageInfo = new ImageInfo(imageURL, imgaeWidth, imageHeight, color);
 
 		return imageInfo;

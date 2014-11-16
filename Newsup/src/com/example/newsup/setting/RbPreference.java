@@ -20,6 +20,8 @@ public class RbPreference {
 	public final static String PREF_IS_INTRO = "PREF_IS_INTRO";
 	public final static String IS_LOCK_SCREEN ="IS_LOCK_SCREEN";
 	public final static String PREF_IS_FIRST_NETWORK_REQUEST = "PREF_IS_FIRST_NETWORK_REQUEST";
+	public final static String FIRST_ARTICLE_REQUEST = "FIRST_ARTICLE_REQUEST";
+	
 	
 	SharedPreferences pref;
 	SharedPreferences.Editor editor;

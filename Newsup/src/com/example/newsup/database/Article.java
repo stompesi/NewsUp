@@ -76,11 +76,16 @@ public class Article extends SugarRecord<Article> implements Serializable {
 			JSONObject article = params[0];
 			
 			try {
+				
 				resource.acquire();
 				Article articleORM;
-				articleORM = new Article();
+				articleORM = getArticle(article.getInt("id"));
 				
-				articleORM.setIdx(++Article.auto);
+				if(articleORM == null) {
+					articleORM = new Article();
+					articleORM.setIdx(++Article.auto);
+				}
+				
 				articleORM.setArticleId(article.getInt("id"));
 				articleORM.setCategory(article.getInt("category"));
 				articleORM.setBody(article.getString("body"));
@@ -133,7 +138,7 @@ public class Article extends SugarRecord<Article> implements Serializable {
 	public static List<Article> selectOtherArticleList(int category, int offset) {
 		Article.executeQuery("VACUUM");
 		// TODO : 점수별 소팅 
-		List<Article> result = Article.findWithQuery(Article.class, "SELECT * FROM Article where category = ? and SCORE != 0 ORDER BY idx asc LIMIT 10 OFFSET ?", "" + category , "" + offset);
+		List<Article> result = Article.findWithQuery(Article.class, "SELECT * FROM Article where category = ? and SCORE = -1 ORDER BY timestamp desc LIMIT 10 OFFSET ?", "" + category , "" + offset);
 		return result;
 	}
 	

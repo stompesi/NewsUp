@@ -12,6 +12,7 @@ import android.util.Log;
 import com.example.newsup.background.receiver.ScreenOnOffReceiver;
 import com.example.newsup.database.Article;
 import com.example.newsup.network.NewsUpNetwork;
+import com.example.newsup.setting.RbPreference;
 
 public class ArticleManageService extends Service {
 
@@ -36,6 +37,16 @@ public class ArticleManageService extends Service {
 	@Override
 	public void onCreate() {
 		Log.d("NewsUp", "Oncreate ArticleManage service");
+		
+		RbPreference pref = new RbPreference(this);
+		if(pref.getValue(RbPreference.FIRST_ARTICLE_REQUEST, true)) {
+			for (int i = 1 ; i <= 10 ; i++) {
+				NewsUpNetwork.getInstance().requestArticleList(i, false);
+			}
+			pref.setValue(RbPreference.FIRST_ARTICLE_REQUEST, false);
+		}
+		
+		
 		super.onCreate();
 		registerScreenOnOffReceiver();
 		startRequestArticleManage();
@@ -48,6 +59,20 @@ public class ArticleManageService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		RbPreference pref = new RbPreference(this);
+		if(pref.getValue(RbPreference.FIRST_ARTICLE_REQUEST, true)) {
+			for (int i = 1 ; i <= 10 ; i++) {
+				NewsUpNetwork.getInstance().requestArticleList(i, false);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			pref.setValue(RbPreference.FIRST_ARTICLE_REQUEST, false);
+		}
+		
 		return START_REDELIVER_INTENT;
 	}
 
@@ -79,7 +104,7 @@ public class ArticleManageService extends Service {
 	// 서버에 Article 요청 
 	private static void requestArticles() {
 		for (int i = CATEGORY_START_INDEX; i <= CATEGORY_MAX_INDEX; i++) {
-			NewsUpNetwork.getInstance().requestArticleList(i);
+			NewsUpNetwork.getInstance().requestArticleList(i, false);
 		}
 	}
 	

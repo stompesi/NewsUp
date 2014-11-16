@@ -46,7 +46,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	
 	
 	public void successSaveArticle(){
-		articleListManager.successSaveArticle();
+		articleListManager.successNetworkArticleRequest();
 	}
 	
 	public static LockScreenActivity getInstance() {
@@ -83,7 +83,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		ViewFlipper articleListFlipper = (ViewFlipper) findViewById(R.id.lockScreenViewFlipper);
 		articleListFlipper.setOnTouchListener(this);
 		
-		articleListManager = new ArticleListManager(this, articleListFlipper, R.layout.view_lockscreen_article_list, 0);
+		articleListManager = new ArticleListManager(this, articleListFlipper, R.layout.view_lockscreen_article_list, 0, R.layout.view_lockscreen_network_error);
 		
 		timeView = (TextView) findViewById(R.id.lockScreenTime);
 		dateView = (TextView) findViewById(R.id.lockScreenDate);
@@ -127,14 +127,19 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 		
 		Intent intent = new Intent(LockScreenActivity.this, ArticleActivity.class);
 		ArrayList<TransmissionArticle> articleList = new ArrayList<TransmissionArticle>();
-		
-		for(int i = articleListManager.getChildChount() - 1 ; i >= ARTICLE_END_ITEM_INDEX  ; i--) {
-			//TODO : 여기해야한다 
+		int end;
+		if(articleListManager.isNetworkError()) {
+			end = ARTICLE_END_ITEM_INDEX + 1;
+			bun.putInt("setCurrentChildIndex", articleListManager.getCurrentChildIndex() - 1);
+		} else {
+			end = ARTICLE_END_ITEM_INDEX;
+			bun.putInt("setCurrentChildIndex", articleListManager.getCurrentChildIndex());
+		}
+		for(int i = articleListManager.getChildChount() - 1 ; i >= end  ; i--) {
 			TransmissionArticle transmissionArticle = new TransmissionArticle(articleListManager.getChildAt(i));
 			articleList.add(transmissionArticle);
 		}
 		bun.putInt("articleId", articleListManager.getCurrentViewId());
-		bun.putInt("setCurrentChildIndex", articleListManager.getCurrentChildIndex()); // add two parameters: a string and a boolean
 		bun.putSerializable("articleList", articleList);
 		intent.putExtras(bun);
 		startActivity(intent);
@@ -197,6 +202,10 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 			}  
 		}
 		return true;
+	}
+	
+	public void runOutArticle() {
+		articleListManager.runOutArticle();
 	}
 }
 

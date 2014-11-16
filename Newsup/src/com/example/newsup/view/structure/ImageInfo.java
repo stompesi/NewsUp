@@ -8,7 +8,7 @@ public class ImageInfo {
 	private String color;
 	
 	public ImageInfo(String imageURL, int imageWidth,int imageHeight, String color) {
-		Log.d("NewsUp", "이미지 정보 객체 생성");
+		Log.d("NewsUp", "이미지 정보 객체 생성 width : " + imageWidth + " height : " + imageHeight);
 		
 		this.imageURL = imageURL;
 		this.imageHeight = imageHeight;

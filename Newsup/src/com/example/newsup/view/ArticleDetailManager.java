@@ -16,6 +16,8 @@ import android.os.Handler;
 import android.text.TextPaint;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,9 +54,19 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	
 	ArticleDetailInfomation articleDetailInfomation;
 	
-	public ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
+	private static ArticleDetailManager articleDetailManager;
+	
+	private ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
 		this.context = context;
+	}
+	
+	public static void setArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
+		articleDetailManager = new ArticleDetailManager(context, flipper, offset);
+	}
+	
+	public static ArticleDetailManager getInstance() {
+		return articleDetailManager;
 	}
 
 
@@ -64,7 +76,8 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	PageSplitter splitter;
 	
 	private int totalCount;
-
+	
+	
 	public void getArticleDetail(int articleId) {
 		String str;
 		Article article;
@@ -153,7 +166,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 							LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 							setPageNumber(view, getChildChount() - i, getChildChount());
 						}
-						NewsUpNetwork.getInstance().requestArticleDetail(articleId, ArticleDetailManager.this);
+						NewsUpNetwork.getInstance().requestArticleDetail(articleId);
 
 					}
 				});
@@ -215,7 +228,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 					setPageNumber(view, getChildChount() - i, getChildChount());
 				}
-				NewsUpNetwork.getInstance().requestArticleDetail(articleId, ArticleDetailManager.this);
+				NewsUpNetwork.getInstance().requestArticleDetail(articleId);
 				resource.release();
 			} else {
 				addView(articleContentLayout);
@@ -248,11 +261,20 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				imageInfo = (ImageInfo) object;
 				imageView = new ImageView(context);
 
-				view.addView(imageView);
 
-				imageView.getLayoutParams().height = imageInfo.getHeight();
-				imageView.getLayoutParams().width = imageInfo.getWidth();
+
+				
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				params.gravity = Gravity.CENTER_HORIZONTAL;
+				params.width = imageInfo.getWidth();
+				params.height = imageInfo.getHeight();
+				
+				imageView.setLayoutParams(params);
+				
+				
 				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+				view.addView(imageView);				
+				
 
 				NewsUpImageLoader.loadImage(imageView, imageInfo.getURL(), imageInfo.getColor());
 			}
@@ -311,23 +333,11 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	}
 
-	private TextView setTextView(Context context, int height, int textSize) {
-
-		TextView textView = new TextView(context);
-		textView.setWidth(layoutInfo.getAvailableTotalWidth());
-		textView.setHeight(height);
-		textView.setLineSpacing((float) 1.1, (float) 1.1);
-		textView.setTextColor(Color.BLACK);
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources()
-				.getDimension(textSize));
-		ApplyFont(context, textView);
-
-		return textView;
-	}
+	
 
 	private void ApplyFont(Context context, TextView tv) {
-		//		Typeface face = Typeface.createFromAsset(context.getAssets(), "NanumGothic.ttf.mp3");
-		//		tv.setTypeface(face);
+//		Typeface face = Typeface.createFromAsset(context.getAssets(), "NanumGothic.ttf.mp3");
+//		tv.setTypeface(face);
 	}
 
 	private void ApplyFont(Context context, TextPaint tv) {
@@ -378,9 +388,10 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	
 	public void requestInfomation(int articleId) {
 		Article article = Article.getArticle(articleId);
-		
-		NewsUpNetwork.getInstance().requestFacebook(article.getArticleURL(), ArticleDetailManager.this);
-		NewsUpNetwork.getInstance().requestTwitter(article.getArticleURL(), ArticleDetailManager.this);
+		if(article != null) {
+			NewsUpNetwork.getInstance().requestFacebook(article.getArticleURL());
+			NewsUpNetwork.getInstance().requestTwitter(article.getArticleURL());
+		}
 	}
 	
 	public void setFacebookLikeCount(int shareCount) {

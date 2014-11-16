@@ -19,8 +19,10 @@ import android.widget.ViewFlipper;
 
 import com.example.newsup.R;
 import com.example.newsup.activity.transmission.structure.TransmissionArticle;
+import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.background.service.LockScreenService;
 import com.example.newsup.database.Article;
+import com.example.newsup.network.NewsUpNetwork;
 import com.example.newsup.setting.RbPreference;
 import com.example.newsup.view.ArticleDetailManager;
 import com.example.newsup.view.ArticleFlipViewManager;
@@ -88,7 +90,6 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 			}
 		}
 		articleListManager.insertArticleList();
-//		flipperManager.setAnimation(R.anim.fade_out, R.anim.fade_in);
 		articleListManager.display(articleListManager.getChildChount() - 1);
 	}
 
@@ -114,8 +115,9 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 		articleListFlipper.setOnTouchListener(this);
 		articleDetailFlipper.setOnTouchListener(this);
 		
-		articleListManager = new ArticleListManager(this, articleListFlipper, R.layout.view_article_list, 1);
-		articleDetailManager = new ArticleDetailManager(this, articleDetailFlipper, 0);
+		articleListManager = new ArticleListManager(this, articleListFlipper, R.layout.view_article_list, 1, R.layout.view_article_network_error);
+		ArticleDetailManager.setArticleDetailManager(this, articleDetailFlipper, 0);
+		articleDetailManager = ArticleDetailManager.getInstance();
 		
 		flipperManager = articleListManager;
 		
@@ -137,7 +139,7 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 	}
 	
 	public void successSaveArticle(){
-		articleListManager.successSaveArticle();
+		articleListManager.successNetworkArticleRequest();
 	}
 	
 	public void changeTextSize() {
@@ -288,5 +290,9 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 	
 	public void changeIsAnimationningFlag() {
 		isAnimationning = false;
+	}
+	
+	public void runOutArticle(){
+		articleListManager.runOutArticle();
 	}
 }

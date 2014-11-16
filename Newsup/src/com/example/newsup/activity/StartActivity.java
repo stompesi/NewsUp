@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.newsup.R;
-import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.background.service.ArticleManageService;
 import com.example.newsup.background.service.LockScreenService;
 import com.example.newsup.network.NewsUpNetwork;

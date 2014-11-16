@@ -15,7 +15,6 @@ public class SplashActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		
@@ -32,11 +31,6 @@ public class SplashActivity extends Activity {
 					startActivity(intent);
 					finish();
 				} else {
-					
-					//TODO : 지울것 
-					NewsUpNetwork.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
-					NewsUpNetwork.getInstance().requestRegistUser(getApplication());
-					
 					Intent intent = new Intent(SplashActivity.this, ArticleActivity.class);
 					startActivity(intent);
 					finish();

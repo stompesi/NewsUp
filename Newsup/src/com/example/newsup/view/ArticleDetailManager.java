@@ -94,10 +94,9 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		
 		textView = new TextView(context);
 		textView.setWidth(layoutInfo.getAvailableTotalWidth());
-		textView.setLineSpacing((float) 1.1, (float) 1.1);
+		textView.setLineSpacing((float) 1.5, (float) 1.5);
 
 		int textSize = NewsUpApp.getInstance().getTextSize();
-		textView.setTextColor(Color.BLACK);
 		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context
 				.getResources().getDimension(textSize));
 		ApplyFont(context, textView);
@@ -162,12 +161,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						for(int i = 0 ; i < getChildChount() ; i++) {
-							LinearLayout view = (LinearLayout) flipper.getChildAt(i);
-							setPageNumber(view, getChildChount() - i, getChildChount());
-						}
 						NewsUpNetwork.getInstance().requestArticleDetail(articleId);
-
 					}
 				});
 				return null;
@@ -196,6 +190,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					e1.printStackTrace();
 				}
 				if(pageOut) {
+					// TODO : 여기 손좀 보아야 할 것 
 					removeAllFlipperItem();
 					return null;
 				}
@@ -223,11 +218,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				addView(articleContentLayout);
 				currentChildIndex++;
 				articleReadInfo.addPage();
-
-				for(int i = 0 ; i < getChildChount() ; i++) {
-					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
-					setPageNumber(view, getChildChount() - i, getChildChount());
-				}
 				NewsUpNetwork.getInstance().requestArticleDetail(articleId);
 				resource.release();
 			} else {
@@ -290,7 +280,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 				textView = new TextView(context);
 				textView.setWidth(layoutInfo.getAvailableTotalWidth());
-				textView.setLineSpacing((float) 1.1, (float) 1.1);
+				textView.setLineSpacing((float) 1.5, (float) 1.5);
 
 				int textSize = NewsUpApp.getInstance().getTextSize();
 				textView.setTextColor(Color.BLACK);
@@ -336,13 +326,13 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	
 
 	private void ApplyFont(Context context, TextView tv) {
-//		Typeface face = Typeface.createFromAsset(context.getAssets(), "NanumGothic.ttf.mp3");
-//		tv.setTypeface(face);
+		Typeface face = Typeface.createFromAsset(context.getAssets(), "NotoSansKR-Regular.ttf.mp3");
+		tv.setTypeface(face);
 	}
 
 	private void ApplyFont(Context context, TextPaint tv) {
 		Typeface face = Typeface.createFromAsset(context.getAssets(),
-				"NanumGothic.ttf.mp3");
+				"NotoSansKR-Regular.ttf.mp3");
 		tv.setTypeface(face);
 	}
 
@@ -426,6 +416,10 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		addView(new ArticleLastPageMaker(context, inflater, true, articleDetailInfomation).getLastPage());
 		currentChildIndex++;
 		articleReadInfo.addPage();
+		for(int i = 0 ; i < getChildChount() ; i++) {
+			LinearLayout view = (LinearLayout) flipper.getChildAt(i);
+			setPageNumber(view, getChildChount() - i, getChildChount());
+		}
 	}
 
 	public void setRelatedArticle(JSONArray relatedArticles, boolean isExistVideo) {
@@ -452,6 +446,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				addView(new ArticleLastPageMaker(context, inflater, isExistVideo, articleDetailInfomation).getLastPage());
 				currentChildIndex++;
 				articleReadInfo.addPage();
+				
+				for(int i = 0 ; i < getChildChount() ; i++) {
+					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
+					setPageNumber(view, getChildChount() - i, getChildChount());
+				}
+				
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

@@ -33,7 +33,7 @@
             <ListView
                 android:id="@+id/itemList"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="wrap_content"
                 android:scrollbars="none" >
             </ListView>
 
@@ -93,14 +93,14 @@
             android:layout_gravity="end"
             android:visibility="visible" >
 
-            <TextView
+            <com.example.newsup.text.StyledLastArticleTextView
                 android:id="@+id/viewArticleBottom"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/view_article_detail_page_margin_end"
-                android:gravity="right|center_vertical"
-                android:text="1 / 10"
-                android:textSize="@dimen/view_article_detail_page_text_size" />
+                android:gravity="end|center_vertical"
+                android:textSize="12sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
         </LinearLayout>
     </FrameLayout>
 

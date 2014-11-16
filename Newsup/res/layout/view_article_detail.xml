@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidhuman="http://schemas.android.com/apk/res/com.example.newsup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -34,25 +35,15 @@
             android:layout_gravity="end"
             android:visibility="visible" >
 
-            <TextView
+            <com.example.newsup.text.StyledLastArticleTextView
                 android:id="@+id/viewArticleBottom"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/view_article_detail_page_margin_end"
-                android:gravity="right|center_vertical"
-                android:text="1 / 10"
-                android:textSize="@dimen/view_article_detail_page_text_size" />
+                android:gravity="end|center_vertical"
+                android:textSize="12sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
         </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>
-
-
-
-
-
-
-
-
-
-

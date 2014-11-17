@@ -152,7 +152,11 @@ public class Article extends SugarRecord<Article> implements Serializable {
 		Article.deleteAll(Article.class, "timestamp <= ?", "" + twoDayAgo);
 		
 		LockScreenActivity lockScreenActivity = (LockScreenActivity) LockScreenActivity.getInstance();
-		lockScreenActivity.reFresh();
+		
+		if(lockScreenActivity != null) {
+			lockScreenActivity.reFresh();
+		}
+		
 	}
 	
 	

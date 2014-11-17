@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    
     <LinearLayout
         android:id="@+id/viewArticleDetail"
         android:layout_width="match_parent"
@@ -27,6 +28,20 @@
             android:layout_gravity="center" >
 
             <!-- 좋아요 싫어요 나타내야한다 -->
+            <ImageView 
+                android:id="@+id/like"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="30dp"/>
+            
+            <ImageView 
+                android:id="@+id/unlike"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitXY"/>
         </LinearLayout>
 
         <LinearLayout

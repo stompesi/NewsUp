@@ -33,7 +33,7 @@ public class NewsUpNetwork {
 	private final static String TAG_OBJECT_JSON = "JSON_OBJECT";
 	
 	// 서버 요청 주소 
-	private final static String ARTICLE_REQUEST_SERVER_ADDRESS = "http://14.63.173.158:5000";
+	private final static String ARTICLE_REQUEST_SERVER_ADDRESS = "http://14.63.173.158";
 	private final static String LOG_SEND_SERVER_ADDRESS = "http://14.63.161.26:5000";
 
 	private static NewsUpNetwork instance;
@@ -190,7 +190,7 @@ public class NewsUpNetwork {
             params.put("start_time", articleReadInfo.getStartTime());  
             params.put("page", articleReadInfo.getPagesReadTime());
             //TODO : 좋아요 실어요 넣기 
-            params.put("like", 0);
+            params.put("like", articleReadInfo.getLike());
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
@@ -200,7 +200,7 @@ public class NewsUpNetwork {
 		Log.e("updateUserLog", ""+ (articleReadInfo.getPagesReadTime()));
 		Log.e("updateUserLog", ""+ (articleReadInfo.getPagesReadTime()).size());
         //TODO : 좋아요 실어요 넣기 
-		Log.e("updateUserLog", ""+ 0);
+		Log.e("updateUserLog", ""+ articleReadInfo.getLike());
 		
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.POST, requestURL, params, new Response.Listener<JSONObject>() {
 					@Override

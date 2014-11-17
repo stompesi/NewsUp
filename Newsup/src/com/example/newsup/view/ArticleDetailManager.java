@@ -17,10 +17,13 @@ import android.text.TextPaint;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.newsup.R;
@@ -55,9 +58,60 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	
 	private static ArticleDetailManager articleDetailManager;
 	
+	private OnClickListener likeClickListener;
+	
+	
+	private int likeFlag; 
+	ImageView like;
+	ImageView unlike;
+	
 	private ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
 		this.context = context;
+		likeFlag = 0;
+		likeClickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				
+				switch(v.getId()) {
+				case R.id.like:
+					switch(likeFlag){
+					case 0:
+						like.setBackgroundResource(R.drawable.ic_like_on);
+						likeFlag = 1;
+						break;
+					case 1:
+						like.setBackgroundResource(R.drawable.ic_like_off);
+						likeFlag = 0;
+						break;
+					case -1:
+						like.setBackgroundResource(R.drawable.ic_like_on);
+						unlike.setBackgroundResource(R.drawable.ic_unlike_off);
+						likeFlag = 1;
+						break;
+					}
+					break;
+				case R.id.unlike:
+					switch(likeFlag){
+					case 0:
+						unlike.setBackgroundResource(R.drawable.ic_unlike_on);
+						likeFlag = -1;
+						break;
+					case 1:
+						unlike.setBackgroundResource(R.drawable.ic_unlike_on);
+						like.setBackgroundResource(R.drawable.ic_like_off);
+						likeFlag = -1;
+						break;
+					case -1:
+						unlike.setBackgroundResource(R.drawable.ic_unlike_off);
+						likeFlag = 0;
+						break;
+					}
+					break;
+				}
+			}
+	};
 	}
 	
 	public static void setArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
@@ -155,12 +209,21 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 			if(next == null) {
 				handler.post(new Runnable() {
-
+					
 					@Override
 					public void run() {
-						NewsUpNetwork.getInstance().requestArticleDetail(articleId);
+						like = (ImageView) flipper.getCurrentView().findViewById(R.id.like);
+						unlike = (ImageView) flipper.getCurrentView().findViewById(R.id.unlike);
+						
+						like.setBackgroundResource(R.drawable.ic_like_off);
+						unlike.setBackgroundResource(R.drawable.ic_unlike_off);
+						
+						like.setOnClickListener(likeClickListener);
+						unlike.setOnClickListener(likeClickListener);
+						
 					}
 				});
+				NewsUpNetwork.getInstance().requestArticleDetail(articleId);
 				return null;
 			} 
 			try {
@@ -209,8 +272,19 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 			if(isFinish){
 				Log.e("last", "last");
 				addView(articleContentLayout);
+				
+				like = (ImageView) articleContentLayout.findViewById(R.id.like);
+				unlike = (ImageView) articleContentLayout.findViewById(R.id.unlike);
+				
+				like.setBackgroundResource(R.drawable.ic_like_off);
+				unlike.setBackgroundResource(R.drawable.ic_unlike_off);
+				
+				like.setOnClickListener(likeClickListener);
+				unlike.setOnClickListener(likeClickListener);
+				
 				currentChildIndex++;
 				articleReadInfo.addPage();
+				
 				NewsUpNetwork.getInstance().requestArticleDetail(articleId);
 				resource.release();
 			} else {
@@ -323,17 +397,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		tv.setTypeface(face);
 	}
 
-	private void ApplyFont(Context context, TextPaint tv) {
-		Typeface face = Typeface.createFromAsset(context.getAssets(),
-				"NotoSansKR-Regular.ttf.mp3");
-		tv.setTypeface(face);
-	}
-
 	@Override
 	public void outArticleDetail() {
 		pageOut = true;
 		setReadTime();
 		if (NewsUpNetwork.isNetworkState(context)) {
+			articleReadInfo.setLike(likeFlag);
 			NewsUpNetwork.getInstance().updateUserLog(articleReadInfo);
 		}
 	}
@@ -489,4 +558,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		}
 
 	}
+	
+	
 }

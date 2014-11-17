@@ -6,72 +6,125 @@
     android:background="#F4F4F4"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/relatevie_original_layout"
         android:layout_width="match_parent"
-        android:layout_height="559dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="vertical" >
+        android:layout_height="575dp"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp" >
+
+        <com.example.newsup.text.StyledLastArticleTextView
+            android:id="@+id/relatedArticle"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center_vertical"
+            android:text="관련기사"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+        <ListView
+            android:id="@+id/itemList"
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            android:scrollbars="none" >
+        </ListView>
+
+        <com.example.newsup.text.StyledLastArticleTextView
+            android:id="@+id/relatedArticleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center_vertical"
+            android:text="관련 동영상"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
 
         <LinearLayout
-            android:id="@+id/relatevie_original_layout"
             android:layout_width="match_parent"
-            android:layout_height="559dp"
-            android:orientation="vertical" >
+            android:layout_height="105dp"
+            android:orientation="horizontal" >
 
-            <com.example.newsup.text.StyledLastArticleTextView
-                android:id="@+id/relatedArticle"
-                android:layout_width="match_parent"
-                android:layout_height="47dp"
-                android:gravity="center_vertical"
-                android:text="관련기사"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+            <FrameLayout
+                android:layout_width="160dp"
+                android:layout_height="match_parent" >
 
-            <ListView
-                android:id="@+id/itemList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none" >
-            </ListView>
+                <ImageView
+                    android:id="@+id/youtube_first"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent" />
 
-            <com.example.newsup.text.StyledLastArticleTextView
-                android:id="@+id/relatedArticleTitle"
-                android:layout_width="match_parent"
-                android:layout_height="47dp"
-                android:gravity="center_vertical"
-                android:text="관련 동영상"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                <LinearLayout
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:visibility="visible" >
+
+                    <com.example.newsup.text.EllipsizingTextView
+                        android:id="@+id/youtube_first_title"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:padding="8dp"
+                        android:text="영화제목"
+                        android:textColor="#000000"
+                        android:textSize="11sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+                    <ImageButton
+                        android:id="@+id/youtube_first_play"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/playbutton"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </FrameLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="225dp"
-                android:orientation="horizontal" >
-
-                <com.google.android.youtube.player.YouTubePlayerView
-                    android:id="@+id/youtube_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                android:layout_width="8dp"
+                android:layout_height="match_parent" >
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/relatevie_second_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" 
-            android:visibility="invisible">
+            <FrameLayout
+                android:layout_width="160dp"
+                android:layout_height="match_parent" >
 
-            <WebView
-                android:id="@+id/relative_webview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/youtube_second"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:visibility="visible" >
+
+                    <com.example.newsup.text.EllipsizingTextView
+                        android:id="@+id/youtube_second_title"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:padding="8dp"
+                        android:text="영화제목 "
+                        android:textColor="#000000"
+                        android:textSize="11sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+                    <ImageButton
+                        android:id="@+id/youtube_second_play"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/playbutton"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
-    </FrameLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

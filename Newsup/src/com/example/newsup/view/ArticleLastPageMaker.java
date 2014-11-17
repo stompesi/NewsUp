@@ -63,11 +63,17 @@ YouTubePlayer.OnInitializedListener{
 		LinearLayout lastLayout = (LinearLayout) Inflater.inflate(R.layout.view_article_detail_last_page, null);
 		itemList =(ListView)(lastLayout).findViewById(R.id.itemList);
 		textview = (TextView)(lastLayout).findViewById(R.id.viewArticleBottom);
+		
+		
+		
 		webView = (WebView)(lastLayout).findViewById(R.id.relative_webview);
 		relatevie_second_layout = (LinearLayout)(lastLayout).findViewById(R.id.relatevie_second_layout);
 		relatevie_original_layout = (LinearLayout)(lastLayout).findViewById(R.id.relatevie_second_layout);
 
 		youTubePlayerView = (YouTubePlayerView)(lastLayout).findViewById(R.id.youtube_view);
+		
+		
+		
 		if(articleDetailInfomation.getRelatedArticleList().size() == 0) {
 			itemList.setVisibility(View.GONE);
 			TextView relatedArticle = (TextView)(lastLayout).findViewById(R.id.relatedArticle);

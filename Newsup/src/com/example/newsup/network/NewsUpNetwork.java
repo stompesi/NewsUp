@@ -33,7 +33,7 @@ public class NewsUpNetwork {
 	private final static String TAG_OBJECT_JSON = "JSON_OBJECT";
 	
 	// 서버 요청 주소 
-	private final static String ARTICLE_REQUEST_SERVER_ADDRESS = "http://14.63.173.158";
+	private final static String ARTICLE_REQUEST_SERVER_ADDRESS = "http://14.63.173.158:80";
 	private final static String LOG_SEND_SERVER_ADDRESS = "http://14.63.161.26:5000";
 
 	private static NewsUpNetwork instance;

@@ -164,9 +164,16 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	}
 	
 	public void reFresh() {
-		articleListManager.removeAllFlipperItem();
-		articleListManager.insertArticleList();
-		articleListManager.display(articleListManager.getChildChount() - 1);
+		Handler handler = new Handler();
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				articleListManager.removeAllFlipperItem();
+				articleListManager.insertArticleList();
+				articleListManager.display(articleListManager.getChildChount() - 1);
+			}
+		});
 	}
 	
 	public boolean onTouch(View v, MotionEvent event) {

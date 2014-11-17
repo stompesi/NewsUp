@@ -42,7 +42,6 @@ import com.google.android.youtube.player.YouTubePlayer.Provider;
 
 public class ArticleDetailManager extends ArticleFlipViewManager implements YouTubePlayer.OnInitializedListener {
 	public static final String VIDEO_ID = "V7dmCpyCtA4";
-	private int textSize;
 
 	private ArticleReadInfo articleReadInfo;
 	private int pageReadStartTime;
@@ -105,7 +104,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 		splitter = new PageSplitter(textPaint);
 
-		// TODO: 시작페이지를 만들어야한다 (상세기사 첫화면)
 		splitter.split(str);
 		ArticleDetailPage articleDetailPage = splitter.makePageList();
 
@@ -160,7 +158,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						NewsUpNetwork.getInstance().requestArticleDetail(articleId);
 					}
 				});
@@ -169,7 +166,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 			try {
 				Thread.sleep(300);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			while(next != null) {
@@ -186,18 +182,15 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 						publishProgress(articleDetailPage);
 					}
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				if(pageOut) {
-					// TODO : 여기 손좀 보아야 할 것 
 					removeAllFlipperItem();
 					return null;
 				}
 				try {
 					Thread.sleep(300);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -454,7 +447,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -472,14 +464,20 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	}
 
 	public void removeAllFlipperItem() {
-		flipper.removeAllViews();
+		Handler handler = new Handler();
+		
+		handler.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				flipper.removeAllViews();
+			}
+		});
 	}
 
 	@Override
 	public void onInitializationFailure(Provider arg0,
 			YouTubeInitializationResult arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

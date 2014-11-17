@@ -48,8 +48,7 @@ public class PageSplitter {
 		page = new ArticleDetailPage();
 		isComplete = false;
 		for (int i = 0; i < list.size() || !(remnantContent.isEmpty()) ;) {
-			// TODO : 조건문 함수로 변경 
-			if (!(remnantContent.isEmpty()) && (!prevIsPageOver || remnantContent.peek() instanceof String)) {
+			if (!(remnantContent.isEmpty()) && (!prevIsPageOver || remnantContent.peek() instanceof String) || i == list.size()) {
 				content = remnantContent.poll();
 				inputContent(content);
 			} else {
@@ -80,7 +79,6 @@ public class PageSplitter {
 		if (currentViewHeight > imageInfo.getHeight()) {
 			if (!(totalInputString.isEmpty()) || imageInfo.getHeight() >= layoutInfo.getAvailableTotalHeight()) {
 				page.add(totalInputString);
-				// TODO : 함수로 뺄까 ?
 				totalInputString = "";
 			}
 			
@@ -217,7 +215,6 @@ public class PageSplitter {
 		
 		double ratio;
 		
-		// TODO : COLOR 처리를 해야함 
 		String[] imageResult = str.split(" ");
 
 		color = imageResult[0];

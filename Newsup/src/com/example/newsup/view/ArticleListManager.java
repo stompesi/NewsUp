@@ -300,9 +300,18 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 
 	public void removeAllFlipperItem() {
-		while (flipper.getChildCount() > offset) {
-			flipper.removeViewAt(minChildIndex);
-		}
+		Handler handler = new Handler();
+		
+		handler.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				while (flipper.getChildCount() > offset) {
+					flipper.removeViewAt(minChildIndex);
+				}
+			}
+		});
 	}
 
 	public void setZeroScore() {

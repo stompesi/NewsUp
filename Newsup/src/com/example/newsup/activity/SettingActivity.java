@@ -73,7 +73,7 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 		btnMediumWorld.setOnClickListener(this);
 		btnLargeWorld.setOnClickListener(this);
 
-		
+
 		if(pref.getValue(RbPreference.IS_LOCK_SCREEN, false))
 		{
 			btnlockScreen.setBackgroundResource(R.drawable.switch_on);
@@ -88,19 +88,13 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 		switch(index)
 		{
 		case WORLD_SMALL:
-
-			Log.d("TAG", "1번 ");
 			btnSmallWorld.setBackgroundResource(R.drawable.btn_fs_36_on);
 			break;
-
 		case WORLD_MEDIUM:
-			Log.d("TAG", "12번 ");
 			btnMediumWorld.setBackgroundResource(R.drawable.btn_fs_42_on);
 			break;
 
-
 		case WORLD_LARGE:
-			Log.d("TAG", "3번 ");
 			btnLargeWorld.setBackgroundResource(R.drawable.btn_fs_48_on);
 			break;
 
@@ -120,7 +114,6 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 			worldCount = WORLD_SMALL;
 			pref.setValue(RbPreference.WORD_SIZE, SMALL_WORD);
 			NewsUpApp.getInstance().setTextSize(SMALL_WORD);
-			Log.d("TAG", "1번 클");
 
 			worldToggleButton(worldCount);
 			break;
@@ -129,7 +122,7 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 			worldCount = WORLD_MEDIUM;
 			pref.setValue(RbPreference.WORD_SIZE, MEDIUM_WORD);
 			NewsUpApp.getInstance().setTextSize(MEDIUM_WORD);
-			Log.d("TAG", "2번 클");
+
 			worldToggleButton(worldCount);
 			break;
 
@@ -137,12 +130,12 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 			worldCount = WORLD_LARGE;
 			pref.setValue(RbPreference.WORD_SIZE, LARGE_WORD);
 			NewsUpApp.getInstance().setTextSize(LARGE_WORD);
-			Log.d("TAG", "3번 클");
+
 			worldToggleButton(worldCount);
 			break;
 
 		case R.id.swLockScreen:
-			Log.d("TAG", "4번 클");
+
 			isLockScreen = toggleButton(isLockScreen); 
 			pref.setValue(RbPreference.IS_LOCK_SCREEN, isLockScreen);
 			break;
@@ -158,28 +151,26 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 	}
 
 	public void worldToggleButton(int worldCount){
-
 		switch(worldCount){
-
 		case WORLD_SMALL:
 			btnSmallWorld.setBackgroundResource(R.drawable.btn_fs_36_on);
 			btnMediumWorld.setBackgroundResource(R.drawable.btn_fs_42_off);
 			btnLargeWorld.setBackgroundResource(R.drawable.btn_fs_48_off);
-			Log.d("TAG", "1번 토");
+
 			break;
 
 		case WORLD_MEDIUM:
 			btnSmallWorld.setBackgroundResource(R.drawable.btn_fs_36_off);
 			btnMediumWorld.setBackgroundResource(R.drawable.btn_fs_42_on);
 			btnLargeWorld.setBackgroundResource(R.drawable.btn_fs_48_off);
-			Log.d("TAG", "2번 토");
+
 			break;
 
 		case WORLD_LARGE:
 			btnSmallWorld.setBackgroundResource(R.drawable.btn_fs_36_off);
 			btnMediumWorld.setBackgroundResource(R.drawable.btn_fs_42_off);
 			btnLargeWorld.setBackgroundResource(R.drawable.btn_fs_48_on);
-			Log.d("TAG", "3번 토");
+
 			break;
 		default:
 			break;
@@ -190,25 +181,22 @@ public class SettingActivity extends Activity implements OnTouchListener,OnClick
 
 	public boolean toggleButton(boolean isLockScreen){
 		if(isLockScreen){
-			Log.d("TAG", "드루와1 ");
+
 			btnlockScreen.setBackgroundResource(R.drawable.switch_off);
 			isLockScreen = false;
 			Intent intent = new Intent(context, LockScreenService.class);
 			stopService(intent);
-			
-			
+
+
 		}else{
-			Log.d("TAG", "드루와2 ");
+
 			btnlockScreen.setBackgroundResource(R.drawable.switch_on);
 			isLockScreen = true;
 			Intent intent = new Intent(context, LockScreenService.class);
 			startService(intent);
-			
 		}
-
 		return isLockScreen;
 	}
-
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {

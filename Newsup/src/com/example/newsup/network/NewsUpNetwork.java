@@ -27,6 +27,7 @@ import com.example.newsup.data.ArticleReadInfo;
 import com.example.newsup.database.Article;
 import com.example.newsup.view.ArticleDetailManager;
 import com.example.newsup.view.structure.ArticleDetailInfomation;
+import com.example.newsup.view.structure.RelatedArticle;
 
 public class NewsUpNetwork {
 
@@ -120,10 +121,10 @@ public class NewsUpNetwork {
 									Article.saveArticle(articles.getJSONObject(i));
 								}
 								if(ArticleActivity.getInstance() != null && isUserRequest) {
-									ArticleActivity.getInstance().successSaveArticle();
+									ArticleActivity.getInstance().getArticleListManager().successNetworkArticleRequest();
 								} 
 								if(LockScreenActivity.getInstance() != null && isUserRequest) {
-									LockScreenActivity.getInstance().successSaveArticle();
+									LockScreenActivity.getInstance().getArticleListManager().successNetworkArticleRequest();
 								}
 							}
 						} catch (JSONException e) {
@@ -135,10 +136,10 @@ public class NewsUpNetwork {
 					public void onErrorResponse(VolleyError error) {
 						Log.e("NewsUp", "Network : 뉴스기사 요청 실패.");
 						if(ArticleActivity.getInstance() != null) {
-							ArticleActivity.getInstance().successSaveArticle();
+							ArticleActivity.getInstance().getArticleListManager().failNetworkArticleRequest();
 						} 
 						if(LockScreenActivity.getInstance() != null) {
-							LockScreenActivity.getInstance().successSaveArticle();
+							LockScreenActivity.getInstance().getArticleListManager().failNetworkArticleRequest();
 						}
 					}
 				}) {
@@ -211,7 +212,6 @@ public class NewsUpNetwork {
 							switch(errorCode) {
 							case 1:
 								Log.e("NewsUp", "Network : updateUserLog 실패.");
-								updateUserLog(articleReadInfo);
 								break;
 							case 0:
 								Log.d("NewsUp", "Network : updateUserLog 성공.");
@@ -343,19 +343,9 @@ public class NewsUpNetwork {
 						Log.d("NewsUp", "Network : 뉴스 상세 정보 요청 성공.");
 						try {
 							JSONArray relatedArticles = response.getJSONArray("related_article");
-							JSONArray entity = response.getJSONArray("video");
-							String videoEntity = "";
+							JSONArray relatedVideos = response.getJSONArray("related_video");
 							
-							if(entity.length() == 0) {
-								articleDetailManager.setRelatedArticle(relatedArticles, false);
-							} else {
-								for(int i = 0 ; i < entity.length() ; i++) {
-									videoEntity = videoEntity + entity.getString(i) + "+"; 
-								}
-								Log.e("entity", "" +entity);
-								requestVideo(videoEntity);
-								articleDetailManager.setRelatedArticle(relatedArticles, true);
-							}
+							articleDetailManager.setRelatedInfomation(relatedArticles, relatedVideos);
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -364,6 +354,57 @@ public class NewsUpNetwork {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						Log.e("NewsUp", "Network : 뉴스상세정보 요청 실패.");
+						ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
+						JSONArray relatedArticles = new JSONArray();
+						JSONArray relatedArticles1 = new JSONArray();
+						JSONObject item = new JSONObject();
+						JSONObject item1 = new JSONObject();
+						
+						try {
+							item.put("title", "title");
+							item.put("description", "description");
+							item.put("url", "http://www.naver.com");
+							relatedArticles.put(item);
+							item = new JSONObject();
+							item.put("title", "title2");
+							item.put("description", "description");
+							item.put("url", "http://www.naver.com");
+							relatedArticles.put(item);
+							item = new JSONObject();
+							item.put("title", "title3");
+							item.put("description", "description");
+							item.put("url", "http://www.naver.com");
+							relatedArticles.put(item);
+							
+							
+							
+							item1.put("title", "title");
+							item1.put("id", "GHu39FEFIks");
+							
+							item1.put("image_url", "http://i.ytimg.com/vi_webp/eDCqnr1B3Js/default.webp");
+							
+							
+							
+							relatedArticles1.put(item1);
+							
+							item1 = new JSONObject();
+							
+							item1.put("title", "title2");
+							item1.put("id", "GHu39FEFIks");
+							
+							item1.put("image_url", "http://i.ytimg.com/vi_webp/9txzvu6eQuw/default.webp");
+							
+							relatedArticles1.put(item1);
+							
+							
+							
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						articleDetailManager.setRelatedInfomation(relatedArticles , relatedArticles1);
+//						articleDetailManager.setRelatedInfomation(null , null);
 					}
 				}) {
 			 @Override
@@ -377,50 +418,50 @@ public class NewsUpNetwork {
 	}
 	
 	
-	public void requestVideo(String query) {
-		Log.d("NewsUp", "동영상 요청");
-		
-		String requestURL = "https://www.googleapis.com/youtube/v3/search?"
-				+ "part=snippet&"
-				+ "key=AIzaSyBUlYE_3MYaqnTFaegtKhSy0BzvkdQTfqY&"
-				+ "type=video&"
-				+ "order=date&"
-				+ "q=";
-		try {
-			requestURL += URLEncoder.encode(query,"UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		Log.d("NewsUp", "requestURL : " + requestURL);
-		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
-					@Override
-					public void onResponse(JSONObject response) {
-						Log.d("NewsUp", "동영상 요청 성공");
-						ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
-						String videoId;
-						try {
-							JSONArray entity = response.getJSONArray("items");
-							JSONObject videoObject = entity.getJSONObject(0);
-							JSONObject id = videoObject.getJSONObject("id");
-							videoId = id.getString("videoId");
-							articleDetailManager.setRelatedArticle(videoId);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError error) {
-					}
-				}) {
-		};
-		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
-	}
+//	public void requestVideo(String query) {
+//		Log.d("NewsUp", "동영상 요청");
+//		
+//		String requestURL = "https://www.googleapis.com/youtube/v3/search?"
+//				+ "part=snippet&"
+//				+ "key=AIzaSyBUlYE_3MYaqnTFaegtKhSy0BzvkdQTfqY&"
+//				+ "type=video&"
+//				+ "order=date&"
+//				+ "q=";
+//		try {
+//			requestURL += URLEncoder.encode(query,"UTF-8");
+//		} catch (UnsupportedEncodingException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		Log.d("NewsUp", "requestURL : " + requestURL);
+//		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
+//					@Override
+//					public void onResponse(JSONObject response) {
+//						Log.d("NewsUp", "동영상 요청 성공");
+//						ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
+//						String videoId;
+//						try {
+//							JSONArray entity = response.getJSONArray("items");
+//							JSONObject videoObject = entity.getJSONObject(0);
+//							JSONObject id = videoObject.getJSONObject("id");
+//							videoId = id.getString("videoId");
+//							articleDetailManager.setRelatedArticle(videoId);
+//						} catch (JSONException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//					}
+//				}, new Response.ErrorListener() {
+//					@Override
+//					public void onErrorResponse(VolleyError error) {
+//					}
+//				}) {
+//		};
+//		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
+//	}
 	
 	// Preference 서버로 전달 
-		public void requestPreference(ArrayList<Integer> likeCategoryList) {
+	public void requestPreference(ArrayList<Integer> likeCategoryList) {
 			Log.d("NewsUp", "Preference 서버로 전달");
 			String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/users/preference";
 
@@ -466,4 +507,5 @@ public class NewsUpNetwork {
 			};
 			NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 		}
+	
 }

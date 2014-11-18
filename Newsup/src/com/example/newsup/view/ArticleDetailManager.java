@@ -8,25 +8,31 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextPaint;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.newsup.R;
+import com.example.newsup.activity.ArticleActivity;
 import com.example.newsup.activity.transmission.structure.Image;
 import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.data.ArticleReadInfo;
@@ -39,11 +45,9 @@ import com.example.newsup.view.structure.ArticleDetailPage;
 import com.example.newsup.view.structure.ImageInfo;
 import com.example.newsup.view.structure.LayoutInfo;
 import com.example.newsup.view.structure.RelatedArticle;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.example.newsup.view.structure.RelatedVideo;
 
-public class ArticleDetailManager extends ArticleFlipViewManager implements YouTubePlayer.OnInitializedListener {
+public class ArticleDetailManager extends ArticleFlipViewManager {
 	public static final String VIDEO_ID = "V7dmCpyCtA4";
 
 	private ArticleReadInfo articleReadInfo;
@@ -51,7 +55,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	LayoutInfo layoutInfo;
 
-	boolean pageOut;
 	boolean isAnimationning;
 	
 	ArticleDetailInfomation articleDetailInfomation;
@@ -60,14 +63,17 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	
 	private OnClickListener likeClickListener;
 	
-	
+	private boolean isOutArticleDetailPage;
 	private int likeFlag; 
 	ImageView like;
 	ImageView unlike;
 	
+	Semaphore resource;
+	
 	private ArticleDetailManager(Context context, ViewFlipper flipper, int offset) {
 		super(context, flipper, offset);
 		this.context = context;
+		resource = new Semaphore(1);
 		likeFlag = 0;
 		likeClickListener = new OnClickListener() {
 			@Override
@@ -191,13 +197,9 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 		private ArticleDetailPage articleDetailPage;
 
-
-		private final Semaphore resource;
-
 		private int articleId;
 		private boolean isFinish;
 		public InsertArticleTask(int articleId) {
-			resource = new Semaphore(1);
 			this.isFinish = false;
 			this.articleId = articleId;
 		}
@@ -206,34 +208,47 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		@Override
 		protected Void doInBackground(Void... params) {
 			ArticleDetailPage next = splitter.makePageList();
-
-			if(next == null) {
-				handler.post(new Runnable() {
-					
-					@Override
-					public void run() {
-						like = (ImageView) flipper.getCurrentView().findViewById(R.id.like);
-						unlike = (ImageView) flipper.getCurrentView().findViewById(R.id.unlike);
-						
-						like.setBackgroundResource(R.drawable.ic_like_off);
-						unlike.setBackgroundResource(R.drawable.ic_unlike_off);
-						
-						like.setOnClickListener(likeClickListener);
-						unlike.setOnClickListener(likeClickListener);
-						
-					}
-				});
-				NewsUpNetwork.getInstance().requestArticleDetail(articleId);
-				return null;
-			} 
+			
+			
 			try {
+				resource.acquire();
+				
+				if(next == null) {
+					handler.post(new Runnable() {
+						
+						@Override
+						public void run() {
+							like = (ImageView) flipper.getCurrentView().findViewById(R.id.like);
+							unlike = (ImageView) flipper.getCurrentView().findViewById(R.id.unlike);
+							
+							like.setBackgroundResource(R.drawable.ic_like_off);
+							unlike.setBackgroundResource(R.drawable.ic_unlike_off);
+							
+							like.setOnClickListener(likeClickListener);
+							unlike.setOnClickListener(likeClickListener);
+							
+						}
+					});
+					NewsUpNetwork.getInstance().requestArticleDetail(articleId);
+					resource.release();
+					return null;
+				} 
+				resource.release();
 				Thread.sleep(300);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
 			}
+		
 			while(next != null) {
+				
 				try {
 					resource.acquire();
+					if(isOutArticleDetailPage) {
+						resource.release();
+						return null;
+					}
+					
 					articleDetailPage = next;
 					next = splitter.makePageList();
 					if(next == null) {
@@ -243,20 +258,11 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 					} 
 					else {
 						publishProgress(articleDetailPage);
+						Thread.sleep(300);
 					}
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				if(pageOut) {
-					removeAllFlipperItem();
-					return null;
-				}
-				try {
-					Thread.sleep(300);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
 			}
 			return null;
 		}
@@ -281,7 +287,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 				
 				like.setOnClickListener(likeClickListener);
 				unlike.setOnClickListener(likeClickListener);
-				
 				currentChildIndex++;
 				articleReadInfo.addPage();
 				
@@ -317,9 +322,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 				imageInfo = (ImageInfo) object;
 				imageView = new ImageView(context);
-
-
-
 				
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				params.gravity = Gravity.CENTER_HORIZONTAL;
@@ -374,9 +376,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 	    			} while (end > 0);
 	    		}
 				textView.setText(save);
-				
-				
-				
 				view.addView(textView);
 			}
 		}
@@ -399,8 +398,8 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	@Override
 	public void outArticleDetail() {
-		pageOut = true;
 		setReadTime();
+		isOutArticleDetailPage = true;
 		if (NewsUpNetwork.isNetworkState(context)) {
 			articleReadInfo.setLike(likeFlag);
 			NewsUpNetwork.getInstance().updateUserLog(articleReadInfo);
@@ -409,8 +408,9 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	@Override
 	public boolean upDownSwipe(int increase) {
+		
 		int checkIndex = currentChildIndex + increase;
-
+		Log.d("NewsUp", "ArticleDetail upDownSwipe : " + checkIndex + " getChildChount() : " + getChildChount());
 		if (checkIndex >= getChildChount() || checkIndex < minChildIndex) {
 			return false;
 		}
@@ -429,9 +429,10 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 
 	@Override
 	public void inArticleDetail(int articleId) {
+		removeAllFlipperItem();
+		isOutArticleDetailPage = false;
 		articleDetailInfomation = new ArticleDetailInfomation();
 		requestInfomation(articleId);
-		pageOut = false;
 		pageReadStartTime = getTimestamp();
 		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime);
 		getArticleDetail(articleId);
@@ -473,55 +474,82 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		totalCount = 0;
 	}
 	
-	public void setRelatedArticle(String videoId) {
-		articleDetailInfomation.setVideoId(videoId);
-		addView(new ArticleLastPageMaker(context, inflater, true, articleDetailInfomation).getLastPage());
-		currentChildIndex++;
-		articleReadInfo.addPage();
-		for(int i = 0 ; i < getChildChount() ; i++) {
-			LinearLayout view = (LinearLayout) flipper.getChildAt(i);
-			setPageNumber(view, getChildChount() - i, getChildChount());
+	public void setRelatedInfomation(JSONArray relatedArticles, JSONArray relatedVedios) {
+		if(relatedArticles == null && relatedVedios == null) {
+			for(int i = 0 ; i < getChildChount() ; i++) {
+				LinearLayout view = (LinearLayout) flipper.getChildAt(i);
+				setPageNumber(view, getChildChount() - i, getChildChount());
+			}
+			return ;
 		}
-	}
-
-	public void setRelatedArticle(JSONArray relatedArticles, boolean isExistVideo) {
 		
 		try {
-			for (int i = 0; i < relatedArticles.length(); i++) {
-				JSONObject item = relatedArticles.getJSONObject(i);
-				RelatedArticle relatedArticle = new RelatedArticle();
-				
-				relatedArticle.setTitle(item.getString("title"));
-				relatedArticle.setDescription(item.getString("description"));
-				relatedArticle.setURL(item.getString("url"));
-				
-				
-				if(item.has("image")) {
-					JSONObject imageObject = item.getJSONObject("image");
-					Image imageInfo = new Image(imageObject.getString("url"), imageObject.getString("color"));
-					relatedArticle.setImageInfo(imageInfo);
+			if(relatedArticles != null) {
+				for (int i = 0; i < relatedArticles.length(); i++) {
+					JSONObject item = relatedArticles.getJSONObject(i);
+					RelatedArticle relatedArticle = new RelatedArticle();
+					
+					relatedArticle.setTitle(item.getString("title"));
+					relatedArticle.setDescription(item.getString("description"));
+					relatedArticle.setURL(item.getString("url"));
+					
+					
+					if(item.has("image")) {
+						JSONObject imageObject = item.getJSONObject("image");
+						Image imageInfo = new Image(imageObject.getString("url"), imageObject.getString("color"));
+						relatedArticle.setImageInfo(imageInfo);
+					}
+					
+					articleDetailInfomation.addRelatedArticle(relatedArticle);
 				}
-				
-				articleDetailInfomation.addRelatedArticle(relatedArticle);
 			}
-			if(!isExistVideo && articleDetailInfomation.getRelatedArticleList().size() != 0) {
-				addView(new ArticleLastPageMaker(context, inflater, isExistVideo, articleDetailInfomation).getLastPage());
+			
+			
+			if(relatedVedios != null) {
+				for (int i = 0; i < relatedVedios.length(); i++) {
+					JSONObject item = relatedVedios.getJSONObject(i);
+					RelatedVideo relatedVideo = new RelatedVideo();
+					
+					relatedVideo.setTitle(item.getString("title"));
+					relatedVideo.setId(item.getString("id"));
+					relatedVideo.setImageURL(item.getString("image_url"));
+					articleDetailInfomation.addRelatedVideo(relatedVideo);
+				}
+			}
+			
+			
+			if(articleDetailInfomation.getRelatedVideoList().size() != 0 || articleDetailInfomation.getRelatedArticleList().size() != 0) {
+				LinearLayout layout = new ArticleLastPageMaker(context, inflater, articleDetailInfomation).getLastPage(); 
+				ListView itemList =(ListView)(layout).findViewById(R.id.itemList);
+				FrameLayout youtube_1 =(FrameLayout)(layout).findViewById(R.id.youtube_1);
+				FrameLayout youtube_2 =(FrameLayout)(layout).findViewById(R.id.youtube_2);
+				
+				youtube_1.setOnTouchListener(ArticleActivity.getInstance());
+				youtube_2.setOnTouchListener(ArticleActivity.getInstance());
+				itemList.setOnTouchListener(ArticleActivity.getInstance());
+				
+				addView(layout);
 				currentChildIndex++;
 				articleReadInfo.addPage();
-				
+			} else {
 				for(int i = 0 ; i < getChildChount() ; i++) {
 					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
 					setPageNumber(view, getChildChount() - i, getChildChount());
 				}
-				
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void showYoutube(int index) {
+		RelatedVideo relatedVideo =articleDetailInfomation.getRelatedVideoList().get(index);
+		context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + relatedVideo.getId())));
+	}
 
 	public void changeTextSize(int articleId) {
 		removeAllFlipperItem();
+		isOutArticleDetailPage = false;
 		pageReadStartTime = getTimestamp();
 		articleReadInfo = new ArticleReadInfo(articleId, pageReadStartTime);
 		getArticleDetail(articleId);
@@ -532,31 +560,11 @@ public class ArticleDetailManager extends ArticleFlipViewManager implements YouT
 		return (int) (System.currentTimeMillis() / 1000L);
 	}
 
+	@Override
 	public void removeAllFlipperItem() {
-		Handler handler = new Handler();
-		
-		handler.post(new Runnable() {
-			
-			@Override
-			public void run() {
-				flipper.removeAllViews();
-			}
-		});
-	}
-
-	@Override
-	public void onInitializationFailure(Provider arg0,
-			YouTubeInitializationResult arg1) {
-	}
-
-	@Override
-	public void onInitializationSuccess(Provider provider, YouTubePlayer player,
-			boolean wasRestored) {
-
-		if (!wasRestored) {
-			player.cueVideo(VIDEO_ID);
-		}
-
+		isOutArticleDetailPage = true;
+		currentChildIndex = 0;
+		flipper.removeAllViews();
 	}
 	
 	

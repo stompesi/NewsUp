@@ -1,6 +1,5 @@
 package com.example.newsup.activity;
 
-import android.R.bool;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 
 import com.example.newsup.R;
 import com.example.newsup.application.NewsUpApp;

@@ -28,12 +28,13 @@
         <ListView
             android:id="@+id/itemList"
             android:layout_width="match_parent"
-            android:layout_height="360dp"
+            android:layout_height="wrap_content"
             android:scrollbars="none" >
         </ListView>
 
         <com.example.newsup.text.StyledLastArticleTextView
-            android:id="@+id/relatedArticleTitle"
+            android:id="@+id/relatedVideoTitle"
+            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:gravity="center_vertical"
@@ -48,38 +49,54 @@
             android:orientation="horizontal" >
 
             <FrameLayout
+                android:id="@+id/youtube_1"
                 android:layout_width="160dp"
-                android:layout_height="match_parent" >
-
-                <ImageView
-                    android:id="@+id/youtube_first"
+                android:layout_height="match_parent"
+                android:visibility="gone" >
+				
+                <LinearLayout 
                     android:layout_width="160dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:paddingTop = "5dp"
+                    android:paddingBottom = "6dp"
+                    android:paddingLeft = "7dp"
+                    android:paddingRight = "7dp">
+                    <ImageView
+                        android:id="@+id/youtube_1_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                   android:background="@drawable/aa"  />
+                    </LinearLayout>
+                
+                
+                <ImageView
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                   android:src="@drawable/video_background"  />
 
                 <LinearLayout
                     android:layout_width="160dp"
                     android:layout_height="40dp"
                     android:layout_gravity="bottom"
-                    android:visibility="visible" >
+                    android:visibility="visible"
+                    android:padding="8dp" >
 
                     <com.example.newsup.text.EllipsizingTextView
-                        android:id="@+id/youtube_first_title"
+                        android:id="@+id/youtube_1_title"
                         android:layout_width="120dp"
                         android:layout_height="match_parent"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:padding="8dp"
                         android:text="영화제목"
-                        android:textColor="#000000"
+                        android:textColor="#fff"
                         android:textSize="11sp"
+                        android:gravity="top"
                         androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
 
-                    <ImageButton
-                        android:id="@+id/youtube_first_play"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/playbutton"
-                        android:padding="8dp" />
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/playbutton" />
                 </LinearLayout>
             </FrameLayout>
 
@@ -89,38 +106,55 @@
             </LinearLayout>
 
             <FrameLayout
+                android:id="@+id/youtube_2"
                 android:layout_width="160dp"
-                android:layout_height="match_parent" >
-
-                <ImageView
-                    android:id="@+id/youtube_second"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+				
+                <LinearLayout 
                     android:layout_width="160dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:paddingTop = "5dp"
+                    android:paddingBottom = "6dp"
+                    android:paddingLeft = "7dp"
+                    android:paddingRight = "7dp">
+                    <ImageView
+                        android:id="@+id/youtube_2_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                   android:background="@drawable/aa"  />
+                    </LinearLayout>
+                
+                
+                <ImageView
+                    
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                   android:src="@drawable/video_background"  />
 
                 <LinearLayout
                     android:layout_width="160dp"
                     android:layout_height="40dp"
                     android:layout_gravity="bottom"
-                    android:visibility="visible" >
+                    android:visibility="visible"
+                    android:padding="8dp" >
 
                     <com.example.newsup.text.EllipsizingTextView
-                        android:id="@+id/youtube_second_title"
+                        android:id="@+id/youtube_2_title"
                         android:layout_width="120dp"
                         android:layout_height="match_parent"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:padding="8dp"
-                        android:text="영화제목 "
-                        android:textColor="#000000"
+                        android:text="영화제목"
+                        android:textColor="#fff"
                         android:textSize="11sp"
+                        android:gravity="top"
                         androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
 
                     <ImageButton
-                        android:id="@+id/youtube_second_play"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/playbutton"
-                        android:padding="8dp" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/playbutton" />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

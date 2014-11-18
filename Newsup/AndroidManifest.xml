@@ -27,7 +27,8 @@
             android:name="com.example.newsup.activity.ArticleActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
             android:name="com.example.newsup.activity.LockScreenActivity"

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.newsup.R;
+import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.background.service.ArticleManageService;
 import com.example.newsup.background.service.LockScreenService;
 import com.example.newsup.network.NewsUpNetwork;
@@ -52,7 +53,8 @@ public class StartActivity extends Activity implements OnTouchListener {
 		Intent articleManageIntent = new Intent(StartActivity.this, ArticleManageService.class);
 		startService(articleManageIntent);
 		
-		
+		NewsUpNetwork.getInstance().setDeviceId(NewsUpApp.getInstance().getDeviceId());
+		NewsUpNetwork.getInstance().requestRegistUser(getApplication());
 		likeCategoryList = new ArrayList<Integer>();
 		
 		categoryList = new Category[10];
@@ -90,8 +92,7 @@ public class StartActivity extends Activity implements OnTouchListener {
 //		pref = new RbPreference(startActivity);
 //		pref.setValue(RbPreference.PREF_IS_INTRO, false);
 //		
-//		NewsUpNetwork.getInstance().setDeviceId(((NewsUpApp)getApplication()).getDeviceId());
-//		NewsUpNetwork.getInstance().requestRegistUser(getApplication());
+		
 //		
 //		intent = new Intent(startActivity, ArticleActivity.class);
 //		startActivity(intent);

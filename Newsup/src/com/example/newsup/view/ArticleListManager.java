@@ -66,7 +66,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		// TODO : Idx를 Id로 변경해야 한다
 		Log.e("article.getArticleId()",
 				"article.getArticleId() : " + article.getTitle() + " idx : "
-						+ article.getIdx());
+						+ article.getIdx() + " category : " + article.getCategory());
 		view.setId(article.getArticleId());
 		TextView title = (TextView) view.findViewById(R.id.title);
 		TextView content = (TextView) view.findViewById(R.id.content);
@@ -138,15 +138,18 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			articleList = Article.selectOtherArticleList(category,
 					articleOffset);
 		}
-
+		
+		
+		
 		int articleListSize = articleList.size();
-
+		Log.d("NewsUp", "articleSize : " + articleListSize + " category : " + category);
 		if (articleListSize == 0) {
 			if (!isFailInsertArticleList) {
 				View view = inflater.inflate(errorXMLId, null);
 				addView(view);
 				isFailInsertArticleList = true;
 				if (NewsUpNetwork.isNetworkState(context)) {
+					Log.d("NewsUp", "새로운 뉴스 기사 요청");
 					NewsUpNetwork.getInstance().requestArticleList(category,
 							true);
 				}
@@ -165,6 +168,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		for (int i = 0; i < articleListSize; i++) {
 			addArticleListItem(articleList.get(i));
 		}
+		successSaveArticle();
 		return articleListSize;
 	}
 
@@ -208,11 +212,12 @@ public class ArticleListManager extends ArticleFlipViewManager {
 							currentChildIndex++;
 							View view = inflater.inflate(errorXMLId, null);
 							addView(view);
+							isFailInsertArticleList = true;
 							if (NewsUpNetwork.isNetworkState(context)) {
 								NewsUpNetwork.getInstance().requestArticleList(
 										category, true);
+								return ;
 							}
-							isFailInsertArticleList = true;
 							successSaveArticle();
 							return;
 						}
@@ -234,7 +239,6 @@ public class ArticleListManager extends ArticleFlipViewManager {
 						}
 						if (isFailInsertArticleList) {
 							isFailInsertArticleList = false;
-							display(currentChildIndex);
 						}
 						//
 						successSaveArticle();
@@ -245,6 +249,10 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 
 	public void successSaveArticle() {
+		isRequestArticle = false;
+	}
+	
+	public void failNetworkArticleRequest() {
 		isRequestArticle = false;
 	}
 
@@ -268,8 +276,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	public boolean upDownSwipe(int increase) {
 		int checkIndex = currentChildIndex + increase;
 
-		if (currentChildIndex <= MINIMUM_ARTICLE_LIST_ATTACH_INDEX
-				&& !isRequestArticle) {
+		Log.d("NewsUp", "checkIndex : " + checkIndex + " currentChildIndex : " + currentChildIndex);
+		if (currentChildIndex <= MINIMUM_ARTICLE_LIST_ATTACH_INDEX && !isRequestArticle) {
 			// TODO : insertArticleListBackGround(); 로변
 			isRequestArticle = true;
 			InsertArticleTask insertArticleTask = new InsertArticleTask();
@@ -300,18 +308,10 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 
 	public void removeAllFlipperItem() {
-		Handler handler = new Handler();
-		
-		handler.post(new Runnable() {
-			
-			@Override
-			public void run() {
 				// TODO Auto-generated method stub
 				while (flipper.getChildCount() > offset) {
 					flipper.removeViewAt(minChildIndex);
-				}
 			}
-		});
 	}
 
 	public void setZeroScore() {
@@ -330,15 +330,33 @@ public class ArticleListManager extends ArticleFlipViewManager {
 
 	public void runOutArticle() {
 		// 기사 다사용했을때 아이디 변경
+		// TODO : 여기 처리해야한다 
+		LinearLayout layout;
+		if(getChildChount() == 0) {
+			layout = (LinearLayout) inflater.inflate(errorXMLId, null);
+			TextView errorMessage = (TextView) layout.findViewById(R.id.text);
+			ProgressBar progressBar = (ProgressBar) layout
+					.findViewById(R.id.progressBar);
 
-		LinearLayout layout = (LinearLayout) getChildAt(0);
+			progressBar.setVisibility(View.GONE);
+			errorMessage.setText("기사를 모두 읽으셨습니다.!");
+			isFailInsertArticleList = true;
+			
+			addView(layout);
+			display(getChildChount() - 1);
+		} else {
+			layout = (LinearLayout) getChildAt(0);
+			TextView errorMessage = (TextView) layout.findViewById(R.id.text);
+			ProgressBar progressBar = (ProgressBar) layout
+					.findViewById(R.id.progressBar);
 
-		TextView errorMessage = (TextView) layout.findViewById(R.id.text);
-		ProgressBar progressBar = (ProgressBar) layout
-				.findViewById(R.id.progressBar);
-
-		progressBar.setVisibility(View.GONE);
-		errorMessage.setText("500개의 기사를 모두 읽으셨습니다.!");
+			progressBar.setVisibility(View.GONE);
+			errorMessage.setText("기사를 모두 읽으셨습니다.!");
+			isFailInsertArticleList = true;
+		}
+		
+		
+		
 
 	}
 }

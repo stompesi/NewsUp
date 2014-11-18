@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,14 +16,13 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.newsup.R;
 import com.example.newsup.activity.transmission.structure.TransmissionArticle;
-import com.example.newsup.application.NewsUpApp;
 import com.example.newsup.background.service.LockScreenService;
 import com.example.newsup.database.Article;
-import com.example.newsup.network.NewsUpNetwork;
 import com.example.newsup.setting.RbPreference;
 import com.example.newsup.view.ArticleDetailManager;
 import com.example.newsup.view.ArticleFlipViewManager;
@@ -55,6 +55,11 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 
 	
 	private boolean isAnimationning;
+	
+	private Toast toast;
+	
+	private long backKeyPressedTime = 0;
+	
 	public static ArticleActivity getInstance() {
 		return (ArticleActivity) mainActivity;
 	}
@@ -64,6 +69,25 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 		Article.setZeroScore(articleListManager.getChildChount() - articleListManager.getCurrentChildIndex() - 1);
         super.onDestroy();
     }
+	
+	public void showGuide() {
+        toast = Toast.makeText(getApplicationContext(),
+                "\'뒤로\'버튼을 한번 더 누르시거나 좌로 한번더 스와이프 하시면 앱이 종료됩니다.", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+	
+	public void onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            showGuide();
+            return;
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish();
+            toast.cancel();
+        }
+    }
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -132,14 +156,14 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 			flipperManager = articleListManager;
 		}
 		articleListManager.setCategory(category);
-		articleListManager.removeAllFlipperItem();
+//		articleListManager.removeAllFlipperItem();
 		articleListManager.insertArticleList();
 		flipperManager.setAnimation(R.anim.in, R.anim.out);
 		articleListManager.display(articleListManager.getChildChount() - 1);
 	}
 	
-	public void successSaveArticle(){
-		articleListManager.successNetworkArticleRequest();
+	public ArticleListManager getArticleListManager() {
+		return articleListManager;
 	}
 	
 	public void changeTextSize() {
@@ -157,6 +181,9 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 				articleListManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
 				backEvent();
 				return true;
+			} else {
+				onBackPressed();
+				return true;
 			}
 		}
 		return super.onKeyDown(keyCode, event);
@@ -173,7 +200,6 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 		      public void onAnimationRepeat(Animation animation) {}
 		      public void onAnimationEnd(Animation animation) {
 		    	  Log.e("end", "backEvent end");
-		    	  articleDetailManager.removeAllFlipperItem();
 		    	  isAnimationning = false;
 		    	  articleListManager.getFlipper().getInAnimation().setAnimationListener(null);
 		      }
@@ -221,9 +247,6 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 	@Override
 	@SuppressLint("ClickableViewAccessibility")
 	public boolean onTouch(View v, MotionEvent event) {
-		if (v != flipperManager.getFlipper()) {
-			return false;
-		}
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			yAtDown = event.getY();
@@ -257,7 +280,7 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 				} else if (xAtUp - xAtDown > SWIPE_MIN_DISTANCE) {
 					initClickCount();
 					if (flipperManager != articleDetailManager) {
-						finish();
+						onBackPressed();
 						return false;
 					}
 					articleDetailManager.setAnimation(R.anim.second_left_right_in, R.anim.first_left_right_out);
@@ -272,6 +295,19 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 					articleListManager.setAnimation(R.anim.first_left_right_in, R.anim.second_up_down_out);
 					return moveArticleDetail(articleListManager.getCurrentViewId());
 				}
+				
+				switch(v.getId()) {
+				case R.id.itemList:
+					return false;
+				case R.id.youtube_1:
+					articleDetailManager.showYoutube(0);
+					return false;
+				case R.id.youtube_2:
+					articleDetailManager.showYoutube(1);
+					return false;
+				}
+				
+				
 				if (clickCount == DOUBLE_TAB) {
 					long time = System.currentTimeMillis() - clickStartTime;
 					if (time <= CLICK_MAX_DURATION) {

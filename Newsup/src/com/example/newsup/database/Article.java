@@ -131,7 +131,7 @@ public class Article extends SugarRecord<Article> implements Serializable {
 	
 	public static List<Article> selectMainArticleList(int offset) {
 		Article.executeQuery("VACUUM");
-		 List<Article>  result = Article.findWithQuery(Article.class, "SELECT * FROM Article WHERE SCORE != 0 ORDER BY score DESC, idx asc LIMIT 10 OFFSET ?", "" + offset);
+		 List<Article>  result = Article.findWithQuery(Article.class, "SELECT * FROM Article WHERE SCORE >= 0 ORDER BY score DESC, idx asc LIMIT 10 OFFSET ?", "" + offset);
 		return result;
 	}
 	
@@ -162,7 +162,7 @@ public class Article extends SugarRecord<Article> implements Serializable {
 	
 	public static void setZeroScore(int limit) {
 		
-		List<Article> result = Article.findWithQuery(Article.class, "SELECT * FROM Article WHERE SCORE != 0 ORDER BY score DESC, idx asc LIMIT ?", "" + limit);
+		List<Article> result = Article.findWithQuery(Article.class, "SELECT * FROM Article WHERE SCORE >= 0 ORDER BY score DESC, idx asc LIMIT ?", "" + limit);
 		
 		for(int i = 0 ; i < result.size() ; i++) {
 			Log.e("asdf", "" + result.get(i).getIdx());
@@ -177,7 +177,7 @@ public class Article extends SugarRecord<Article> implements Serializable {
 		protected Void doInBackground(Integer... params) {
 			int articleId = params[0];
 			Article articleORM = getArticle(articleId);
-			articleORM.setScore(0);
+			articleORM.setScore(-0.1);
 			articleORM.save();
 			return null;
 		}

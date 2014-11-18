@@ -75,7 +75,7 @@ abstract public class ArticleFlipViewManager {
 	}
 	
 	public boolean isErrorView() {
-		return getChildChount() == 1;
+		return getChildChount() == 1 || getCurrentChildIndex() == 0;
 	}
 	abstract public void inArticleDetail(int articleId);
 	abstract public void outArticleDetail();

@@ -32,6 +32,8 @@ public class PageSplitter {
 	
 	boolean isComplete;
 	
+	private int stringEndIndex;
+	
 	ArrayList<Object> list; 
 	public PageSplitter(TextPaint textPaint) {
 		layoutInfo = LayoutInfo.getInstance();
@@ -42,6 +44,8 @@ public class PageSplitter {
 		this.currentInputString = "";
 		this.totalInputString = "";
 		this.list = new ArrayList<Object>();
+		String testString = "안녕하세요. .??아씨발 못하겟네 저는 한종빈입니다 만나서 반갑습니다. 이 데이터는 무엇일까요? 이것은 테스트 데이터입니다. 한줄의 최대 index를 가져오기 위함입니다. ㅎㅎㅎ "; 
+		stringEndIndex = textPaint.breakText(testString, true, layoutInfo.getAvailableTotalWidth(), null);
 	}
 
 	public ArticleDetailPage makePageList() {
@@ -129,7 +133,6 @@ public class PageSplitter {
 
 	private boolean fillText(String text) {
 		String[] splittedText = text.split("\n");
-		int stringEndIndex = 0;
 		
 		currentInputString = "";
 		text = "";
@@ -139,15 +142,14 @@ public class PageSplitter {
 			}
 			text += (splittedText[i] + " ");
 		}
-		String testString = "안녕하세요. .??아씨발 못하겟네 저는 한종빈입니다 만나서 반갑습니다. 이 데이터는 무엇일까요? 이것은 테스트 데이터입니다. 한줄의 최대 index를 가져오기 위함입니다. ㅎㅎㅎ "; 
-		stringEndIndex = textPaint.breakText(testString, true, layoutInfo.getAvailableTotalWidth(), null);
+		
 		while(!text.equals("")){
 			if(stringEndIndex > text.length()) {
-				Log.e("text.substring(0, stringEndIndex);", text.substring(0, text.length()));
+//				Log.e("text.substring(0, stringEndIndex);", text.substring(0, text.length()));
 				totalInputString += text.substring(0, text.length());
 				text = text.substring(text.length());
 			} else {
-				Log.e("text.substring(0, stringEndIndex);", text.substring(0, stringEndIndex));
+//				Log.e("text.substring(0, stringEndIndex);", text.substring(0, stringEndIndex));
 				totalInputString += text.substring(0, stringEndIndex);
 				text = text.substring(stringEndIndex);
 			}

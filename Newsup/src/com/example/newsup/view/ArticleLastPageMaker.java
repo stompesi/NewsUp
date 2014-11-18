@@ -12,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,14 +24,10 @@ import com.example.newsup.activity.transmission.structure.Image;
 import com.example.newsup.network.NewsUpImageLoader;
 import com.example.newsup.view.structure.ArticleDetailInfomation;
 import com.example.newsup.view.structure.RelatedArticle;
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
+import com.example.newsup.view.structure.RelatedVideo;
 
 
-public class ArticleLastPageMaker extends YouTubeBaseActivity implements
-YouTubePlayer.OnInitializedListener{
+public class ArticleLastPageMaker{
 
 	private LayoutInflater Inflater;
 	private Context context;
@@ -38,56 +35,65 @@ YouTubePlayer.OnInitializedListener{
 	public static final String API_KEY = "AIzaSyASbhpfpjbXyEAg9sOejF8hol3dLmJNgHI";
 	public String videoId;
 	WebView webView;
-	private boolean isExistVideo;
 	LinearLayout relatevie_second_layout,relatevie_original_layout;
 
 	private ArticleDetailInfomation articleDetailInfomation;
+	
+	
 
-	public ArticleLastPageMaker(Context context, LayoutInflater Inflater, boolean isExistVideo,
-			ArticleDetailInfomation articleDetailInfomation)
+	public ArticleLastPageMaker(Context context, LayoutInflater Inflater, ArticleDetailInfomation articleDetailInfomation)
 	{
 		this.context = context;
 		this.Inflater = Inflater;
-		this.isExistVideo = isExistVideo;
 		this.articleDetailInfomation = articleDetailInfomation;
 	}
 
 	public LinearLayout getLastPage(){
 		ArrayList<ListItem> itemArray;
-		ListView itemList; 
-		TextView textview;
-		YouTubePlayerView youTubePlayerView;
-		
-
-
+		ListView itemList;
 		LinearLayout lastLayout = (LinearLayout) Inflater.inflate(R.layout.view_article_detail_last_page, null);
 		itemList =(ListView)(lastLayout).findViewById(R.id.itemList);
-		textview = (TextView)(lastLayout).findViewById(R.id.viewArticleBottom);
-		
-		
-		
-		webView = (WebView)(lastLayout).findViewById(R.id.relative_webview);
-		relatevie_second_layout = (LinearLayout)(lastLayout).findViewById(R.id.relatevie_second_layout);
-		relatevie_original_layout = (LinearLayout)(lastLayout).findViewById(R.id.relatevie_second_layout);
-
-		youTubePlayerView = (YouTubePlayerView)(lastLayout).findViewById(R.id.youtube_view);
-		
-		
+		FrameLayout youtube_1 =(FrameLayout)(lastLayout).findViewById(R.id.youtube_1);
+		FrameLayout youtube_2 =(FrameLayout)(lastLayout).findViewById(R.id.youtube_2);
 		
 		if(articleDetailInfomation.getRelatedArticleList().size() == 0) {
 			itemList.setVisibility(View.GONE);
 			TextView relatedArticle = (TextView)(lastLayout).findViewById(R.id.relatedArticle);
 			relatedArticle.setVisibility(View.GONE);
 		}
-
-		if(isExistVideo) {
-			videoId = articleDetailInfomation.getVideoId();
-			youTubePlayerView.initialize(API_KEY, this);
-		} else {
-			TextView relatedArticleTitle = (TextView)(lastLayout).findViewById(R.id.relatedArticleTitle);
-			youTubePlayerView.setVisibility(View.GONE);
-			relatedArticleTitle.setVisibility(View.GONE);
+		switch(articleDetailInfomation.getRelatedVideoList().size()) {
+		case 1:
+			RelatedVideo relatedVideo= articleDetailInfomation.getRelatedVideoList().get(0);
+			youtube_1.setVisibility(View.VISIBLE);
+			TextView title = (TextView) youtube_1.findViewById(R.id.youtube_1_title);
+			ImageView imageView = (ImageView) youtube_1.findViewById(R.id.youtube_1_image);
+			
+			title.setText(relatedVideo.getTitle());
+			NewsUpImageLoader.loadImage(imageView, relatedVideo.getImageURL(), "#ffffff");
+			break;
+		case 2:
+			RelatedVideo relatedVideo1 = articleDetailInfomation.getRelatedVideoList().get(0);
+			RelatedVideo relatedVideo2 = articleDetailInfomation.getRelatedVideoList().get(1);
+			youtube_1.setVisibility(View.VISIBLE);
+			TextView youtube_1_title = (TextView) youtube_1.findViewById(R.id.youtube_1_title);
+			ImageView youtube_1_imageView = (ImageView) youtube_1.findViewById(R.id.youtube_1_image);
+			
+			youtube_1_title.setText(relatedVideo1.getTitle());
+			NewsUpImageLoader.loadImage(youtube_1_imageView, relatedVideo1.getImageURL(), "#ffffff");
+			
+			youtube_2.setVisibility(View.VISIBLE);
+			TextView youtube_2_title = (TextView) youtube_2.findViewById(R.id.youtube_2_title);
+			ImageView iyoutube_2_mageView = (ImageView) youtube_2.findViewById(R.id.youtube_2_image);
+			
+			youtube_2_title.setText(relatedVideo2.getTitle());
+			NewsUpImageLoader.loadImage(iyoutube_2_mageView, relatedVideo2.getImageURL(), "#ffffff");
+			break;
+		case 0:
+			TextView relatedVideoTitle = (TextView)(lastLayout).findViewById(R.id.relatedVideoTitle);
+			relatedVideoTitle.setVisibility(View.GONE);
+			break;
 		}
+
 
 		itemArray = new ArrayList<ListItem>();
 		ListItem listItem; 
@@ -103,32 +109,18 @@ YouTubePlayer.OnInitializedListener{
 		LastPageListAdapter lastPageListAdapter = new LastPageListAdapter(context, R.layout.view_article_detail_last_page_list_item, itemArray);
 		itemList.setAdapter(lastPageListAdapter);
 		itemList.setOnItemClickListener(mItemClickListener);
-
-		//		setPageNumber(lastLayout, maxPageNumber+1, maxPageNumber+1);
 		return lastLayout;
-
 	}
+	
 	private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long l_position) {
 			String URL = articleDetailInfomation.getRelatedArticleList().get(position).getURL();
-			
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
 			context.startActivity(intent);
-			
-			context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=cxLG2wtE7TM")));
 		}
 	};
-
-	private class WebViewClientClass extends WebViewClient { 
-		@Override 
-		public boolean shouldOverrideUrlLoading(WebView view, String url) { 
-			view.loadUrl(url); 
-			return true; 
-		} 
-	}
-
 
 	public class ListItem{
 
@@ -143,14 +135,11 @@ YouTubePlayer.OnInitializedListener{
 	}
 
 	private class LastPageListAdapter extends BaseAdapter{
-
-		Context context; 
 		LayoutInflater Inflater;
 		ArrayList<ListItem> array;
 		int layout;
 
 		public LastPageListAdapter(Context context, int layout , ArrayList<ListItem> array){
-			this.context = context;
 			Inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			this.array = array;
 			this.layout = layout;
@@ -194,25 +183,6 @@ YouTubePlayer.OnInitializedListener{
 
 
 			return convertView;
-		}
-
-	}
-
-	@Override
-	public void onInitializationFailure(
-			com.google.android.youtube.player.YouTubePlayer.Provider provider,
-			YouTubeInitializationResult result) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onInitializationSuccess(
-			com.google.android.youtube.player.YouTubePlayer.Provider provider,
-			YouTubePlayer player, boolean wasRestored) {
-
-		if (!wasRestored) {
-			player.cueVideo(videoId);
 		}
 
 	}

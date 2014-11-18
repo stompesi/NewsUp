@@ -45,8 +45,8 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	private Runnable timerRunnable;
 	
 	
-	public void successSaveArticle(){
-		articleListManager.successNetworkArticleRequest();
+	public ArticleListManager getArticleListManager() {
+		return articleListManager;
 	}
 	
 	public static LockScreenActivity getInstance() {
@@ -56,10 +56,8 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.e("Create", "aaa");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lockscreen);
-		
 		init();
 		
 		/***

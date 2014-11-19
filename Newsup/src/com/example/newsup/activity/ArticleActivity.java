@@ -66,7 +66,7 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 	@Override
     public void onDestroy()
     {
-		Article.setZeroScore(articleListManager.getChildChount() - articleListManager.getCurrentChildIndex() - 1);
+		articleListManager.setZeroScore();
         super.onDestroy();
     }
 	
@@ -101,7 +101,11 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 		 */
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			if(extras.containsKey("category")) {
+			if (extras.containsKey("startCategory")) {
+				articleListManager.insertArticleList(extras.getInt("startCategory"));
+				articleListManager.display(articleListManager.getChildChount() - 1);
+				return ;
+			} else if(extras.containsKey("category")) {
 				articleListManager.setCategory(extras.getInt("category"));
 			} else {
 				int articleId = extras.getInt("articleId");
@@ -154,12 +158,17 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 			articleDetailManager.outArticleDetail();
 			articleDetailManager.removeAllFlipperItem();
 			flipperManager = articleListManager;
+			flipperManager.setAnimation(R.anim.in, R.anim.out);
+			backEvent();
+		}else if(category != articleListManager.getCategory()) {
+			articleListManager.setZeroScore();
+			articleListManager.setCategory(category);
+			articleListManager.removeAllFlipperItem();
+			articleListManager.insertArticleList();
+			flipperManager.setAnimation(R.anim.in, R.anim.out);
+			articleListManager.display(articleListManager.getChildChount() - 1);
 		}
-		articleListManager.setCategory(category);
-//		articleListManager.removeAllFlipperItem();
-		articleListManager.insertArticleList();
-		flipperManager.setAnimation(R.anim.in, R.anim.out);
-		articleListManager.display(articleListManager.getChildChount() - 1);
+		
 	}
 	
 	public ArticleListManager getArticleListManager() {
@@ -306,7 +315,6 @@ public class ArticleActivity extends YouTubeBaseActivity implements OnTouchListe
 					articleDetailManager.showYoutube(1);
 					return false;
 				}
-				
 				
 				if (clickCount == DOUBLE_TAB) {
 					long time = System.currentTimeMillis() - clickStartTime;

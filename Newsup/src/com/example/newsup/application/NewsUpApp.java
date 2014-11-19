@@ -38,6 +38,7 @@ public class NewsUpApp extends com.orm.SugarApp {
 		if(deviceId == null) {
 			deviceId = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
 			pref.setValue(RbPreference.USER_ID, deviceId);
+			NewsUpNetwork.getInstance().setDeviceId(deviceId);
 		}
 		
 		NewsUpNetwork.getInstance().setDeviceId(deviceId);

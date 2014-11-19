@@ -53,8 +53,8 @@ public class StartActivity extends Activity implements OnTouchListener {
 		Intent articleManageIntent = new Intent(StartActivity.this, ArticleManageService.class);
 		startService(articleManageIntent);
 		
-		NewsUpNetwork.getInstance().setDeviceId(NewsUpApp.getInstance().getDeviceId());
 		NewsUpNetwork.getInstance().requestRegistUser(getApplication());
+		
 		likeCategoryList = new ArrayList<Integer>();
 		
 		categoryList = new Category[10];
@@ -81,23 +81,11 @@ public class StartActivity extends Activity implements OnTouchListener {
 		findViewById(R.id.sympathy).setOnTouchListener(this);
 		findViewById(R.id.game).setOnTouchListener(this);
 		findViewById(R.id.start).setOnTouchListener(this);
-	}
-	
-//	public void settingStart() {
-//		StartActivity startActivity;
-//		RbPreference pref;
-//		Intent intent;
-//		
-//		startActivity = StartActivity.this;
-//		pref = new RbPreference(startActivity);
-//		pref.setValue(RbPreference.PREF_IS_INTRO, false);
-//		
 		
-//		
-//		intent = new Intent(startActivity, ArticleActivity.class);
-//		startActivity(intent);
-//		startActivity.finish();
-//	}
+		RbPreference pref = new RbPreference(this);
+		pref.setValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
+		
+	}
 	
 	
 	@Override
@@ -110,7 +98,6 @@ public class StartActivity extends Activity implements OnTouchListener {
 			xAtUp = event.getX();
 			if (Math.abs(xAtDown - xAtUp) > SWIPE_MIN_DISTANCE) {
 			} else if (Math.abs(xAtUp - xAtDown) > SWIPE_MIN_DISTANCE) {
-				return true;
 			} else {
 				int category = 0;
 				switch(v.getId()) {
@@ -139,12 +126,18 @@ public class StartActivity extends Activity implements OnTouchListener {
 					//처음 시작 할때 셋팅 값 저장.
 					RbPreference pref = new RbPreference(this);
 					pref.setValue(RbPreference.IS_LOCK_SCREEN, true);//락스크린 on
-					pref.setValue(RbPreference.WORD_SIZE, SettingActivity.MEDIUM_WORD);//글자 크기 기본 15로 지정.
 					pref.setValue(RbPreference.PREF_IS_INTRO, false);
 					NewsUpNetwork.getInstance().requestPreference(likeCategoryList);
 					
-					
 					Intent i = new Intent(StartActivity.this, ArticleActivity.class);
+					Bundle bun = new Bundle();
+					if(likeCategoryList.size() == 0) {
+						bun.putInt("startCategory", 1);
+					} else {
+						bun.putInt("startCategory", likeCategoryList.get(0).intValue());
+					}
+					
+					i.putExtras(bun);
 					startActivity(i);
 					finish();
 					return true;
@@ -188,6 +181,9 @@ public class StartActivity extends Activity implements OnTouchListener {
 			}
 			
 			switch(likeCount) {
+			case 0:
+				showMessage("추천 받기 원하는 카테고리를 선택해 주세요.");
+				break;
 			case 1:
 				showMessage("하나의 카테고리에 추천도가 높아져요!!");
 				break;

@@ -25,6 +25,7 @@ abstract public class ArticleFlipViewManager {
 		this.flipper = flipper;
 		this.context = context;
 		minChildIndex = 0;
+		currentChildIndex = -1;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -33,6 +34,7 @@ abstract public class ArticleFlipViewManager {
 	
 	
 	public void removeFlipperItem() {
+		currentChildIndex--;
 		flipper.removeViewAt(minChildIndex);
 	}
 
@@ -50,6 +52,7 @@ abstract public class ArticleFlipViewManager {
 	}
 	
 	protected void addView(View view) {
+		currentChildIndex++;
 		flipper.addView(view, minChildIndex);
 	}
 	

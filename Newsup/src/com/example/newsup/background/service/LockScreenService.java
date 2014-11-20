@@ -20,7 +20,7 @@ public class LockScreenService extends Service {
 		super.onCreate();
 		registerScreenOnOffReceiver();
 		// TODO : 아이콘 넣어야 함
-		Notification notification = new NotificationCompat.Builder(getApplicationContext()).setContentTitle("NewsUp").setContentText("첫화면에 뉴스 기스 혜택 제공 중").setSmallIcon(R.drawable.ic_launcher).build();
+		Notification notification = new NotificationCompat.Builder(getApplicationContext()).setContentTitle("NewsUp").setContentText("첫화면에 뉴스 기스 혜택 제공 중").setSmallIcon(R.drawable.appicon).build();
 		startForeground(1, notification);
 	}
 

@@ -119,9 +119,11 @@ public class Article extends SugarRecord<Article> implements Serializable {
 	
 	public static void refreshArticleScore(JSONObject article) {
 		try {
-			Article articleORM = getArticle(article.getInt("int"));
-			articleORM.setScore(article.getDouble("score"));
-			articleORM.save();
+			Article articleORM = getArticle(article.getInt("id"));
+			if(articleORM != null) {
+				articleORM.setScore(article.getDouble("score"));
+				articleORM.save();
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -219,10 +219,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 
 	class InsertArticleTask extends AsyncTask<Integer, Void, List<Article>> {
-
 		@Override
 		protected List<Article> doInBackground(Integer... params) {
-			// TODO Auto-generated method stub
 			int articleOffset = getArticleOffset();
 			int category = params[0];
 			List<Article> articleList = null;
@@ -348,10 +346,9 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	}
 
 	public void removeAllFlipperItem() {
-				// TODO Auto-generated method stub
-				while (flipper.getChildCount() > offset) {
-					flipper.removeViewAt(minChildIndex);
-			}
+		while (flipper.getChildCount() > offset) {
+			flipper.removeViewAt(minChildIndex);
+		}
 	}
 	
 	public void setZeroScore() {

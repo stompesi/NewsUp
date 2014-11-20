@@ -59,7 +59,7 @@ public class NewsUpNetwork {
 	public void refreshArticleScore() {
 		Log.d("NewsUp", "뉴스기사 점수 요청");
 		Log.d("NewsUp", "deviceId : " + deviceId);
-		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/category/";
+		String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/news/category/scores";
 
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
 					@Override
@@ -67,7 +67,8 @@ public class NewsUpNetwork {
 						Log.d("NewsUp", "Network : 뉴스기사 점수 요청 성공.");
 						JSONArray articles;
 						try {
-							articles = response.getJSONArray("articles");
+							articles = response.getJSONArray("data");
+							Log.d("NewsUp", "서버 점수 초기화 count : " + articles.length());
 							for (int i = 0; i < articles.length(); i++) {
 								Article.refreshArticleScore(articles.getJSONObject(i));
 							}

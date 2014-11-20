@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -19,7 +20,6 @@ import android.widget.ViewFlipper;
 import com.example.newsup.R;
 import com.example.newsup.activity.transmission.structure.TransmissionArticle;
 import com.example.newsup.clock.Clock;
-import com.example.newsup.database.Article;
 import com.example.newsup.view.ArticleListManager;
 
 
@@ -162,11 +162,12 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	}
 	
 	public void reFresh() {
-		Handler handler = new Handler();
+		Handler handler = new Handler(Looper.getMainLooper());
+		
 		handler.post(new Runnable() {
+			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				articleListManager.removeAllFlipperItem();
 				articleListManager.insertArticleList();
 				articleListManager.display(articleListManager.getChildChount() - 1);

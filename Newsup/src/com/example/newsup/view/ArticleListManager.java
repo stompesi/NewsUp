@@ -310,7 +310,6 @@ public class ArticleListManager extends ArticleFlipViewManager {
 
 		Log.d("NewsUp", "checkIndex : " + checkIndex + " currentChildIndex : " + currentChildIndex + " getChildChount() : " + getChildChount());
 		if (currentChildIndex <= MINIMUM_ARTICLE_LIST_ATTACH_INDEX && !isRequestArticle) {
-			// TODO : insertArticleListBackGround(); 로변
 			isRequestArticle = true;
 			InsertArticleTask insertArticleTask = new InsertArticleTask();
 			insertArticleTask.execute(category);

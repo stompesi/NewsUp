@@ -6,11 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import com.example.newsup.activity.LockScreenActivity;
-import com.example.newsup.activity.StartActivity;
-import com.example.newsup.background.service.ArticleManageService;
 import com.example.newsup.background.service.LockScreenService;
 import com.example.newsup.setting.RbPreference;
 

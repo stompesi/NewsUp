@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.newsup.activity.LockScreenActivity;
 import com.orm.SugarRecord;
@@ -30,9 +29,7 @@ public class Article extends SugarRecord<Article> implements Serializable {
 	
 	private int idx;
 	
-	public Article() {
-		
-	}
+	public Article() {}
 	
 	public int getIdx() { return idx; }
 	public int getArticleId() { return articleId; }
@@ -80,7 +77,9 @@ public class Article extends SugarRecord<Article> implements Serializable {
 				
 				resource.acquire();
 				Article articleORM;
-				articleORM = getArticle(article.getInt("id"));
+				articleORM = Select.from(Article.class).whereOr(
+						Condition.prop("article_id").eq(article.getInt("id")), 
+						Condition.prop("title").eq(article.getString("title"))).first();
 				
 				if(articleORM == null) {
 					articleORM = new Article();

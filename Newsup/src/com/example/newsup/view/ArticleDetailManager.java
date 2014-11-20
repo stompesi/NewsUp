@@ -208,14 +208,10 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 		@Override
 		protected Void doInBackground(Void... params) {
 			ArticleDetailPage next = splitter.makePageList();
-			
-			
 			try {
 				resource.acquire();
-				
 				if(next == null) {
 					handler.post(new Runnable() {
-						
 						@Override
 						public void run() {
 							like = (ImageView) flipper.getCurrentView().findViewById(R.id.like);
@@ -492,7 +488,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 					relatedArticle.setURL(item.getString("url"));
 					
 					
-					if(item.has("image")) {
+					if(item.has("image") && !item.isNull("image")) {
 						JSONObject imageObject = item.getJSONObject("image");
 						Image imageInfo = new Image(imageObject.getString("url"), imageObject.getString("color"));
 						relatedArticle.setImageInfo(imageInfo);
@@ -528,11 +524,10 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 				
 				addView(layout);
 				articleReadInfo.addPage();
-			} else {
-				for(int i = 0 ; i < getChildChount() ; i++) {
-					LinearLayout view = (LinearLayout) flipper.getChildAt(i);
-					setPageNumber(view, getChildChount() - i, getChildChount());
-				}
+			}
+			for(int i = 0 ; i < getChildChount() ; i++) {
+				LinearLayout view = (LinearLayout) flipper.getChildAt(i);
+				setPageNumber(view, getChildChount() - i, getChildChount());
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

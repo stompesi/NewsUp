@@ -64,8 +64,7 @@
                     <ImageView
                         android:id="@+id/youtube_1_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                   android:background="@drawable/aa"  />
+                    android:layout_height="match_parent" />
                     </LinearLayout>
                 
                 
@@ -121,8 +120,7 @@
                     <ImageView
                         android:id="@+id/youtube_2_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                   android:background="@drawable/aa"  />
+                    android:layout_height="match_parent" />
                     </LinearLayout>
                 
                 

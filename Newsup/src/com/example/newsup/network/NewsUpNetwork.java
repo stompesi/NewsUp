@@ -114,17 +114,18 @@ public class NewsUpNetwork {
 								}
 							} else {
 								for (int i = 0; i < articles.length(); i++) {
-									Log.e("Id", "" + articles.getJSONObject(i).getDouble("score"));
-									articles.getJSONObject(i).put("category", category);
-									// TODO : 카테고리 임시변경함 - 서버에서 제대로 데이터가 날라온다면 제거해야함 
+									Log.e("Id", "" + articles.getJSONObject(i).getDouble("score") + " timestamp : " + 
+											articles.getJSONObject(i).getInt("timestamp") + " category : " + 
+											articles.getJSONObject(i).getInt("category"));
 									articles.getJSONObject(i).put("category", category);
 									Article.saveArticle(articles.getJSONObject(i));
 								}
 								if(ArticleActivity.getInstance() != null && isUserRequest) {
-									ArticleActivity.getInstance().getArticleListManager().successNetworkArticleRequest();
+									ArticleActivity.getInstance().getArticleListManager().successNetworkArticleRequest(category);
+									return ;
 								} 
 								if(LockScreenActivity.getInstance() != null && isUserRequest) {
-									LockScreenActivity.getInstance().getArticleListManager().successNetworkArticleRequest();
+									LockScreenActivity.getInstance().getArticleListManager().successNetworkArticleRequest(category);
 								}
 							}
 						} catch (JSONException e) {

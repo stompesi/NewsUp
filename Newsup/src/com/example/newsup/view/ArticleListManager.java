@@ -2,6 +2,7 @@ package com.example.newsup.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -43,6 +44,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	private Handler mHandler;
 
 	private int errorXMLId;
+	
+	Stack<Integer> viewArticleList;
 
 	public ArticleListManager(Context context, ViewFlipper flipper, int itemId,
 			int offset, int errorXMLId) {
@@ -53,6 +56,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		this.isRequestArticle = false;
 		mHandler = new Handler();
 		this.errorXMLId = errorXMLId;
+		viewArticleList = new Stack<Integer>();
 	}
 
 	public void setCategory(int category) {
@@ -65,8 +69,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 
 		// TODO : Idx를 Id로 변경해야 한다
 		Log.e("article.getArticleId()",
-				"article.getArticleId() : " + article.getTitle() + " idx : "
-						+ article.getIdx() + " category : " + article.getCategory());
+				"id : " + article.getArticleId() + "  title : " + article.getTitle() + " idx : "
+						+ article.getIdx() + " category : " + article.getCategory() + " timestamp : " + article.getTimestamp());
 		view.setId(article.getArticleId());
 		TextView title = (TextView) view.findViewById(R.id.title);
 		TextView content = (TextView) view.findViewById(R.id.content);
@@ -128,7 +132,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		}
 	}
 
-	public int insertArticleList() {
+	public void insertArticleList() {
 		int articleOffset = getArticleOffset();
 		List<Article> articleList = null;
 
@@ -138,9 +142,6 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			articleList = Article.selectOtherArticleList(category,
 					articleOffset);
 		}
-		
-		
-		
 		int articleListSize = articleList.size();
 		Log.d("NewsUp", "articleSize : " + articleListSize + " category : " + category);
 		if (articleListSize == 0) {
@@ -150,10 +151,9 @@ public class ArticleListManager extends ArticleFlipViewManager {
 				isFailInsertArticleList = true;
 				if (NewsUpNetwork.isNetworkState(context)) {
 					Log.d("NewsUp", "새로운 뉴스 기사 요청");
-					NewsUpNetwork.getInstance().requestArticleList(category,
-							true);
+					NewsUpNetwork.getInstance().requestArticleList(category,true);
 				}
-				return 1;
+				return ;
 			}
 			if (NewsUpNetwork.isNetworkState(context)) {
 				NewsUpNetwork.getInstance().requestArticleList(category, true);
@@ -169,7 +169,42 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			addArticleListItem(articleList.get(i));
 		}
 		successSaveArticle();
-		return articleListSize;
+	}
+	
+	public void insertArticleList(int startCategory) {
+		int articleOffset = getArticleOffset();
+		List<Article> articleList = null;
+
+		articleList = Article.selectOtherArticleList(startCategory, articleOffset);
+		int articleListSize = articleList.size();
+		Log.d("NewsUp", "articleSize : " + articleListSize + " startCategory : " + startCategory);
+		if (articleListSize == 0) {
+			if (!isFailInsertArticleList) {
+				LinearLayout layout = (LinearLayout)inflater.inflate(errorXMLId, null);
+				
+				TextView errorMessage = (TextView) layout.findViewById(R.id.text);
+
+				errorMessage.setText("당신의 맞춤형 기사를 추천 중입니다.");
+				
+				addView(layout);
+				isFailInsertArticleList = true;
+				if (NewsUpNetwork.isNetworkState(context)) {
+					Log.d("NewsUp", "새로운 뉴스 기사 요청");
+					NewsUpNetwork.getInstance().requestArticleList(startCategory,
+							true);
+				}
+				return ;
+			}
+		} else {
+			if (isFailInsertArticleList) {
+				removeFlipperItem();
+				isFailInsertArticleList = false;
+			}
+		}
+
+		for (int i = 0; i < articleListSize; i++) {
+			addArticleListItem(articleList.get(i));
+		}
 	}
 
 	private int getArticleOffset() {
@@ -183,12 +218,13 @@ public class ArticleListManager extends ArticleFlipViewManager {
 		return articleOffset;
 	}
 
-	class InsertArticleTask extends AsyncTask<Void, Void, List<Article>> {
+	class InsertArticleTask extends AsyncTask<Integer, Void, List<Article>> {
 
 		@Override
-		protected List<Article> doInBackground(Void... params) {
+		protected List<Article> doInBackground(Integer... params) {
 			// TODO Auto-generated method stub
 			int articleOffset = getArticleOffset();
+			int category = params[0];
 			List<Article> articleList = null;
 
 			if (category == 0) {
@@ -206,10 +242,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
 				@Override
 				public void run() {
 					int articleListSize = articleList.size();
-					currentChildIndex += articleListSize;
 					if (articleListSize == 0) {
 						if (!isFailInsertArticleList) {
-							currentChildIndex++;
 							View view = inflater.inflate(errorXMLId, null);
 							addView(view);
 							isFailInsertArticleList = true;
@@ -229,14 +263,14 @@ public class ArticleListManager extends ArticleFlipViewManager {
 						}
 					} else {
 
-						if (isFailInsertArticleList) {
+						if (isFailInsertArticleList ) {
 							removeFlipperItem();
-							currentChildIndex--;
-
 						}
 						for (int i = 0; i < articleListSize; i++) {
 							addArticleListItem(articleList.get(i));
 						}
+						Log.e("currentChildIndex", "currentChildIndex : " + currentChildIndex);
+						display(currentChildIndex);
 						if (isFailInsertArticleList) {
 							isFailInsertArticleList = false;
 						}
@@ -276,15 +310,21 @@ public class ArticleListManager extends ArticleFlipViewManager {
 	public boolean upDownSwipe(int increase) {
 		int checkIndex = currentChildIndex + increase;
 
-		Log.d("NewsUp", "checkIndex : " + checkIndex + " currentChildIndex : " + currentChildIndex);
+		Log.d("NewsUp", "checkIndex : " + checkIndex + " currentChildIndex : " + currentChildIndex + " getChildChount() : " + getChildChount());
 		if (currentChildIndex <= MINIMUM_ARTICLE_LIST_ATTACH_INDEX && !isRequestArticle) {
 			// TODO : insertArticleListBackGround(); 로변
 			isRequestArticle = true;
 			InsertArticleTask insertArticleTask = new InsertArticleTask();
-			insertArticleTask.execute();
+			insertArticleTask.execute(category);
 		}
 		if (checkIndex >= getChildChount() || checkIndex < minChildIndex) {
 			return false;
+		}
+		
+		if(increase == -1) {
+			viewArticleList.push(flipper.getCurrentView().getId());
+		} else {
+			viewArticleList.pop();
 		}
 		display(checkIndex);
 		return true;
@@ -313,19 +353,19 @@ public class ArticleListManager extends ArticleFlipViewManager {
 					flipper.removeViewAt(minChildIndex);
 			}
 	}
-
+	
 	public void setZeroScore() {
-		Article.setZeroScore(currentChildIndex + 1);
+		Article.setZeroScore(viewArticleList);
 	}
 
 	public boolean isNetworkError() {
 		return isFailInsertArticleList;
 	}
 
-	public void successNetworkArticleRequest() {
+	public void successNetworkArticleRequest(int category) {
 		isRequestArticle = true;
 		InsertArticleTask insertArticleTask = new InsertArticleTask();
-		insertArticleTask.execute();
+		insertArticleTask.execute(category);
 	}
 
 	public void runOutArticle() {
@@ -354,9 +394,5 @@ public class ArticleListManager extends ArticleFlipViewManager {
 			errorMessage.setText("기사를 모두 읽으셨습니다.!");
 			isFailInsertArticleList = true;
 		}
-		
-		
-		
-
 	}
 }

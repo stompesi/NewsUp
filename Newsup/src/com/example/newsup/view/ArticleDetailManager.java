@@ -287,14 +287,12 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 				
 				like.setOnClickListener(likeClickListener);
 				unlike.setOnClickListener(likeClickListener);
-				currentChildIndex++;
 				articleReadInfo.addPage();
 				
 				NewsUpNetwork.getInstance().requestArticleDetail(articleId);
 				resource.release();
 			} else {
 				addView(articleContentLayout);
-				currentChildIndex++;
 				articleReadInfo.addPage();
 				resource.release();
 			}
@@ -529,7 +527,6 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 				itemList.setOnTouchListener(ArticleActivity.getInstance());
 				
 				addView(layout);
-				currentChildIndex++;
 				articleReadInfo.addPage();
 			} else {
 				for(int i = 0 ; i < getChildChount() ; i++) {
@@ -563,7 +560,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 	@Override
 	public void removeAllFlipperItem() {
 		isOutArticleDetailPage = true;
-		currentChildIndex = 0;
+		currentChildIndex = -1;
 		flipper.removeAllViews();
 	}
 	

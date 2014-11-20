@@ -110,7 +110,7 @@ public class LockScreenActivity extends Activity implements OnTouchListener {
 	@Override
     protected void onDestroy() {
         Log.i("test", "onDstory()");
-        Article.setZeroScore(articleListManager.getChildChount() - articleListManager.getCurrentChildIndex() - 1);
+        articleListManager.setZeroScore();
         timerHandler.removeCallbacks(timerRunnable);
         super.onDestroy();
     }

@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -38,14 +39,26 @@ public class ArticleManageService extends Service {
 	public void onCreate() {
 		Log.d("NewsUp", "Oncreate ArticleManage service");
 		
-		RbPreference pref = new RbPreference(this);
-		if(pref.getValue(RbPreference.FIRST_ARTICLE_REQUEST, true)) {
-			for (int i = 1 ; i <= 10 ; i++) {
-				NewsUpNetwork.getInstance().requestArticleList(i, false);
+		AsyncTask.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				RbPreference pref = new RbPreference(getApplicationContext());
+				if(pref.getValue(RbPreference.FIRST_ARTICLE_REQUEST, true)
+						&& NewsUpNetwork.isNetworkState(getApplicationContext())) {
+					for (int i = 1 ; i <= 10 ; i++) {
+						NewsUpNetwork.getInstance().requestArticleList(i, false);
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					pref.setValue(RbPreference.FIRST_ARTICLE_REQUEST, false);
+				}
 			}
-			pref.setValue(RbPreference.FIRST_ARTICLE_REQUEST, false);
-		}
-		
+		});
 		
 		super.onCreate();
 		registerScreenOnOffReceiver();
@@ -59,20 +72,6 @@ public class ArticleManageService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		RbPreference pref = new RbPreference(this);
-		if(pref.getValue(RbPreference.FIRST_ARTICLE_REQUEST, true)) {
-			for (int i = 1 ; i <= 10 ; i++) {
-				NewsUpNetwork.getInstance().requestArticleList(i, false);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			pref.setValue(RbPreference.FIRST_ARTICLE_REQUEST, false);
-		}
-		
 		return START_REDELIVER_INTENT;
 	}
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:androidhuman="http://schemas.android.com/apk/res/com.example.newsup"
+    xmlns:androidhuman="http://schemas.android.com/apk/res/com.tworoom.android.newsup"
     android:id="@+id/menuLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,7 +37,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/politics" />
 
-                    <com.example.newsup.text.StyledCategoryTextView
+                    <com.tworoom.android.newsup.text.StyledCategoryTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|top"
@@ -64,7 +64,7 @@
                         android:layout_height="117dp"
                         android:background="@drawable/it" />
 
-                    <com.example.newsup.text.StyledCategoryTextView
+                    <com.tworoom.android.newsup.text.StyledCategoryTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|bottom"
@@ -95,7 +95,7 @@
                         android:layout_height="101dp"
                         android:background="@drawable/economic" />
 
-                    <com.example.newsup.text.StyledCategoryTextView
+                    <com.tworoom.android.newsup.text.StyledCategoryTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|bottom"
@@ -122,7 +122,7 @@
                         android:layout_height="159dp"
                         android:background="@drawable/culture" />
 
-                    <com.example.newsup.text.StyledCategoryTextView
+                    <com.tworoom.android.newsup.text.StyledCategoryTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|top"
@@ -155,7 +155,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/sports" />
 
-                <com.example.newsup.text.StyledCategoryTextView
+                <com.tworoom.android.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
@@ -182,7 +182,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/entertainment" />
 
-                <com.example.newsup.text.StyledCategoryTextView
+                <com.tworoom.android.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
@@ -209,7 +209,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/international" />
 
-                <com.example.newsup.text.StyledCategoryTextView
+                <com.tworoom.android.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
@@ -241,7 +241,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/health" />
 
-                <com.example.newsup.text.StyledCategoryTextView
+                <com.tworoom.android.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|bottom"
@@ -268,7 +268,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/game" />
 
-                <com.example.newsup.text.StyledCategoryTextView
+                <com.tworoom.android.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
@@ -295,7 +295,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/sympathy" />
 
-                <com.example.newsup.text.StyledCategoryTextView
+                <com.tworoom.android.newsup.text.StyledCategoryTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|top"

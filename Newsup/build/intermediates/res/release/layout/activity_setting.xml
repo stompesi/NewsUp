@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidhuman="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal" >
+
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:text="설정"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal" >
+
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingTop="21dp"
+            android:text="락스크린"
+            android:textColor="#747474"
+            android:textSize="13sp"
+            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+        <LinearLayout
+            android:layout_width="188dp"
+            android:layout_height="match_parent" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/swLockScreen"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/switch_on" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/divider" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal" >
+
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingTop="21dp"
+            android:text="글자크기"
+            android:textColor="#747474"
+            android:textSize="13sp"
+            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+        <LinearLayout
+            android:layout_width="90dp"
+            android:layout_height="match_parent" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnTextSizeSmall"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_fs_36_off"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
+
+        <LinearLayout
+            android:layout_width="24dp"
+            android:layout_height="match_parent" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnTextSizeMedium"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_fs_42_off"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
+
+        <LinearLayout
+            android:layout_width="24dp"
+            android:layout_height="match_parent" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnTextSizeLarge"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_fs_48_off"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/divider" >
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/res/layout/activity_setting.xml -->

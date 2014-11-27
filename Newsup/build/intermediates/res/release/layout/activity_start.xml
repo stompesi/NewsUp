@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidhuman="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/menuLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <ViewFlipper
+        android:id="@+id/flipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="264dp"
+                android:background="#FFFFFF"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="188dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="1dp"
+                    android:paddingTop="2dp" >
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="143dp" >
+
+                        <Button
+                            android:id="@+id/politicalSociety"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/politics" />
+
+                        <org.tworoom.android.newsup.text.StyledCategoryTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|top"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="2dp"
+                            android:text="정치/사회"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp" >
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="117dp" >
+
+                        <Button
+                            android:id="@+id/it"
+                            android:layout_width="match_parent"
+                            android:layout_height="117dp"
+                            android:background="@drawable/it" />
+
+                        <org.tworoom.android.newsup.text.StyledCategoryTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|bottom"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginRight="15dp"
+                            android:text="IT/과학"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="172dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="1dp"
+                    android:paddingRight="2dp"
+                    android:paddingTop="2dp" >
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="101dp" >
+
+                        <Button
+                            android:id="@+id/economy"
+                            android:layout_width="match_parent"
+                            android:layout_height="101dp"
+                            android:background="@drawable/economic" />
+
+                        <org.tworoom.android.newsup.text.StyledCategoryTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|bottom"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="15dp"
+                            android:text="경제"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp" >
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="159dp" >
+
+                        <Button
+                            android:id="@+id/culture"
+                            android:layout_width="match_parent"
+                            android:layout_height="159dp"
+                            android:background="@drawable/culture" />
+
+                        <org.tworoom.android.newsup.text.StyledCategoryTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|top"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="2dp"
+                            android:text="문화"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="107dp"
+                android:background="#FFFFFF"
+                android:orientation="horizontal"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp" >
+
+                <FrameLayout
+                    android:layout_width="142dp"
+                    android:layout_height="match_parent" >
+
+                    <Button
+                        android:id="@+id/sports"
+                        android:layout_width="142dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/sports" />
+
+                    <org.tworoom.android.newsup.text.StyledCategoryTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginRight="15dp"
+                        android:text="스포츠"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent" >
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="105dp"
+                    android:layout_height="match_parent" >
+
+                    <Button
+                        android:id="@+id/entertainment"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/entertainment" />
+
+                    <org.tworoom.android.newsup.text.StyledCategoryTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginRight="15dp"
+                        android:text="연예"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent" >
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="105dp"
+                    android:layout_height="match_parent" >
+
+                    <Button
+                        android:id="@+id/world"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/international" />
+
+                    <org.tworoom.android.newsup.text.StyledCategoryTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginRight="15dp"
+                        android:text="국제"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="122dp"
+                android:background="#FFFFFF"
+                android:orientation="horizontal"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp" >
+
+                <FrameLayout
+                    android:layout_width="105dp"
+                    android:layout_height="match_parent" >
+
+                    <Button
+                        android:id="@+id/health"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/health" />
+
+                    <org.tworoom.android.newsup.text.StyledCategoryTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|bottom"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="건강"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent" >
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="105dp"
+                    android:layout_height="match_parent" >
+
+                    <Button
+                        android:id="@+id/game"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/game" />
+
+                    <org.tworoom.android.newsup.text.StyledCategoryTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginRight="15dp"
+                        android:text="게임"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent" >
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="142dp"
+                    android:layout_height="match_parent" >
+
+                    <Button
+                        android:id="@+id/sympathy"
+                        android:layout_width="142dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/sympathy" />
+
+                    <org.tworoom.android.newsup.text.StyledCategoryTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|top"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="2dp"
+                        android:text="공감"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="#FFFFFF" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                android:background="#FFFFFF"
+                android:orientation="horizontal"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp" >
+
+                <TextView
+                    android:id="@+id/responseText"
+                    android:layout_width="177dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="추천 받기 원하는 카테고리를 선택해 주세요." />
+
+                <LinearLayout
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent" >
+                </LinearLayout>
+                
+                <LinearLayout
+                    	android:layout_width="177dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                    <Button
+                        android:id="@+id/start"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/check" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/help_5"
+            android:gravity="end" >
+
+            <ImageButton
+                android:id="@+id/check5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="10dp"
+                android:background="@drawable/check" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/help_4"
+            android:gravity="end" >
+
+            <ImageButton
+                android:id="@+id/check4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="10dp"
+                android:background="@drawable/check" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/help_3"
+            android:gravity="end" >
+
+            <ImageButton
+                android:id="@+id/check3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="10dp"
+                android:background="@drawable/check" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/help_2"
+            android:gravity="end" >
+
+            <ImageButton
+                android:id="@+id/check2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="10dp"
+                android:background="@drawable/check" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/help_1"
+            android:gravity="end" >
+
+            <ImageButton
+                android:id="@+id/check1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="10dp"
+                android:background="@drawable/check" />
+        </LinearLayout>
+    </ViewFlipper>
+
+</LinearLayout><!-- From: file:/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/res/layout/activity_start.xml -->

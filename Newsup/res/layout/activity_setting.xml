@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:androidhuman="http://schemas.android.com/apk/res/com.tworoom.android.newsup"
+    xmlns:androidhuman="http://schemas.android.com/apk/res-auto"
     android:id="@+id/settingLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +14,7 @@
         android:layout_height="48dp"
         android:orientation="horizontal" >
 
-        <com.tworoom.android.newsup.text.StyledLastArticleTextView
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
             android:layout_width="44dp"
             android:layout_height="match_parent"
             android:paddingLeft="16dp"
@@ -30,7 +30,7 @@
         android:layout_height="56dp"
         android:orientation="horizontal" >
 
-        <com.tworoom.android.newsup.text.StyledLastArticleTextView
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:paddingLeft="16dp"
@@ -63,7 +63,7 @@
         android:layout_height="56dp"
         android:orientation="horizontal" >
 
-        <com.tworoom.android.newsup.text.StyledLastArticleTextView
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:paddingLeft="16dp"

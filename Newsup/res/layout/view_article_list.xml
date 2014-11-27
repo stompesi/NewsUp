@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:androidhuman="http://schemas.android.com/apk/res/com.tworoom.android.newsup"
+    xmlns:androidhuman="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -12,7 +12,7 @@
         android:layout_height="304dp"
         android:scaleType="centerCrop" />
 
-    <com.tworoom.android.newsup.text.EllipsizingTextView
+    <org.tworoom.android.newsup.text.EllipsizingTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="86dp"
@@ -33,7 +33,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
-        <com.tworoom.android.newsup.text.StyledArticleTextView
+        <org.tworoom.android.newsup.text.StyledArticleTextView
             android:id="@+id/provider"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -48,7 +48,7 @@
             android:layout_height="match_parent" >
         </LinearLayout>
 
-        <com.tworoom.android.newsup.text.StyledArticleTextView
+        <org.tworoom.android.newsup.text.StyledArticleTextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -62,7 +62,7 @@
             android:layout_height="match_parent" >
         </LinearLayout>
 
-        <com.tworoom.android.newsup.text.StyledArticleTextView
+        <org.tworoom.android.newsup.text.StyledArticleTextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -72,7 +72,7 @@
             androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
     </LinearLayout>
 
-    <com.tworoom.android.newsup.text.StyledArticleTextView
+    <org.tworoom.android.newsup.text.StyledArticleTextView
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="186dp"

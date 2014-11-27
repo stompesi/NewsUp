@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lockscreen_back" >
+
+    <ViewFlipper
+        android:id="@+id/articleListFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ViewFlipper
+            android:id="@+id/articleDetailFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </ViewFlipper>
+    </ViewFlipper>
+
+</LinearLayout><!-- From: file:/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/res/layout/activity_article.xml -->

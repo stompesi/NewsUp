@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidhuman="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/relatevie_original_layout"
+        android:layout_width="match_parent"
+        android:layout_height="575dp"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp" >
+
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
+            android:id="@+id/relatedArticle"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center_vertical"
+            android:text="관련기사"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+        <ListView
+            android:id="@+id/itemList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" >
+        </ListView>
+
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
+            android:id="@+id/relatedVideoTitle"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center_vertical"
+            android:text="관련 동영상"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:orientation="horizontal" >
+
+            <FrameLayout
+                android:id="@+id/youtube_1"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:visibility="gone" >
+				
+                <LinearLayout 
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                    android:paddingTop = "5dp"
+                    android:paddingBottom = "6dp"
+                    android:paddingLeft = "7dp"
+                    android:paddingRight = "7dp">
+                    <ImageView
+                        android:id="@+id/youtube_1_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                    </LinearLayout>
+                
+                
+                <ImageView
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                   android:src="@drawable/video_background"  />
+
+                <LinearLayout
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:visibility="visible"
+                    android:padding="8dp" >
+
+                    <org.tworoom.android.newsup.text.EllipsizingTextView
+                        android:id="@+id/youtube_1_title"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="영화제목"
+                        android:textColor="#fff"
+                        android:textSize="11sp"
+                        android:gravity="top"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/playbutton" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="8dp"
+                android:layout_height="match_parent" >
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/youtube_2"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+				
+                <LinearLayout 
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                    android:paddingTop = "5dp"
+                    android:paddingBottom = "6dp"
+                    android:paddingLeft = "7dp"
+                    android:paddingRight = "7dp">
+                    <ImageView
+                        android:id="@+id/youtube_2_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                    </LinearLayout>
+                
+                
+                <ImageView
+                    
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                   android:src="@drawable/video_background"  />
+
+                <LinearLayout
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:visibility="visible"
+                    android:padding="8dp" >
+
+                    <org.tworoom.android.newsup.text.EllipsizingTextView
+                        android:id="@+id/youtube_2_title"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="영화제목"
+                        android:textColor="#fff"
+                        android:textSize="11sp"
+                        android:gravity="top"
+                        androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+                    <ImageButton
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/playbutton" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#F4F4F4"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" >
+
+            <!-- 좋아요 싫어요 나타내야한다 -->
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:visibility="visible" >
+
+            <org.tworoom.android.newsup.text.StyledLastArticleTextView
+                android:id="@+id/viewArticleBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/view_article_detail_page_margin_end"
+                android:gravity="end|center_vertical"
+                android:textSize="12sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout><!-- From: file:/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/res/layout/view_article_detail_last_page.xml -->

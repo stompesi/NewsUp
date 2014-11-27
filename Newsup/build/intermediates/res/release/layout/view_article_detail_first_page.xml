@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidhuman="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="166dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" >
+
+        <org.tworoom.android.newsup.text.EllipsizingTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="86dp"
+            android:ellipsize="middle"
+            android:lineSpacingExtra="6dp"
+            android:maxLines="2"
+            android:textColor="#000000"
+            android:textSize="27sp"
+            androidhuman:typeface="NotoSansKR-Medium.ttf.mp3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="16dp" >
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal" >
+			
+                <org.tworoom.android.newsup.text.StyledFirstArticleTextView
+                    android:id="@+id/author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:maxLength="10"
+            
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+                <LinearLayout
+                    android:layout_width="8dp"
+                    android:layout_height="match_parent" >
+                </LinearLayout>
+
+                <org.tworoom.android.newsup.text.StyledFirstArticleTextView
+                    android:id="@+id/provider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="10dp"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:visibility="visible" >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_fb_on" />
+
+                <org.tworoom.android.newsup.text.StyledFirstArticleTextView
+                    android:id="@+id/cnt_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="8dp"
+                    android:textColor="#000000"
+                    android:textSize="8sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_tw_on" />
+
+                <org.tworoom.android.newsup.text.StyledFirstArticleTextView
+                    android:id="@+id/cnt_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="#000000"
+                    android:textSize="8sp"
+                    androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewArticleDetail"
+        android:layout_width="match_parent"
+        android:layout_height="409dp"
+        android:orientation="vertical"
+        android:padding="16dp" >
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#FFFFFF"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" >
+
+            <!-- 좋아요 싫어요 나타내야한다 -->
+            <ImageView 
+                android:id="@+id/like"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="30dp"/>
+            
+            <ImageView 
+                android:id="@+id/unlike"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitXY"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:visibility="visible" >
+
+            <org.tworoom.android.newsup.text.StyledLastArticleTextView
+                android:id="@+id/viewArticleBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/view_article_detail_page_margin_end"
+                android:gravity="end|center_vertical"
+                android:textSize="12sp"
+                androidhuman:typeface="NotoSansKR-Regular.ttf.mp3" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout><!-- From: file:/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/res/layout/view_article_detail_first_page.xml -->

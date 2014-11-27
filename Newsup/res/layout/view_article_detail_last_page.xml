@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:androidhuman="http://schemas.android.com/apk/res/com.tworoom.android.newsup"
+    xmlns:androidhuman="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F4F4"
@@ -15,7 +15,7 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp" >
 
-        <com.tworoom.android.newsup.text.StyledLastArticleTextView
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
             android:id="@+id/relatedArticle"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -32,7 +32,7 @@
             android:scrollbars="none" >
         </ListView>
 
-        <com.tworoom.android.newsup.text.StyledLastArticleTextView
+        <org.tworoom.android.newsup.text.StyledLastArticleTextView
             android:id="@+id/relatedVideoTitle"
             android:layout_marginTop="24dp"
             android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                     android:visibility="visible"
                     android:padding="8dp" >
 
-                    <com.tworoom.android.newsup.text.EllipsizingTextView
+                    <org.tworoom.android.newsup.text.EllipsizingTextView
                         android:id="@+id/youtube_1_title"
                         android:layout_width="120dp"
                         android:layout_height="match_parent"
@@ -137,7 +137,7 @@
                     android:visibility="visible"
                     android:padding="8dp" >
 
-                    <com.tworoom.android.newsup.text.EllipsizingTextView
+                    <org.tworoom.android.newsup.text.EllipsizingTextView
                         android:id="@+id/youtube_2_title"
                         android:layout_width="120dp"
                         android:layout_height="match_parent"
@@ -178,7 +178,7 @@
             android:layout_gravity="end"
             android:visibility="visible" >
 
-            <com.tworoom.android.newsup.text.StyledLastArticleTextView
+            <org.tworoom.android.newsup.text.StyledLastArticleTextView
                 android:id="@+id/viewArticleBottom"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

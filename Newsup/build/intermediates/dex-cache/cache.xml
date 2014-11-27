@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/build/intermediates/pre-dexed/debug/universal-image-loader-1.9.3-29c3c96d806a3eddff260bd51eb4c679fc970d9d.jar"
+        jar="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/libs/universal-image-loader-1.9.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="a85588bec3e2c4584d593d3f15df1677321bca72"/>
+    <item
+        dex="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/build/intermediates/pre-dexed/debug/volley-01519cd88c36aefdecdbe62397c3e38e53448c90.jar"
+        jar="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/libs/volley.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="0c771a1794cd3eb842a03b67d159c4a316da4df2"/>
+    <item
+        dex="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/build/intermediates/pre-dexed/debug/sugar-1.3-ede8964cba1b664591af7094af1bae340f027051.jar"
+        jar="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/libs/sugar-1.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="5f8a323697ff1f101f72a345b14185d76d7c4353"/>
+    <item
+        dex="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/build/intermediates/pre-dexed/debug/UrQA-Client_0.97-d1c953513d8120d7fb77d7a49c38edba8705e11a.jar"
+        jar="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/libs/UrQA-Client_0.97.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="6c520db9e766a4646b04baa8dbcd885a223a026f"/>
+    <item
+        dex="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/build/intermediates/pre-dexed/debug/android-async-http-1.4.6-12adb47e6a1b9b34aefd87ee8a8ef97339f27987.jar"
+        jar="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/libs/android-async-http-1.4.6.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="a845a88238be0b5be9d238652c1bc0605ef91f52"/>
+    <item
+        dex="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/build/intermediates/pre-dexed/debug/android-support-v4-6d87fc1992a914566f3bd41f1a92c1ca17d6288a.jar"
+        jar="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/libs/android-support-v4.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="3b20dc871d179ba476082efe543dc1b38db46e30"/>
+
+</pre-dex-items>

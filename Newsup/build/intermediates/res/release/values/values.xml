@@ -36,7 +36,7 @@
     <eat-comment />
 
     <string name="action_settings">Settings</string>
-    <string name="app_name">FlipView</string>
+    <string name="app_name">NewsUp</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_start">NewsUp</string>
     <!-- From: file:/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/res/values/styles.xml -->

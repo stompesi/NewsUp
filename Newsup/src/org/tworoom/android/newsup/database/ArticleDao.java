@@ -2,22 +2,17 @@ package org.tworoom.android.newsup.database;
 
 import java.util.List;
 
-/**
- * Created by stompesi on 14. 12. 7..
- */
 public class ArticleDao {
-
-
 
     public void saveArticle(Article article) {
         article.save();
     }
+
     public Article getArticle(int articleId) {
         Article article = null;
         article = Article.findById(Article.class, (long) articleId);
         return article;
     }
-
 
     public List<Article> getArticleList(int offset) {
         Article.executeQuery("VACUUM");
@@ -34,6 +29,4 @@ public class ArticleDao {
     public void deleteArticle(String time) {
         Article.deleteAll(Article.class, "timestamp <= ?", time);
     }
-
-
 }

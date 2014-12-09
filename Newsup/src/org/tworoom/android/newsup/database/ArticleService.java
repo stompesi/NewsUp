@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.Semaphore;
 
-/**
- * Created by stompesi on 14. 12. 7..
- */
 public class ArticleService {
 
     private static ArticleService articleService;
@@ -124,14 +121,10 @@ public class ArticleService {
         }
     }
 
-
-
     public void removeyArticle(){
         int TWO_DAY_SECOND = 172800;
         int twoDayAgo = (int)(System.currentTimeMillis() / 1000L) - TWO_DAY_SECOND;
         articleDao.deleteArticle(String.valueOf(twoDayAgo));
-
-
         LockScreenActivity lockScreenActivity = (LockScreenActivity) LockScreenActivity.getInstance();
         if(lockScreenActivity != null) {
             lockScreenActivity.reFresh();

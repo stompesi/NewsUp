@@ -25,6 +25,7 @@ import org.tworoom.android.newsup.activity.ArticleActivity;
 import org.tworoom.android.newsup.activity.LockScreenActivity;
 import org.tworoom.android.newsup.application.NewsUpApp;
 import org.tworoom.android.newsup.database.Article;
+import org.tworoom.android.newsup.database.ArticleService;
 import org.tworoom.android.newsup.view.ArticleDetailManager;
 
 public class NewsUpNetwork {
@@ -68,7 +69,7 @@ public class NewsUpNetwork {
 							articles = response.getJSONArray("data");
 							Log.d("NewsUp", "서버 점수 초기화 count : " + articles.length());
 							for (int i = 0; i < articles.length(); i++) {
-								Article.refreshArticleScore(articles.getJSONObject(i));
+                                ArticleService.getInstance().refreshArticleScore(articles.getJSONObject(i));
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -117,7 +118,7 @@ public class NewsUpNetwork {
 											articles.getJSONObject(i).getInt("timestamp") + " category : " + 
 											articles.getJSONObject(i).getInt("category"));
 									articles.getJSONObject(i).put("category", category);
-									Article.saveArticle(articles.getJSONObject(i));
+									ArticleService.getInstance().saveArticle(articles.getJSONObject(i));
 								}
 								if(ArticleActivity.getInstance() != null && isUserRequest) {
 									ArticleActivity.getInstance().getArticleListManager().successNetworkArticleRequest(category);
@@ -416,51 +417,8 @@ public class NewsUpNetwork {
 		};
 		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
 	}
-	
-	
-//	public void requestVideo(String query) {
-//		Log.d("NewsUp", "동영상 요청");
-//		
-//		String requestURL = "https://www.googleapis.com/youtube/v3/search?"
-//				+ "part=snippet&"
-//				+ "key=AIzaSyBUlYE_3MYaqnTFaegtKhSy0BzvkdQTfqY&"
-//				+ "type=video&"
-//				+ "order=date&"
-//				+ "q=";
-//		try {
-//			requestURL += URLEncoder.encode(query,"UTF-8");
-//		} catch (UnsupportedEncodingException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		Log.d("NewsUp", "requestURL : " + requestURL);
-//		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
-//					@Override
-//					public void onResponse(JSONObject response) {
-//						Log.d("NewsUp", "동영상 요청 성공");
-//						ArticleDetailManager articleDetailManager = ArticleDetailManager.getInstance();
-//						String videoId;
-//						try {
-//							JSONArray entity = response.getJSONArray("items");
-//							JSONObject videoObject = entity.getJSONObject(0);
-//							JSONObject id = videoObject.getJSONObject("id");
-//							videoId = id.getString("videoId");
-//							articleDetailManager.setRelatedArticle(videoId);
-//						} catch (JSONException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//					}
-//				}, new Response.ErrorListener() {
-//					@Override
-//					public void onErrorResponse(VolleyError error) {
-//					}
-//				}) {
-//		};
-//		NewsUpApp.getInstance().addToRequestQueue(jsonObjectRequest, TAG_OBJECT_JSON);
-//	}
-	
-	// Preference 서버로 전달 
+
+	// Preference 서버로 전달
 	public void requestPreference(ArrayList<Integer> likeCategoryList) {
 			Log.d("NewsUp", "Preference 서버로 전달");
 			String requestURL = ARTICLE_REQUEST_SERVER_ADDRESS + "/users/preference";

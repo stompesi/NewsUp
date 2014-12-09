@@ -12,6 +12,7 @@ import android.util.Log;
 
 import org.tworoom.android.newsup.background.receiver.ScreenOnOffReceiver;
 import org.tworoom.android.newsup.database.Article;
+import org.tworoom.android.newsup.database.ArticleService;
 import org.tworoom.android.newsup.network.NewsUpNetwork;
 import org.tworoom.android.newsup.setting.RbPreference;
 
@@ -111,7 +112,7 @@ public class ArticleManageService extends Service {
 
 	// 48시간 이상 지난 Article 제거  
 	private static void removeArticleTimeOverItem() {
-		Article.removeyArticle();
+		ArticleService.getInstance().removeyArticle();
 	}
 	
 	// 서버에 Article 요청 하루에 한번  

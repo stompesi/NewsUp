@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.tworoom.android.newsup"
+    android:versionCode="2"
+    android:versionName="1.0.1" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:name="org.tworoom.android.newsup.application.NewsUpApp"
+        android:allowBackup="true"
+        android:icon="@drawable/appicon"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Holo.NoActionBar" >
+        <activity
+            android:name="org.tworoom.android.newsup.activity.ArticleActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="org.tworoom.android.newsup.activity.LockScreenActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="org.tworoom.android.newsup.activity.MenuActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="org.tworoom.android.newsup.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="org.tworoom.android.newsup.activity.StartActivity"
+            android:label="@string/title_activity_start"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="org.tworoom.android.newsup.activity.SplashActivity"
+            android:label="@string/title_activity_start"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service android:name="org.tworoom.android.newsup.background.service.LockScreenService" />
+        <service android:name="org.tworoom.android.newsup.background.service.ArticleManageService" />
+
+        <receiver
+            android:name="org.tworoom.android.newsup.background.receiver.LockScreenReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="org.tworoom.android.newsup.background.receiver.ScreenOnOffReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="sugar_example.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="3" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="org.tworoom.android.newsup" />
+    </application>
+
+</manifest>

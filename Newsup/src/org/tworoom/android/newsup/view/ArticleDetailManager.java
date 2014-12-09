@@ -32,6 +32,7 @@ import org.tworoom.android.newsup.activity.transmission.structure.Image;
 import org.tworoom.android.newsup.application.NewsUpApp;
 import org.tworoom.android.newsup.data.ArticleReadInfo;
 import org.tworoom.android.newsup.database.Article;
+import org.tworoom.android.newsup.database.ArticleService;
 import org.tworoom.android.newsup.network.NewsUpImageLoader;
 import org.tworoom.android.newsup.network.NewsUpNetwork;
 import org.tworoom.android.newsup.splitter.PageSplitter;
@@ -141,7 +142,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
 
         TextPaint textPaint;
 
-        article = Article.getArticle(articleId);
+        article = ArticleService.getInstance().getArticle(articleId);
         list = new ArrayList<Object>();
         str = article.getBody();
 
@@ -432,7 +433,7 @@ public class ArticleDetailManager extends ArticleFlipViewManager {
     }
 
     public void requestInfomation(int articleId) {
-        Article article = Article.getArticle(articleId);
+        Article article = ArticleService.getInstance().getArticle(articleId);
         if (article != null) {
             NewsUpNetwork.getInstance().requestFacebook(article.getArticleURL());
             NewsUpNetwork.getInstance().requestTwitter(article.getArticleURL());

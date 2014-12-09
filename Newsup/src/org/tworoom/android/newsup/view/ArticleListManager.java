@@ -17,6 +17,7 @@ import org.tworoom.android.newsup.activity.transmission.structure.Image;
 import org.tworoom.android.newsup.activity.transmission.structure.TransmissionArticle;
 import org.tworoom.android.newsup.data.TimeCalculator;
 import org.tworoom.android.newsup.database.Article;
+import org.tworoom.android.newsup.database.ArticleService;
 import org.tworoom.android.newsup.network.NewsUpImageLoader;
 import org.tworoom.android.newsup.network.NewsUpNetwork;
 
@@ -68,9 +69,9 @@ public class ArticleListManager extends ArticleFlipViewManager {
 
         // TODO : Idx를 Id로 변경해야 한다
         Log.e("article.getArticleId()",
-                "id : " + article.getArticleId() + "  title : " + article.getTitle() + " idx : "
+                "id : " + article.getId() + "  title : " + article.getTitle() + " idx : "
                         + article.getIdx() + " category : " + article.getCategory() + " timestamp : " + article.getTimestamp());
-        view.setId(article.getArticleId());
+        view.setId(article.getId().intValue());
         TextView title = (TextView) view.findViewById(R.id.title);
         TextView content = (TextView) view.findViewById(R.id.content);
         TextView time = (TextView) view.findViewById(R.id.time);
@@ -135,12 +136,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
         int articleOffset = getArticleOffset();
         List<Article> articleList = null;
 
-        if (category == 0) {
-            articleList = Article.selectMainArticleList(articleOffset);
-        } else {
-            articleList = Article.selectOtherArticleList(category,
-                    articleOffset);
-        }
+        articleList = ArticleService.getInstance().getArticleList(articleOffset, category);
+
         int articleListSize = articleList.size();
         Log.d("NewsUp", "articleSize : " + articleListSize + " category : " + category);
         if (articleListSize == 0) {
@@ -174,7 +171,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
         int articleOffset = getArticleOffset();
         List<Article> articleList = null;
 
-        articleList = Article.selectOtherArticleList(startCategory, articleOffset);
+        articleList = ArticleService.getInstance().getArticleList(startCategory, articleOffset);
         int articleListSize = articleList.size();
         Log.d("NewsUp", "articleSize : " + articleListSize + " startCategory : " + startCategory);
         if (articleListSize == 0) {
@@ -224,12 +221,8 @@ public class ArticleListManager extends ArticleFlipViewManager {
             int category = params[0];
             List<Article> articleList = null;
 
-            if (category == 0) {
-                articleList = Article.selectMainArticleList(articleOffset);
-            } else {
-                articleList = Article.selectOtherArticleList(category,
-                        articleOffset);
-            }
+            articleList = ArticleService.getInstance().getArticleList(articleOffset, category);
+
             return articleList;
         }
 
@@ -352,7 +345,7 @@ public class ArticleListManager extends ArticleFlipViewManager {
     }
 
     public void setZeroScore() {
-        Article.setZeroScore(viewArticleList);
+        ArticleService.getInstance().setZeroScore(viewArticleList);
     }
 
     public boolean isNetworkError() {

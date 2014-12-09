@@ -1,24 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="2" >
-
-    <dataSet config="main" >
-        <source path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets" >
-            <file
-                name="NotoSansKR-Medium.ttf.mp3"
-                path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets/NotoSansKR-Medium.ttf.mp3" />
-            <file
-                name="NotoSansKR-Regular.ttf.mp3"
-                path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets/NotoSansKR-Regular.ttf.mp3" />
-            <file
-                name="Roboto-Regular.ttf.mp3"
-                path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets/Roboto-Regular.ttf.mp3" />
-            <file
-                name="RobotoMedium.ttf.mp3"
-                path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets/RobotoMedium.ttf.mp3" />
-        </source>
-    </dataSet>
-    <dataSet config="debug" >
-        <source path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/build-types/debug/assets" />
-    </dataSet>
-
-</merger>
+<merger version="3"><dataSet config="main"><source path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets"><file name="NotoSansKR-Medium.ttf.mp3" path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets/NotoSansKR-Medium.ttf.mp3"/><file name="NotoSansKR-Regular.ttf.mp3" path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets/NotoSansKR-Regular.ttf.mp3"/><file name="Roboto-Regular.ttf.mp3" path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets/Roboto-Regular.ttf.mp3"/><file name="RobotoMedium.ttf.mp3" path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/assets/RobotoMedium.ttf.mp3"/></source></dataSet><dataSet config="debug"><source path="/Users/stompesi/Documents/SourceTree/NewsUp/Newsup/build-types/debug/assets"/></dataSet></merger>

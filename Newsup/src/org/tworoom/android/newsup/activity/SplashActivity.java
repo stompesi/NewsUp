@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import org.tworoom.android.newsup.R;
-
-import org.tworoom.android.newsup.setting.RbPreference;
 import com.urqa.clientinterface.URQAController;
+
+import org.tworoom.android.newsup.R;
+import org.tworoom.android.newsup.setting.RbPreference;
 
 public class SplashActivity extends Activity {
 
@@ -18,13 +18,12 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		
 		URQAController.InitializeAndStartSession(getApplicationContext(), "184637B8");
-		
+
 		Handler hd = new Handler();
 		hd.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				RbPreference pref = new RbPreference(SplashActivity.this);
-//				 앱 처음 실행 
 				if(pref.getValue(RbPreference.PREF_IS_INTRO, true)) {
 					Intent intent = new Intent(SplashActivity.this, StartActivity.class);
 					startActivity(intent);
